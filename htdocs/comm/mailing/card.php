@@ -234,6 +234,7 @@ if (empty($reshook))
 								'__OTHER3__' => $other3,
 								'__OTHER4__' => $other4,
 								'__OTHER5__' => $other5,
+                                '__SIGNATURE__' => (($user->signature && empty($conf->global->MAIN_MAIL_DO_NOT_USE_SIGN))?$user->signature:''),
 								'__CHECK_READ__' => '<img src="'.DOL_MAIN_URL_ROOT.'/public/emailing/mailing-read.php?tag='.$obj->tag.'&securitykey='.urlencode($conf->global->MAILING_EMAIL_UNSUBSCRIBE_KEY).'" width="1" height="1" style="width:1px;height:1px" border="0"/>',
 								'__UNSUBSCRIBE__' => '<a href="'.DOL_MAIN_URL_ROOT.'/public/emailing/mailing-unsubscribe.php?tag='.$obj->tag.'&unsuscrib=1&securitykey='.urlencode($conf->global->MAILING_EMAIL_UNSUBSCRIBE_KEY).'" target="_blank">'.$langs->trans("MailUnsubcribe").'</a>'
 						);
