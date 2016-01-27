@@ -93,6 +93,9 @@ if ($id > 0 || ! empty($ref))
 	if ($ret < 0) dol_print_error('',$object->error);
 }
 
+//Verify if user is an intervenant
+if (!empty($conf->global->FICHINTER_INTERVENANT_ALLOW_MODIF) && in_array($user->id,$object->getIdContact('internal','INTERVENING'))) $user->rights->ficheinter->creer=true;
+
 $permissionnote=$user->rights->ficheinter->creer;	// Used by the include of actions_setnotes.inc.php
 $permissiondellink=$user->rights->ficheinter->creer;	// Used by the include of actions_dellink.inc.php
 
