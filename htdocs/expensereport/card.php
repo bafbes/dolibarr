@@ -1883,7 +1883,7 @@ if ($action != 'create' && $action != 'edit')
 	*/
 	if ($user->rights->expensereport->creer && $object->fk_statut==0)
 	{
-		if ($object->fk_user_author == $user->id)
+		if ($object->fk_user_author == $user->id || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
 		{
 			// Modify
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&id='.$object->id.'">'.$langs->trans('Modify').'</a>';
@@ -1909,7 +1909,7 @@ if ($action != 'create' && $action != 'edit')
 	 */
 	if($user->rights->expensereport->creer && $object->fk_statut==99)
 	{
-		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid)
+		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
 		{
 			// Modify
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&id='.$object->id.'">'.$langs->trans('Modify').'</a>';
@@ -1929,7 +1929,7 @@ if ($action != 'create' && $action != 'edit')
 
 	if ($user->rights->expensereport->to_paid && $object->fk_statut==5)
 	{
-		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid)
+		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
 		{
 			// Brouillonner
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=brouillonner&id='.$object->id.'">'.$langs->trans('SetToDraft').'</a>';
@@ -1943,7 +1943,7 @@ if ($action != 'create' && $action != 'edit')
 	 */
 	if ($object->fk_statut == 2)
 	{
-		if ($object->fk_user_author == $user->id)
+		if ($object->fk_user_author == $user->id || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
 		{
 			// Brouillonner
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=brouillonner&id='.$object->id.'">'.$langs->trans('SetToDraft').'</a>';
@@ -1960,7 +1960,7 @@ if ($action != 'create' && $action != 'edit')
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=refuse&id='.$object->id.'">'.$langs->trans('Deny').'</a>';
 		//}
 
-		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid)
+		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
 		{
 			// Cancel
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=cancel&id='.$object->id.'">'.$langs->trans('Cancel').'</a>';
@@ -1998,7 +1998,7 @@ if ($action != 'create' && $action != 'edit')
 		}
 
 		// Cancel
-		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid)
+		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
 		{
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=cancel&id='.$object->id.'">'.$langs->trans('Cancel').'</a>';
 		}
@@ -2033,7 +2033,7 @@ if ($action != 'create' && $action != 'edit')
 	if ($user->rights->expensereport->supprimer && $object->fk_statut==4)
 	{
 
-		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid)
+		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
 		{
 			// Brouillonner
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=brouillonner&id='.$object->id.'">'.$langs->trans('ReOpen').'</a>';
