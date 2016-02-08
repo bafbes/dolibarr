@@ -4789,7 +4789,7 @@ class Form
      *  @param	array			$restrictlinksto	Restrict links to some elements, for exemple array('order') or array('supplier_order')
      *  @return	int									<0 if KO, >0 if OK
      */
-    function showLinkToObjectBlock($object, $restrictlinksto=array())
+    function showLinkToObjectBlock($object, $restrictlinksto=array(),$fk_soc=0)
     {
         global $conf, $langs, $hookmanager;
         global $bc;
@@ -4886,6 +4886,7 @@ class Form
 			$sql .= " FROM " . MAIN_DB_PREFIX . "societe as s";
 			$sql .= ", " . MAIN_DB_PREFIX . "fichinter as f";
 			$sql .= ' WHERE f.fk_soc = s.rowid';
+            if($fk_soc) $sql .= " AND f.fk_soc=$fk_soc";
 
 			$resqlorderlist = $this->db->query($sql);
 			if ($resqlorderlist)
