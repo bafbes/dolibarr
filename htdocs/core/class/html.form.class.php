@@ -4765,6 +4765,9 @@ class Form
         		else if ($objecttype == 'order_supplier')   {
         			$tplpath = 'fourn/commande';
         		}
+        		else if ($objecttype == 'expensereport')   {
+        			$tplpath = 'expensereport';
+        		}
 
         		global $linkedObjectBlock;
         		$linkedObjectBlock = $objects;
