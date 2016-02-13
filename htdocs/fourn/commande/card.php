@@ -915,9 +915,13 @@ if (empty($reshook))
        			// If creation from another object of another module (Example: origin=propal, originid=1)
 				if (! empty($origin) && ! empty($originid))
 				{
-					$element = 'comm/askpricesupplier';
-					$subelement = 'askpricesupplier';
-
+					if ($origin == 'order' || $origin == 'commande') {
+                        $element = $subelement = 'commande';
+                    }
+                    else { 
+                        $element = 'comm/askpricesupplier';
+                        $subelement = 'askpricesupplier';
+                    }    
 					$object->origin = $origin;
 					$object->origin_id = $originid;
 
@@ -928,8 +932,8 @@ if (empty($reshook))
 						$object->linked_objects = array_merge($object->linked_objects, $other_linked_objects);
 					}
 
-					$object_id = $object->create($user);
-					if ($object_id > 0)
+					$id = $object->create($user);
+					if ($id > 0)
 					{
 						dol_include_once('/' . $element . '/class/' . $subelement . '.class.php');
 
@@ -979,13 +983,15 @@ if (empty($reshook))
 								}
 
 								$idprod = $productsupplier->find_min_price_product_fournisseur($lines[$i]->fk_product, $lines[$i]->qty);
-								$res = $productsupplier->fetch($idProductFourn);
-
+								$res = $productsupplier->fetch($idprod);
+                                $soc=new societe($db);
+                                $soc->fetch($socid);
+                                $tva_tx=($origin=="commande")?get_default_tva($soc,$mysoc,$lines[$i]->fk_product,$idprod):$lines[$i]->tva_tx;
 								$result = $object->addline(
 									$desc,
 									$lines[$i]->subprice,
 									$lines[$i]->qty,
-									$lines[$i]->tva_tx,
+									$tva_tx,
 									$lines[$i]->localtax1_tx,
 									$lines[$i]->localtax2_tx,
 									$lines[$i]->fk_product,
