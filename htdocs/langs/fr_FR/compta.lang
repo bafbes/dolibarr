@@ -192,6 +192,7 @@ ByProductsAndServices=Par produits et services
 RefExt=Référence externe
 ToCreateAPredefinedInvoice=Pour créer une facture prédéfinie, créer une facture standard puis sans la valider, cliquer sur le bouton "Convertir en facture prédéfine".
 LinkedOrder=Lier à une commande
+LinkedSupplierOrder=Lier à une commande fournisseur
 ReCalculate=Recalculer
 Mode1=Mode 1
 Mode2=Mode 2

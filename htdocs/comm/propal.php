@@ -2277,14 +2277,14 @@ if ($action == 'create')
 		// Linked object block
 		$somethingshown = $form->showLinkedObjectBlock($object);
 
-		// Show links to link elements
-		$linktoelem = $form->showLinkToObjectBlock($object);
-		if ($linktoelem) print '<br>'.$linktoelem;
+        if (GETPOST('LinkedFichinter')) {
+            $object->fetch($id);
+            $object->fetch_thirdparty();
+            $result = $object->add_object_linked('fichinter', GETPOST('LinkedFichinter'));
+        }
 
         // Show links to link elements
-        $linktoelements=array();
         if($conf->global->PROPALE_LINK_TO_INTERVENTION) $linktoelements[]='fichinter';
-        $linktoelem='';
         $linktoelem = $form->showLinkToObjectBlock($object,$linktoelements,$object->socid);
         if ($linktoelem) print '<br>'.$linktoelem;
 

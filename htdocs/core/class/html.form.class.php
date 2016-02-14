@@ -4868,22 +4868,23 @@ class Form
 			print '</div>';
 		}
 
-		if ((in_array('fichinter',$restrictlinksto)) && ! empty($conf->ficheinter->enabled))
+		if (((! is_array($restrictlinksto)) || in_array('fichinter',$restrictlinksto)) 
+                && ! empty($conf->ficheinter->enabled))
 		{
-			$linktoelem.=($linktoelem?' &nbsp; ':'').'<a href="#" id="linktoorder">' . $langs->trans('LinkedFichinter') . '</a>';
+			$linktoelem.=($linktoelem?' &nbsp; ':'').'<a href="#" id="Linketofichinter">' . $langs->trans('LinkedFichinter') . '</a>';
 
 			print '
 				<script type="text/javascript" language="javascript">
 				jQuery(document).ready(function() {
-					jQuery("#linktoorder").click(function() {
-						jQuery("#orderlist").toggle();
-						jQuery("#linktoorder").toggle();
+					jQuery("#Linketofichinter").click(function() {
+						jQuery("#Fichinterlist").toggle();
+						jQuery("#Linketofichinter").toggle();
 					});
 				});
 				</script>
 				';
 
-			print '<div id="orderlist"'.(empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER)?' style="display:none"':'').'>';
+			print '<div id="Fichinterlist"'.(empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER)?' style="display:none"':'').'>';
 
 			$sql = "SELECT s.rowid as socid, s.nom as name, s.client, f.rowid, f.ref";
 			$sql .= " FROM " . MAIN_DB_PREFIX . "societe as s";
@@ -4891,10 +4892,10 @@ class Form
 			$sql .= ' WHERE f.fk_soc = s.rowid';
             if($fk_soc) $sql .= " AND f.fk_soc=$fk_soc";
 
-			$resqlorderlist = $this->db->query($sql);
-			if ($resqlorderlist)
+			$resql = $this->db->query($sql);
+			if ($resql)
 			{
-				$num = $this->db->num_rows($resqlorderlist);
+				$num = $this->db->num_rows($resql);
 				$i = 0;
 
 				print '<br><form action="" method="POST" name="LinkedFichinter">';
@@ -4906,7 +4907,7 @@ class Form
 				print '</tr>';
 				while ($i < $num)
 				{
-					$objp = $this->db->fetch_object($resqlorderlist);
+					$objp = $this->db->fetch_object($resql);
 
 					$var = ! $var;
 					print '<tr ' . $bc [$var] . '>';
@@ -4922,7 +4923,7 @@ class Form
 				print '</table>';
 				print '<div class="center"><input type="submit" class="button" value="' . $langs->trans('ToLink') . '">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" class="button" name="cancel" value="' . $langs->trans('Cancel') . '"></div>';
 				print '</form>';
-				$this->db->free($resqlorderlist);
+				$this->db->free($resql);
 			} else {
 				dol_print_error($this->db);
 			}
@@ -4933,33 +4934,33 @@ class Form
         if (((! is_array($restrictlinksto)) || in_array('supplier_order',$restrictlinksto))
 			&& ! empty($conf->fournisseur->enabled))
 		{
-			$linktoelem.=($linktoelem?' &nbsp; ':'').'<a href="#" id="linktoorder">' . $langs->trans('LinkedOrder') . '</a>';
+			$linktoelem.=($linktoelem?' &nbsp; ':'').'<a href="#" id="LinketosupplierOrder">' . $langs->trans('LinkedSupplierOrder') . '</a>';
 
 			print '
 			<script type="text/javascript" language="javascript">
 			jQuery(document).ready(function() {
-				jQuery("#linktoorder").click(function() {
-					jQuery("#orderlist").toggle();
-					jQuery("#linktoorder").toggle();
+				jQuery("#LinketosupplierOrder").click(function() {
+					jQuery("#SupplierOrderlist").toggle();
+					jQuery("#LinketosupplierOrder").toggle();
 				});
 			});
 			</script>
 			';
 
-			print '<div id="orderlist"'.(empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER)?' style="display:none"':'').'>';
+			print '<div id="SupplierOrderlist"'.(empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER)?' style="display:none"':'').'>';
 
 			$sql = "SELECT s.rowid as socid, s.nom as name, s.client, c.rowid, c.ref, c.ref_supplier, c.total_ht";
 			$sql .= " FROM " . MAIN_DB_PREFIX . "societe as s";
 			$sql .= ", " . MAIN_DB_PREFIX . "commande_fournisseur as c";
 			$sql .= ' WHERE c.fk_soc = s.rowid AND c.fk_soc = ' . $object->thirdparty->id;
 
-			$resqlorderlist = $this->db->query($sql);
-			if ($resqlorderlist)
+			$resql = $this->db->query($sql);
+			if ($resql)
 			{
-				$num = $this->db->num_rows($resqlorderlist);
+				$num = $this->db->num_rows($resql);
 				$i = 0;
 
-				print '<br><form action="" method="POST" name="LinkedOrder">';
+				print '<br><form action="" method="POST" name="LinkedSupplierOrder">';
 				print '<table class="noborder">';
 				print '<tr class="liste_titre">';
 				print '<td class="nowrap"></td>';
@@ -4970,12 +4971,12 @@ class Form
 				print '</tr>';
 				while ($i < $num)
 				{
-					$objp = $this->db->fetch_object($resqlorderlist);
+					$objp = $this->db->fetch_object($resql);
 
 					$var = ! $var;
 					print '<tr ' . $bc [$var] . '>';
 					print '<td aling="left">';
-					print '<input type="radio" name="linkedOrder" value=' . $objp->rowid . '>';
+					print '<input type="radio" name="LinkedSupplierOrder" value=' . $objp->rowid . '>';
 					print '<td align="center">' . $objp->ref . '</td>';
 					print '<td>' . $objp->ref_supplier . '</td>';
 					print '<td>' . price($objp->total_ht) . '</td>';
@@ -4988,7 +4989,7 @@ class Form
 				print '</table>';
 				print '<br><div class="center"><input type="submit" class="button" value="' . $langs->trans('ToLink') . '"> &nbsp; <input type="submit" class="button" name="cancel" value="' . $langs->trans('Cancel') . '"></div>';
 				print '</form>';
-				$this->db->free($resqlorderlist);
+				$this->db->free($resql);
 			} else {
 				dol_print_error($this->db);
 			}
