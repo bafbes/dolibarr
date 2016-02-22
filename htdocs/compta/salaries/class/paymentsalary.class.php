@@ -171,7 +171,7 @@ class PaymentSalary extends CommonObject
 		$sql.= " s.dateep,";
 		$sql.= " s.note,";
 		$sql.= " s.fk_bank,";
-		$sql.= " s.fk_user_creat,";
+		$sql.= " s.fk_user_author,";
 		$sql.= " s.fk_user_modif,";
 		$sql.= " b.fk_account,";
 		$sql.= " b.fk_type,";
@@ -340,7 +340,7 @@ class PaymentSalary extends CommonObject
 		$sql.= ", label";
 		$sql.= ", datesp";
 		$sql.= ", dateep";
-		$sql.= ", fk_user_creat";
+		$sql.= ", fk_user_author";
 		$sql.= ", fk_bank";
 		$sql.= ", entity";
 		$sql.= ") ";
