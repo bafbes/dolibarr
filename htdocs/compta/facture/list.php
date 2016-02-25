@@ -380,7 +380,7 @@ if ($resql)
             $facturestatic->id=$objp->facid;
             $facturestatic->ref=$objp->facnumber;
             $facturestatic->type=$objp->type;
-            $notetoshow=dol_string_nohtmltag(($user->societe_id>0?$objp->note_public:$objp->note),1);
+            $notetoshow=dol_string_nohtmltag($objp->note_private,1);
             $paiement = $facturestatic->getSommePaiement();
 
             print '<table class="nobordernopadding"><tr class="nocellnopadd">';
