@@ -6,7 +6,7 @@
  * Copyright (C) 2013       Florian Henry           <florian.henry@open-concept.pro>
  * Copyright (C) 2014       Ferran Marcet           <fmarcet@2byte.es>
  * Copyright (C) 201		Charlie Benke           <charlies@patas-monkey.com>
- * Copyright (C) 2015       Abbes Bahfir            <bafbes@gmail.com>
+ * Copyright (C) 2015-2016  Abbes Bahfir            <bafbes@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -473,12 +473,12 @@ if (empty($reshook))
 			$mesg='<div class="error">'.$langs->trans("ErrorFieldRequired",$langs->transnoentitiesnoconv("Description")).'</div>';
 			$error++;
 		}
-		if (!GETPOST('durationhour','int') && !GETPOST('durationmin','int'))
+		if (empty($conf->global->FICHINTER_WITHOUT_DURATION) && !GETPOST('durationhour','int') && !GETPOST('durationmin','int'))
 		{
 			$mesg='<div class="error">'.$langs->trans("ErrorFieldRequired",$langs->transnoentitiesnoconv("Duration")).'</div>';
 			$error++;
 		}
-		if (GETPOST('durationhour','int') >= 24 && GETPOST('durationmin','int') > 0)
+		if (empty($conf->global->FICHINTER_WITHOUT_DURATION) && GETPOST('durationhour','int') >= 24 && GETPOST('durationmin','int') > 0)
 		{
 			$mesg='<div class="error">'.$langs->trans("ErrorValueTooHigh").'</div>';
 			$error++;
@@ -489,7 +489,7 @@ if (empty($reshook))
 
 			$desc=GETPOST('np_desc');
 			$date_intervention = dol_mktime(GETPOST('dihour','int'), GETPOST('dimin','int'), 0, GETPOST('dimonth','int'), GETPOST('diday','int'), GETPOST('diyear','int'));
-			$duration = convertTime2Seconds(GETPOST('durationhour','int'), GETPOST('durationmin','int'));
+			$duration = empty($conf->global->FICHINTER_WITHOUT_DURATION)?0:convertTime2Seconds(GETPOST('durationhour','int'), GETPOST('durationmin','int'));
 
 
 			// Extrafields
@@ -1428,7 +1428,7 @@ else if ($id > 0 || ! empty($ref))
 				print '<tr class="liste_titre">';
 				print '<td>'.$langs->trans('Description').'</td>';
 				print '<td align="center">'.$langs->trans('Date').'</td>';
-				print '<td align="right">'.$langs->trans('Duration').'</td>';
+				print '<td align="right">'.(empty($conf->global->FICHINTER_WITHOUT_DURATION)?$langs->trans('Duration'):'').'</td>';
 				print '<td width="48" colspan="3">&nbsp;</td>';
 				print "</tr>\n";
 			}
@@ -1450,7 +1450,7 @@ else if ($id > 0 || ! empty($ref))
 					print '<td align="center" width="150">'.dol_print_date($db->jdate($objp->date_intervention),'dayhour').'</td>';
 
 					// Duration
-					print '<td align="right" width="150">'.convertSecondToTime($objp->duree).'</td>';
+					print '<td align="right" width="150">'.(empty($conf->global->FICHINTER_WITHOUT_DURATION)?convertSecondToTime($objp->duree):'').'</td>';
 
 					print "</td>\n";
 
@@ -1523,14 +1523,18 @@ else if ($id > 0 || ! empty($ref))
 					$form->select_date($db->jdate($objp->date_intervention),'di',1,1,0,"date_intervention");
 					print '</td>';
 
-					// Duration
-					print '<td align="right">';
-					$selectmode='select';
-					if (! empty($conf->global->INTERVENTION_ADDLINE_FREEDUREATION)) $selectmode='text';
-					$form->select_duration('duration',$objp->duree, $selectmode);
-					print '</td>';
+                        
+                    // Duration
+                    print '<td align="right">';
+                    if (empty($conf->global->FICHINTER_WITHOUT_DURATION)) {
+                        $selectmode = 'select';
+                        if (!empty($conf->global->INTERVENTION_ADDLINE_FREEDUREATION))
+                            $selectmode = 'text';
+                        $form->select_duration('duration', $objp->duree, $selectmode);
+                    }
+                    print '</td>';
 
-					print '<td align="center" colspan="5" valign="center"><input type="submit" class="button" name="save" value="'.$langs->trans("Save").'">';
+                    print '<td align="center" colspan="5" valign="center"><input type="submit" class="button" name="save" value="'.$langs->trans("Save").'">';
 					print '<br><input type="submit" class="button" name="cancel" value="'.$langs->trans("Cancel").'"></td>';
 					print '</tr>' . "\n";
 
@@ -1561,7 +1565,7 @@ else if ($id > 0 || ! empty($ref))
 				print '<a name="add"></a>'; // ancre
 				print $langs->trans('Description').'</td>';
 				print '<td align="center">'.$langs->trans('Date').'</td>';
-				print '<td align="right">'.$langs->trans('Duration').'</td>';
+				print '<td align="right">'.(empty($conf->global->FICHINTER_WITHOUT_DURATION)?$langs->trans('Duration'):'').'</td>';
 
 				print '<td colspan="4">&nbsp;</td>';
 				print "</tr>\n";
@@ -1587,14 +1591,17 @@ else if ($id > 0 || ! empty($ref))
 				$form->select_date($timewithnohour,'di',1,1,0,"addinter");
 				print '</td>';
 
-				// Duration
-				print '<td align="right">';
-				$selectmode='select';
-				if (! empty($conf->global->INTERVENTION_ADDLINE_FREEDUREATION)) $selectmode='text';
-				$form->select_duration('duration', (!GETPOST('durationhour','int') && !GETPOST('durationmin','int'))?3600:(60*60*GETPOST('durationhour','int')+60*GETPOST('durationmin','int')), 0, $selectmode);
-				print '</td>';
+                // Duration
+                print '<td align="right">';
+                if (empty($conf->global->FICHINTER_WITHOUT_DURATION)) {
+                    $selectmode = 'select';
+                    if (!empty($conf->global->INTERVENTION_ADDLINE_FREEDUREATION))
+                        $selectmode = 'text';
+                    $form->select_duration('duration', (!GETPOST('durationhour', 'int') && !GETPOST('durationmin', 'int')) ? 3600 : (60 * 60 * GETPOST('durationhour', 'int') + 60 * GETPOST('durationmin', 'int')), 0, $selectmode);
+                }
+                print '</td>';
 
-				print '<td align="center" valign="middle" colspan="4"><input type="submit" class="button" value="'.$langs->trans('Add').'" name="addline"></td>';
+                print '<td align="center" valign="middle" colspan="4"><input type="submit" class="button" value="'.$langs->trans('Add').'" name="addline"></td>';
 				print '</tr>';
 
 				//Line extrafield
