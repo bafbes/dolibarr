@@ -4789,20 +4789,31 @@ class Form
      *  Show block with links to link to other objects.
      *
      *  @param	CommonObject	$object				Object we want to show links to
-     *  @param	array			$restrictlinksto	Restrict links to some elements, for exemple array('order') or array('supplier_order')
      *  @return	int									<0 if KO, >0 if OK
      */
-    function showLinkToObjectBlock($object, $restrictlinksto=array(),$fk_soc=0)
+    function showLinkToObjectBlock($object)
     {
         global $conf, $langs, $hookmanager;
         global $bc;
-
-		$linktoelem='';
+        
+        $linktoelements='';
+        if($object->element=="propal"){
+            if($conf->global->PROPALE_LINK_TO_INTERVENTION) $linktoelements=array('fichinter');
+        }
+        elseif($object->element=="facture"){
+            $linktoelements=array('order');
+        }
+        elseif($object->element=="expensereport"){
+            if($conf->global->EXPENSES_LINK_TO_INTERVENTION) $linktoelements=array('fichinter');
+        }
+        elseif($object->element=="invoice_supplier"){
+            $linktoelements=array('supplier_order');
+        }
 
 		if (! is_object($object->thirdparty)) $object->fetch_thirdparty();
 
 
-		if (((! is_array($restrictlinksto)) || in_array('order',$restrictlinksto))
+		if (((! is_array($linktoelements)) || in_array('order',$linktoelements))
 			&& ! empty($conf->commande->enabled))
 		{
 			$linktoelem.=($linktoelem?' &nbsp; ':'').'<a href="#" id="linktoorder">' . $langs->trans('LinkedOrder') . '</a>';
@@ -4868,7 +4879,7 @@ class Form
 			print '</div>';
 		}
 
-		if (((! is_array($restrictlinksto)) || in_array('fichinter',$restrictlinksto)) 
+		if (((! is_array($linktoelements)) || in_array('fichinter',$linktoelements)) 
                 && ! empty($conf->ficheinter->enabled))
 		{
 			$linktoelem.=($linktoelem?' &nbsp; ':'').'<a href="#" id="Linketofichinter">' . $langs->trans('LinkedFichinter') . '</a>';
@@ -4890,7 +4901,7 @@ class Form
 			$sql .= " FROM " . MAIN_DB_PREFIX . "societe as s";
 			$sql .= ", " . MAIN_DB_PREFIX . "fichinter as f";
 			$sql .= ' WHERE f.fk_soc = s.rowid';
-            if($fk_soc) $sql .= " AND f.fk_soc=$fk_soc";
+            if($object->socid) $sql .= " AND f.fk_soc=$object->socid";
 
 			$resql = $this->db->query($sql);
 			if ($resql)
@@ -4931,7 +4942,7 @@ class Form
 			print '</div>';
 		}
 
-        if (((! is_array($restrictlinksto)) || in_array('supplier_order',$restrictlinksto))
+        if (((! is_array($linktoelements)) || in_array('supplier_order',$linktoelements))
 			&& ! empty($conf->fournisseur->enabled))
 		{
 			$linktoelem.=($linktoelem?' &nbsp; ':'').'<a href="#" id="LinketosupplierOrder">' . $langs->trans('LinkedSupplierOrder') . '</a>';

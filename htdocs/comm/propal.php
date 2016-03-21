@@ -2284,8 +2284,7 @@ if ($action == 'create')
         }
 
         // Show links to link elements
-        if($conf->global->PROPALE_LINK_TO_INTERVENTION) $linktoelements[]='fichinter';
-        $linktoelem = $form->showLinkToObjectBlock($object,$linktoelements,$object->socid);
+        $linktoelem = $form->showLinkToObjectBlock($object,$linktoelements);
         if ($linktoelem) print '<br>'.$linktoelem;
 
 		print '</div><div class="fichehalfright"><div class="ficheaddleft">';

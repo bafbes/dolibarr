@@ -2085,10 +2085,7 @@ if ($action != 'create' && $action != 'edit' && ($id || $ref))
     $somethingshown = $form->showLinkedObjectBlock($object);
 
     // Show links to link elements
-    $linktoelements=array();
-    if($conf->global->EXPENSES_LINK_TO_INTERVENTION) $linktoelements[]='fichinter';
-    $linktoelem='';
-    $linktoelem = $form->showLinkToObjectBlock($object,$linktoelements);
+    $linktoelem = $form->showLinkToObjectBlock($object);
     if ($linktoelem) print '<br>'.$linktoelem;
 
 }
