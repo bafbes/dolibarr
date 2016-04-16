@@ -3833,6 +3833,7 @@ abstract class CommonObject
             $extrafields = new ExtraFields($this->db);
             $target_extrafields=$extrafields->fetch_name_optionals_label($this->table_element);
 
+            $value=$this->array_options["options_$key"];
             $attributeType  = $extrafields->attribute_type[$key];
             $attributeLabel = $extrafields->attribute_label[$key];
             $attributeParam = $extrafields->attribute_param[$key];
@@ -3846,17 +3847,17 @@ abstract class CommonObject
                     }
                     elseif ($value=='')
                     {
-                        $this->array_options[$key] = null;
+                        $this->array_options["options_$key"] = null;
                     }
                     break;
                 case 'price':
-                    $this->array_options[$key] = price2num($this->array_options[$key]);
+                    $this->array_options["options_$key"] = price2num($this->array_options["options_$key"]);
                     break;
                 case 'date':
-                    $this->array_options[$key]=$this->db->idate($this->array_options[$key]);
+                    $this->array_options["options_$key"]=$this->db->idate($this->array_options["options_$key"]);
                     break;
                 case 'datetime':
-                    $this->array_options[$key]=$this->db->idate($this->array_options[$key]);
+                    $this->array_options["options_$key"]=$this->db->idate($this->array_options["options_$key"]);
                     break;
                 case 'link':
                     $param_list=array_keys($attributeParam ['options']);
@@ -3868,13 +3869,13 @@ abstract class CommonObject
                     if ($value)
                     {
                         $object->fetch(0,$value);
-                        $this->array_options[$key]=$object->id;
+                        $this->array_options["options_$key"]=$object->id;
                     }
                     break;
             }
             
             $this->db->begin();
-            $sql = "UPDATE ".MAIN_DB_PREFIX.$this->table_element."_extrafields SET $key=$value";
+            $sql = "UPDATE ".MAIN_DB_PREFIX.$this->table_element."_extrafields SET $key=".$this->array_options["options_$key"];
             $sql .= " WHERE fk_object = ".$this->id;
             $resql = $this->db->query($sql);
             if (! $resql)
