@@ -119,14 +119,12 @@ $userstatic=new User($db);
 <?php }
 	} ?>
 
-	<form class="tagtr liste_titre">
-		<div class="tagtd"><?php echo $langs->trans("Source"); ?></div>
-		<div class="tagtd"><?php echo $langs->trans("Company"); ?></div>
-		<div class="tagtd"><?php echo $langs->trans("Contacts"); ?></div>
-		<div class="tagtd"><?php echo $langs->trans("ContactType"); ?></div>
-		<div class="tagtd" align="center"><?php echo $langs->trans("Status"); ?></div>
-		<div class="tagtd">&nbsp;</div>
-	</form>
+    <div class="tagtd"><?php echo $langs->trans("Source"); ?></div>
+    <div class="tagtd"><?php echo $langs->trans("Company"); ?></div>
+    <div class="tagtd"><?php echo $langs->trans("Contacts"); ?></div>
+    <div class="tagtd"><?php echo $langs->trans("ContactType"); ?></div>
+    <div class="tagtd" align="center"><?php echo $langs->trans("Status"); ?></div>
+    <div class="tagtd">&nbsp;</div>
 
 	<?php $var=true; ?>
 
