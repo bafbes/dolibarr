@@ -161,11 +161,11 @@ foreach ($modulesdir as $dir)
 				                $objMod = new $modName($db);
 								$modNameLoaded[$modName]=$dir;
 
-    		    		        if (! $objMod->numero > 0 && $modName != 'modUser')
-    		            		{
-    		         		    	dol_syslog('The module descriptor '.$modName.' must have a numero property', LOG_ERR);
-    		            		}
-								$j = $objMod->numero;
+		    		    		        if (! $objMod->numero > 0 && $modName != 'modUser')
+		    		            		{
+		    		         		    	dol_syslog('The module descriptor '.$modName.' must have a numero property', LOG_ERR);
+		    		            		}
+							else $j = $objMod->numero;
 
     							$modulequalified=1;
 
