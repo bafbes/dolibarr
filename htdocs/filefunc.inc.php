@@ -69,6 +69,18 @@ $conffiletoshow = "htdocs/conf/conf.php";
 // Include configuration
 // --- End of part replaced by Dolibarr packager makepack-dolibarr
 
+// Replace conf filename with "conf" parameter on url by GET
+//* Disabled. This is a serious security hole
+if (! empty($_GET['conf']))
+{
+	$confname=basename($_GET['conf']);
+    setcookie('dolconf', $confname, 0, '/');
+    $conffile = 'conf/'.$confname.'.php';
+} else {
+	$confname=basename(empty($_COOKIE['dolconf']) ? 'conf' : $_COOKIE['dolconf']);
+	$conffile = 'conf/'.$confname.'.php';
+}
+//*/
 
 // Include configuration
 $result = @include_once $conffile; // Keep @ because with some error reporting this break the redirect done when file not found
@@ -121,7 +133,11 @@ else
 }
 
 // Disable php display errors
-if (!empty($dolibarr_main_prod)) ini_set('display_errors', 'Off');
+if (! empty($dolibarr_main_prod)) ini_set('display_errors','Off');
+else { 
+    ini_set('display_errors','On');
+    ini_set('display_startup_errors','On');    
+}
 
 // Clean parameters
 $dolibarr_main_data_root = trim($dolibarr_main_data_root);
