@@ -30,30 +30,6 @@
  *  \brief      File that include conf.php file and commons lib like functions.lib.php
  */
 
-if (! defined('DOL_APPLICATION_TITLE')) define('DOL_APPLICATION_TITLE','Dolibarr');
-if (! defined('DOL_VERSION')) define('DOL_VERSION','4.0.1');
-
-if (! defined('EURO')) define('EURO',chr(128));
-
-// Define syslog constants
-if (! defined('LOG_DEBUG'))
-{
-	if (! function_exists("syslog")) {
-		// For PHP versions without syslog (like running on Windows OS)
-		define('LOG_EMERG',0);
-		define('LOG_ALERT',1);
-		define('LOG_CRIT',2);
-		define('LOG_ERR',3);
-		define('LOG_WARNING',4);
-		define('LOG_NOTICE',5);
-		define('LOG_INFO',6);
-		define('LOG_DEBUG',7);
-	}
-}
-
-// End of common declaration part
-if (defined('DOL_INC_FOR_VERSION_ERROR')) return;
-
 
 // Define vars
 $conffiletoshowshort = "conf.php";
@@ -84,6 +60,30 @@ if (! empty($_GET['conf']))
 
 // Include configuration
 $result=@include_once $conffile;	// Keep @ because with some error reporting this break the redirect
+
+if (! defined('DOL_APPLICATION_TITLE')) define('DOL_APPLICATION_TITLE','Dolibarr');
+if (! defined('DOL_VERSION')) define('DOL_VERSION','4.0.1');
+
+if (! defined('EURO')) define('EURO',chr(128));
+
+// Define syslog constants
+if (! defined('LOG_DEBUG'))
+{
+	if (! function_exists("syslog")) {
+		// For PHP versions without syslog (like running on Windows OS)
+		define('LOG_EMERG',0);
+		define('LOG_ALERT',1);
+		define('LOG_CRIT',2);
+		define('LOG_ERR',3);
+		define('LOG_WARNING',4);
+		define('LOG_NOTICE',5);
+		define('LOG_INFO',6);
+		define('LOG_DEBUG',7);
+	}
+}
+
+// End of common declaration part
+if (defined('DOL_INC_FOR_VERSION_ERROR')) return;
 
 if (! $result && ! empty($_SERVER["GATEWAY_INTERFACE"]))    // If install not done and we are in a web session
 {
