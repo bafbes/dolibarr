@@ -88,6 +88,36 @@ function user_prepare_head($object)
         $h++;
     }
 
+    // Notifications
+    if ($user->societe_id == 0 && ! empty($conf->notification->enabled))
+    {
+        $nbNote = 0;
+        $sql = "SELECT COUNT(n.rowid) as nb";
+        $sql.= " FROM ".MAIN_DB_PREFIX."notify_def as n";
+        $sql.= " WHERE fk_user = ".$object->id;
+        $resql=$db->query($sql);
+        if ($resql)
+        {
+            $num = $db->num_rows($resql);
+            $i = 0;
+            while ($i < $num)
+            {
+                $obj = $db->fetch_object($resql);
+                $nbNote=$obj->nb;
+                $i++;
+            }
+        }
+        else {
+            dol_print_error($db);
+        }
+
+        $head[$h][0] = DOL_URL_ROOT.'/user/notify/card.php?id='.$object->id;
+        $head[$h][1] = $langs->trans("Notifications");
+        if ($nbNote > 0) $head[$h][1].= ' <span class="badge">'.$nbNote.'</span>';
+        $head[$h][2] = 'notify';
+        $h++;
+    }
+
     // Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     // $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab

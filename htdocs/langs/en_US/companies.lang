@@ -373,6 +373,7 @@ Organization=Organization
 FiscalYearInformation=Information on the fiscal year
 FiscalMonthStart=Starting month of the fiscal year
 YouMustCreateContactFirst=To be able to add email notifications, you must first insert email contacts for the third party
+YouMustAssignUserMailFirst=You must create email for this user first to be able to add emails notifications for him.
 ListSuppliersShort=List of suppliers
 ListProspectsShort=List of prospects
 ListCustomersShort=List of customers

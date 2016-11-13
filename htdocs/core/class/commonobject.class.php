@@ -4132,8 +4132,16 @@ abstract class CommonObject
             $langs->load('admin');
             require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
             $extrafields = new ExtraFields($this->db);
-            $extrafields->fetch_name_optionals_label($this->table_element);
-
+            $target_extrafields=$extrafields->fetch_name_optionals_label($this->table_element);
+            
+            //Eliminate copied source object extra_fiels that do not exist in target object
+            $new_array_options=array();
+            foreach ($this->array_options as $key => $value) {
+                if (in_array(substr($key,8), array_keys($target_extrafields)))
+                    $new_array_options[$key] = $value;
+            }
+            $this->array_options =$new_array_options;
+            
             foreach($this->array_options as $key => $value)
             {
                	$attributeKey = substr($key,8);   // Remove 'options_' prefix
@@ -4226,6 +4234,88 @@ abstract class CommonObject
             $sql.=")";
 
             dol_syslog(get_class($this)."::insertExtraFields insert", LOG_DEBUG);
+            $resql = $this->db->query($sql);
+            if (! $resql)
+            {
+                $this->error=$this->db->lasterror();
+                $this->db->rollback();
+                return -1;
+            }
+            else
+            {
+                $this->db->commit();
+                return 1;
+            }
+        }
+        else return 0;
+    }
+    /**
+     *	Update an exta field value for the current object.
+     *  Data to describe values to insert/update are stored into $this->array_options=array('options_codeforfield1'=>'valueforfield1', 'options_codeforfield2'=>'valueforfield2', ...)
+     *  This function delte record with all extrafields and insert them again from the array $this->array_options.
+     *  $key    key of the extrafield
+     *  @return int -1=error, O=did nothing, 1=OK
+     */
+    function updateExtraField($key)
+    {
+        global $conf,$langs;
+
+		$error=0;
+
+		if (! empty($conf->global->MAIN_EXTRAFIELDS_DISABLED)) return 0;	// For avoid conflicts if trigger used
+
+        if (! empty($this->array_options) )
+        {
+            // Check parameters
+            $langs->load('admin');
+            require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
+            $extrafields = new ExtraFields($this->db);
+            $target_extrafields=$extrafields->fetch_name_optionals_label($this->table_element);
+
+            $value=$this->array_options["options_$key"];
+            $attributeType  = $extrafields->attribute_type[$key];
+            $attributeLabel = $extrafields->attribute_label[$key];
+            $attributeParam = $extrafields->attribute_param[$key];
+            switch ($attributeType)
+            {
+                case 'int':
+                    if (!is_numeric($value) && $value!='')
+                    {
+                        $this->errors[]=$langs->trans("ExtraFieldHasWrongValue",$attributeLabel);
+                        return -1;
+                    }
+                    elseif ($value=='')
+                    {
+                        $this->array_options["options_$key"] = null;
+                    }
+                    break;
+                case 'price':
+                    $this->array_options["options_$key"] = price2num($this->array_options["options_$key"]);
+                    break;
+                case 'date':
+                    $this->array_options["options_$key"]=$this->db->idate($this->array_options["options_$key"]);
+                    break;
+                case 'datetime':
+                    $this->array_options["options_$key"]=$this->db->idate($this->array_options["options_$key"]);
+                    break;
+                case 'link':
+                    $param_list=array_keys($attributeParam ['options']);
+                    // 0 : ObjectName
+                    // 1 : classPath
+                    $InfoFieldList = explode(":", $param_list[0]);
+                    dol_include_once($InfoFieldList[1]);
+                    $object = new $InfoFieldList[0]($this->db);
+                    if ($value)
+                    {
+                        $object->fetch(0,$value);
+                        $this->array_options["options_$key"]=$object->id;
+                    }
+                    break;
+            }
+            
+            $this->db->begin();
+            $sql = "UPDATE ".MAIN_DB_PREFIX.$this->table_element."_extrafields SET $key='".$this->db->escape($this->array_options["options_$key"])."'";
+            $sql .= " WHERE fk_object = ".$this->id;
             $resql = $this->db->query($sql);
             if (! $resql)
             {

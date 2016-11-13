@@ -91,6 +91,8 @@ if ($id > 0 || ! empty($ref))
 	$ret=$object->fetch($id, $ref);
 	if ($ret > 0) $ret=$object->fetch_thirdparty();
 	if ($ret < 0) dol_print_error('',$object->error);
+    //Give intervenant user modification right
+    if (!empty($conf->global->FICHINTER_INTERVENANT_ALLOW_MODIF) && in_array($user->id,$object->getIdContact('internal','INTERVENING'))) $user->rights->ficheinter->creer=true;
 }
 
 $permissionnote=$user->rights->ficheinter->creer;	// Used by the include of actions_setnotes.inc.php
@@ -1640,7 +1642,7 @@ else if ($id > 0 || ! empty($ref))
 				}
 
 				// Delete
-				if (($object->statut == 0 && $user->rights->ficheinter->creer) || $user->rights->ficheinter->supprimer)
+				if ($user->rights->ficheinter->supprimer)
 				{
 					print '<div class="inline-block divButAction"><a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&amp;action=delete"';
 					print '>'.$langs->trans('Delete').'</a></div>';
