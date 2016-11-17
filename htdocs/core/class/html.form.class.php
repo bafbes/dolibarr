@@ -5280,7 +5280,7 @@ class Form
      *  @param	array			$restrictlinksto	Restrict links to some elements, for exemple array('order') or array('supplier_order')
      *  @return	string									<0 if KO, >0 if OK
      */
-    function showLinkToObjectBlock($object)
+    function showLinkToObjectBlock($object, $restrictlinksto=array())
     {
         global $conf, $langs, $hookmanager;
         global $bc;
