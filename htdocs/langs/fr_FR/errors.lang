@@ -161,6 +161,7 @@ ErrorGlobalVariableUpdater2=Paramètre manquant '%s'
 ErrorGlobalVariableUpdater3=La donnée recherché n'a pas été trouvée
 ErrorGlobalVariableUpdater4=Le client SOAP a échoué avec l'erreur '%s'
 ErrorGlobalVariableUpdater5=Pas de variable globale
+ErrorTryTosellOnNegativeStock=Erreur, tentative de vente du produit %s sur stock négatif lorsque l'option d'inhibition de stock négatif est activée
 ErrorFieldMustBeANumeric=Le champ <b>%s</b> doit être un numérique
 ErrorMandatoryParametersNotProvided=Paramètre(s) obligatoire(s) non fournis
 ErrorOppStatusRequiredIfAmount=Vous avez fixé un montant estimé pour cette opportunité/affaire. Aussi, vous devez également entrer son statut
