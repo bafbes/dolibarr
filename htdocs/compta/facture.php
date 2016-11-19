@@ -3005,6 +3005,32 @@ else if ($id > 0 || ! empty($ref))
 	}
 	print '</tr>';
 
+    // Project
+    if (!empty($conf->projet->enabled)) {
+        $langs->load('projects');
+        print '<tr>';
+        print '<td>';
+
+        print '<table class="nobordernopadding" width="100%"><tr><td>';
+        print $langs->trans('Project');
+        print '</td>';
+        if ($action != 'classify') {
+            print '<td align="right"><a href="' . $_SERVER["PHP_SELF"] . '?action=classify&amp;id=' . $object->id . '">';
+            print img_edit($langs->trans('SetProject'), 1);
+            print '</a></td>';
+        }
+        print '</tr></table>';
+        print '</td><td colspan="3">';
+        if ($action == 'classify') {
+            $form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'projectid', 0, 0, 1);
+        }
+        else {
+            $form->form_project($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->socid, $object->fk_project, 'none', 0, 0);
+        }
+        print '</td>';
+        print '</tr>';
+    }
+
 	// Type
 	print '<tr><td>' . $langs->trans('Type') . '</td><td colspan="5">';
 	print $object->getLibType();
