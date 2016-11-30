@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="js video no-maskImage placeholder" lang="en"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>Comprendre et maîtriser les submodules Git • Git Attitude&nbsp;: formations Git qualitatives et sympathiques</title>
+  <meta name="author" content="Christophe Porteneuve">
+
+  
+  <meta name="description" content="Enfin, les meilleures pratiques autour des submodules Git, démos et manips à l'appui&nbsp;! Workflows, commandes, options et réglages.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1">
+
+  
+  <link rel="canonical" href="http://www.git-attitude.fr/2014/12/31/git-submodules/">
+  <link href="http://www.git-attitude.fr/favicon.ico" rel="icon">
+  <link href="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script async="" src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/cbgapi.loaded_1"></script><script async="" src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/cbgapi.loaded_0"></script><script src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/widgets.js" id="twitter-wjs"></script><script gapi_processed="true" src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/plusone.js" async="" type="text/javascript"></script><script src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/all.js" id="facebook-jssdk"></script><script src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/ga.js" async="" type="text/javascript"></script><script src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/modernizr-2.js"></script>
+  <script src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/ender.js"></script>
+  <script src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/octopress.js" type="text/javascript"></script>
+  <script src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/toc.js" type="text/javascript"></script>
+  <link href="http://www.git-attitude.fr/atom.xml" rel="alternate" title="Git Attitude" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/css_002.css" rel="stylesheet" type="text/css">
+<link href="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/css.css" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34829944-1']);
+    _gaq.push(['_setDomainName', 'git-attitude.fr']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <!--
+  The following reader engagement measurement script inspired by:
+  http://cutroni.com/blog/2012/02/21/advanced-content-tracking-with-google-analytics-part-1/
+  http://cutroni.com/blog/2012/02/23/advanced-content-tracking-with-google-analytics-part-2/
+  -->
+  <script type="text/javascript">
+  (function() {
+    var debugMode = window.location.hostname !== 'www.git-attitude.fr';
+
+    function track(desc) {
+      if (debugMode) {
+        // console.log(desc);
+      } else {
+        _gaq.push(desc);
+      }
+    }
+    
+    function setupContentEngagement() {
+      var article = $('article[role=article]'), listing = $('#blog-archives');
+      if (0 == article.length || listing.length) return;
+
+      // Default time delay before checking location
+      var callBackTime = 100;
+      // # px before tracking a reader
+      var readerLocation = 150;
+
+      var timer = 0, scroller = false, endContent = false, didComplete = false;
+      var beginning = Date.now(), totalTime = 0, scrollStart;
+      track(['_trackEvent', 'Reading', 'ArticleLoaded', '', , true]);
+
+      function trackLocation() {
+        var bottom = $(window).height() + $(window).scrollTop(), height = $(document).height();
+
+        if (bottom > readerLocation && !scroller) {
+          scrollStart = Date.now();
+          var timeToScroll = Math.round((scrollStart - beginning) / 1000);
+          track(['_trackEvent', 'Reading', 'StartReading', '', timeToScroll]);
+          scroller = true;
+        }
+
+        if (bottom >= article.scrollTop() + article.height() && !endContent) {
+          var timeToContentEnd = Math.round((Date.now() - scrollStart) / 1000);
+          track(['_trackEvent', 'Reading', 'ContentBottom', '', timeToContentEnd]);
+          endContent = true;
+        }
+
+        if (bottom >= height && !didComplete) {
+          totalTime = Math.round((Date.now() - scrollStart) / 1000);
+          if (totalTime < 60) {
+            track(['_setCustomVar', 5, 'ReaderType', 'Scanner', 2]);
+          } else {
+            track(['_setCustomVar', 5, 'ReaderType', 'Reader', 2]);
+          }
+          track(['_trackEvent', 'Reading', 'PageBottom', '', totalTime]);
+          didComplete = true;
+        }
+      }
+
+      $(window).scroll(function() {
+        timer && clearTimeout(timer);
+        timer = setTimeout(trackLocation, callBackTime);
+      });
+    }
+
+    $.domReady(setupContentEngagement);
+  })();
+  </script>
+
+
+<script src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/embed.js" async="" type="text/javascript"></script><script src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/timeline.js" async="" charset="utf-8" type="text/javascript"></script><script src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/button.js" async="" charset="utf-8" type="text/javascript"></script><style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}.fb_link img{border:none}@keyframes fb_transform{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}.fb_reset .fb_dialog_legacy{overflow:visible}.fb_dialog_advanced{padding:10px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}.fb_dialog_content{background:#fff;color:#333}.fb_dialog_close_icon{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;_background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif);cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{top:5px;left:5px;right:auto}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent;_background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}.fb_dialog_close_icon:active{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent;_background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}.fb_dialog_loader{background-color:#f6f7f8;border:1px solid #606060;font-size:24px;padding:20px}.fb_dialog_top_left,.fb_dialog_top_right,.fb_dialog_bottom_left,.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}.fb_dialog_top_left{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}.fb_dialog_top_right{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}.fb_dialog_bottom_left{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}.fb_dialog_bottom_right{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}.fb_dialog_vert_left,.fb_dialog_vert_right,.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}.fb_dialog_vert_left,.fb_dialog_vert_right{width:10px;height:100%}.fb_dialog_vert_left{margin-left:-10px}.fb_dialog_vert_right{right:0;margin-right:-10px}.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{width:100%;height:10px}.fb_dialog_horiz_top{margin-top:-10px}.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #3a5795;color:#fff;font-size:14px;font-weight:bold;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{-webkit-transform:none;height:100%;margin:0;overflow:visible;position:absolute;top:-10000px;left:0;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/ya/r/3rhSv5V8j3o.gif) white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{width:auto;height:auto;min-height:initial;min-width:initial;background:none}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{color:#fff;display:block;padding-top:20px;clear:both;font-size:18px}#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .45);position:absolute;bottom:0;left:0;right:0;top:0;width:100%;min-height:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_content .dialog_header{-webkit-box-shadow:white 0 1px 1px -1px inset;background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#738ABA), to(#2C4987));border-bottom:1px solid;border-color:#1d4088;color:#fff;font:14px Helvetica, sans-serif;font-weight:bold;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{-webkit-font-smoothing:subpixel-antialiased;height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4966A6), color-stop(.5, #355492), to(#2A4887));border:1px solid #2f477a;-webkit-background-clip:padding-box;-webkit-border-radius:3px;-webkit-box-shadow:rgba(0, 0, 0, .117188) 0 1px 1px inset, rgba(255, 255, 255, .167969) 0 1px 0;display:inline-block;margin-top:3px;max-width:85px;line-height:18px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{border:none;background:none;color:#fff;font:12px Helvetica, sans-serif;font-weight:bold;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f6f7f8;border:1px solid #555;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_button{text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yD/r/t-wz8gw1xG1.png);background-repeat:no-repeat;background-position:50% 50%;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_hide_iframes iframe{position:relative;left:-10000px}.fb_iframe_widget_loader{position:relative;display:inline-block}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}.fb_iframe_widget_loader .FB_Loader{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}</style><script charset="UTF-8" async="" src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/alfie.js"></script></head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://www.git-attitude.fr/">Git Attitude</a></h1>
+  
+    <h2>La gestion de sources qui fait du bien</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://www.git-attitude.fr/atom.xml" rel="subscribe-rss" title="S’abonner au flux RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.google.fr/search" method="get">
+  <fieldset role="search">
+    <input name="q" value="site:www.git-attitude.fr" type="hidden">
+    <input class="search" name="q" results="0" placeholder="Rechercher" type="text">
+  </fieldset><fieldset class="mobile-nav"><select><option value="">Naviguer…</option><option value="http://www.git-attitude.fr/">» Accueil</option><option value="http://www.git-attitude.fr/blog/archives">» Archives</option><option value="http://www.git-attitude.fr/tout-sur-les-ateliers/">» Tout sur les ateliers de formation</option><option value="http://www.git-attitude.fr/informations-generales/">» Infos &amp; Contact</option><option selected="selected" value="http://www.git-attitude.fr/atom.xml">» RSS</option></select></fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="http://www.git-attitude.fr/">Accueil</a></li>
+  <li><a href="http://www.git-attitude.fr/blog/archives">Archives</a></li>
+  <li><a href="http://www.git-attitude.fr/tout-sur-les-ateliers/">Tout sur les ateliers de formation</a></li>
+  <li><a href="http://www.git-attitude.fr/informations-generales/">Infos &amp; Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Comprendre et maîtriser les submodules Git</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-31T00:00:00+01:00" pubdate="" data-updated="true">31 décembre 2014</time>
+        
+         | <a href="#disqus_thread">Commentaires</a>
+        
+      </p>
+    
+  </header><ul id="toc">
+<li><a href="#ne-vous%20trompez%20pas%20de%20solution">Ne vous trompez pas de solution</a></li>
+<li><a href="#submodules-ou+subtrees%C2%A0?">Submodules ou subtrees&nbsp;?</a></li>
+<li><a href="#fondamentaux-des%20submodules">Fondamentaux des submodules</a></li>
+<li><a href="#une-pl%C3%A9thore+de+pi%C3%A8ges">Une pléthore de pièges</a></li>
+<li><a href="#les-submodules+pas+%C3%A0+pas">Les submodules pas à pas</a></li>
+<li class="level3"><a href="#ajouter-un%20submodule">Ajouter un submodule</a></li>
+<li class="level3"><a href="#r-cup%C3%A9rer+un+d%C3%A9p%C3%B4t+exploitant+des+submodules">Récupérer un dépôt exploitant des submodules</a></li>
+<li class="level3"><a href="#r-cup%C3%A9rer+une+mise+%C3%A0+jour+au+sein+d%E2%80%99un+submodule">Récupérer une mise à jour au sein d’un submodule</a></li>
+<li class="level3"><a href="#mettre-jour+un+d%C3%A9p%C3%B4t+exploitant+des+submodules">Mettre à jour un dépôt exploitant des submodules</a></li>
+<li class="level3"><a href="#mettre-jour+un+submodule+au+sein+d%E2%80%99un+projet+conteneur">Mettre à jour un submodule au sein d’un projet conteneur</a></li>
+<li><a href="#retirer-un%20submodule">Retirer un submodule</a></li>
+<li class="level3"><a href="#temporairement">Temporairement</a></li>
+<li class="level3"><a href="#d-finitivement1">Définitivement</a></li>
+<li><a href="#r-capitulatif%20des%20bonnes%20pratiques%20%28tl;dr%29">Récapitulatif des bonnes pratiques (TL;DR)</a></li>
+<li class="level3"><a href="#en-configuration">En configuration</a></li>
+<li class="level3"><a href="#en-op%C3%A9ration">En opération</a></li>
+<li><a href="#ce-qui%20reste%20dans%20les%20coins">Ce qui reste dans les coins</a></li>
+<li class="level3"><a href="#commandes-git">Commandes Git</a></li>
+<li class="level3"><a href="#options-de%20ligne%20de%20commande">Options de ligne de commande</a></li>
+<li class="level3"><a href="#param-tres%20de%20configuration">Paramètres de configuration</a></li>
+<li><a href="#envie-d%E2%80%99en+savoir+plus%C2%A0?">Envie d’en savoir plus&nbsp;?</a></li>
+</ul>
+
+
+<div class="entry-content"><p>Si vous avez déjà utilisé les submodules, 
+vous en êtes certainement revenus avec quelques cicatrices, en jurant 
+(mais un peu tard) qu’on ne vous y reprendrait plus…  Les submodules ont
+ en effet l’art de nous faire nous arracher les cheveux, avec leurs 
+pièges omniprésents à la moindre manipulation.  Pourtant, ils ne sont 
+pas dénués de mérites, il faut juste savoir comment les prendre.</p>
+
+<p>Dans cet article, nous allons les explorer en détail, en commençant 
+par vérifier qu’ils sont la bonne solution à votre problème, puis en 
+réalisant l’ensemble des manipulations courantes pas à pas, ensemble, 
+pour en illustrer les bonnes pratiques.</p>
+
+<!-- more -->
+
+
+<p><em>(<a href="https://medium.com/@porteneuve/mastering-git-submodules-34c65e940407">English version of this article here</a>)</em></p>
+
+<p>Les submodules, comme les subtrees, visent à <strong>exploiter le code d’un dépôt tiers quelque part au sein de l’arborescence de votre propre dépôt</strong>.  L’objectif est généralement de bénéficier d’une <strong>maintenance centralisée</strong> du code tiers à travers tout un tas de dépôts conteneurs, sans avoir à se taper du copier-coller malhabile et peu fiable.</p>
+
+<p>Afin de simplifier la suite du texte, nous appellerons «&nbsp;<strong>module</strong>&nbsp;»
+ ce code tiers, présent quelque part dans l’arborescence des dépôts 
+conteneurs.  Pour le code du projet utilisant le module au sein de son 
+arborescence, on parlera de «&nbsp;<strong>conteneur</strong>&nbsp;».</p>
+
+<h2 id="ne-vous trompez pas de solution">Ne vous trompez pas de solution</h2>
+
+<p>Il existe des cas de figure dans lesquels cette présence physique du 
+module au sein du code conteneur est impérative, dictée par la 
+technologie à l’œuvre dans le conteneur.  Par exemple, les thèmes et 
+plugins WordPress, Prestashop, etc. sont souvent <em>de facto</em> 
+installés par leur simple présence à des endroits convenus de 
+l’arborescence du projet, et c’est là leur seule 
+«&nbsp;installation&nbsp;» possible.</p>
+
+<p>Dans de tels cas, recourir aux submodules (ou aux subtrees) est sans 
+doute la bonne solution, si tant est que vous deviez en effet versionner
+ votre code et collaborer avec des tiers autour de celui-ci (ou que vous
+ deviez le déployer ailleurs que sur votre machine)&nbsp;; pour un cas 
+strictement local et non versionné, des liens symboliques suffisent 
+probablement, mais ce n’est pas le contexte de cet article.</p>
+
+<p>En revanche, dès lors que la technologie employée par le conteneur permet une notion de <em>packaging</em>
+ et de gestion formelle de dépendances, vous devriez absolument utiliser
+ celle-ci à la place&nbsp;: elle vous fournit une gestion correctement 
+découpée, sans effets de bords ou pièges similaires à ceux qui jonchent 
+les submodules, et vous permet qui plus est de bénéficier de facilités 
+de type <em>versions sémantiques</em> (<a href="http://semver.org/">semver</a>) pour vos dépendances.</p>
+
+<p>Pour rappel, voici les principaux langages et leurs mécanismes de 
+gestion de dépendances / référentiels de paquets/modules&nbsp;:</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Langage </th>
+<th> Outil / Référentiel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> Clojure </td>
+<td> <a href="http://clojars.org/">Clojars</a></td>
+</tr>
+<tr>
+<td></td>
+<td> Erlang </td>
+<td> <a href="https://hex.pm/">Hex</a></td>
+</tr>
+<tr>
+<td></td>
+<td> Go </td>
+<td> <a href="http://godoc.org/-/index">GoDoc</a></td>
+</tr>
+<tr>
+<td></td>
+<td> Haskell </td>
+<td> <a href="http://hackage.haskell.org/">Hackage</a></td>
+</tr>
+<tr>
+<td></td>
+<td> Java </td>
+<td> <a href="http://www.maven.org/">Maven Central</a></td>
+</tr>
+<tr>
+<td></td>
+<td> JavaScript </td>
+<td> <a href="https://www.npmjs.com/">npm</a>, <a href="http://bower.io/">Bower</a></td>
+</tr>
+<tr>
+<td></td>
+<td> .NET </td>
+<td> <a href="http://nuget.org/">nuget</a></td>
+</tr>
+<tr>
+<td></td>
+<td> Perl </td>
+<td> <a href="http://www.cpan.org/">CPAN</a></td>
+</tr>
+<tr>
+<td></td>
+<td> PHP </td>
+<td> <a href="https://getcomposer.org/">Composer</a> / <a href="http://packagist.org/">Packagist</a> / <a href="http://pear.php.net/packages.php">Pear</a></td>
+</tr>
+<tr>
+<td></td>
+<td> Python </td>
+<td> <a href="http://pypi.python.org/pypi">PyPI</a></td>
+</tr>
+<tr>
+<td></td>
+<td> Ruby </td>
+<td> <a href="http://bundler.io/">Bundler</a> / <a href="http://rubygems.org/">Rubygems</a></td>
+</tr>
+<tr>
+<td></td>
+<td> Rust </td>
+<td> <a href="https://crates.io/">Crates</a></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Sérieux, si vous pouvez plutôt gérer vos interdépendances de code en 
+packagant proprement vos modules «&nbsp;centralisés&nbsp;» et en 
+déclarant vos dépendances via les bons outils, faites-le. Vraiment. Je 
+vous jure. Ça vous épargnera un monde de galères (et ça ne nécessite pas
+ forcément de passer par un référentiel public, ce qui permet d’y 
+recourir pour du code privé aussi).</p>
+
+<p>Mais si vous avez l’obligation d’incorporer le code directement au 
+sein de votre source conteneur, alors il vous reste le choix entre 
+submodules et subtrees.</p>
+
+<h2 id="submodules-ou subtrees&nbsp;?">Submodules ou subtrees&nbsp;?</h2>
+
+<p>En général, <strong>les subtrees sont meilleurs</strong>.  Voilà qui 
+vous vend admirablement cet article, hein&nbsp;?  Le fait est que les 
+submodules et les subtrees sont radicalement différents, et pour tout 
+dire opposés, en termes de concepts et de fonctionnement.</p>
+
+<p>La plupart des gens recourent aux submodules pour une variété de 
+raisons&nbsp;; ceux-ci sont présents depuis longtemps en Git, disposent 
+d’une commande dédiée (<code>git submodule</code>) et d’une doc détaillée, et leur fonctionnement est souvent analogue aux <em>externals</em> de Subversion, ce qui les rend faussement familiers.  La mise en place d’un submodule est également très simple (un bête <code>git submodule add</code>), surtout en comparaison à la mise en place d’un subtree.  On ne réalise qu’après que des pièges potentiels nous attendent <em>tous les jours, pour tout le monde</em>.</p>
+
+<p>C’est justement parce que les submodules font souffrir tant de 
+Gitteurs que nous avons choisi de couvrir ceux-ci d’abord, et les 
+subtrees ensuite (dans notre prochain gros article de fond).</p>
+
+<p>Toujours est-il que <strong>parfois, les submodules constituent le bon choix</strong>.
+  C’est notamment le cas lorsque la codebase est massive et qu’on ne 
+veut pas forcément tout récupérer à chaque fois, en particulier dans des
+ projets tentaculaires.  On recourt alors aux submodules pour ne pas 
+exiger la récupération de pans entiers du code pour tout le monde.  
+Divers projets open-source massifs y ont recours précisément pour cette 
+raison (ou en raison d’une forte modularisation qui n’est pas nativement
+ prise en charge par l’écosystème du langage principal)&nbsp;: voyez par
+ exemple Chromium, qui utilise massivement les submodules.</p>
+
+<p>Il est également très préférable que le code du submodule soit <strong>indépendant des particularités du conteneur</strong>
+ (ou en tout cas, se base sur une configuration externe pour gérer ces 
+particularités), car ce code étant centralisé dans un seul dépôt distant
+ (celui du submodule), il est partagé par tous les conteneurs.  Et 
+contourner cette limitation en commençant à pondre dans le submodule des
+ branches spécifiques à tel ou tel conteneur revient à ouvrir la boîte 
+de Pandore&nbsp;: c’est un couplage abusif, contraire aux principes de 
+modularisation et d’encapsulation, et ça reviendra à coup sûr vous 
+mordre la cheville plus tard, vous pouvez me croire.</p>
+
+<h2 id="fondamentaux-des submodules">Fondamentaux des submodules</h2>
+
+<p><strong>Petit rappel de terminologie d’abord&nbsp;: en Git, un dépôt est local</strong>.  La version distante, qui ne sert qu’à l’archivage, à la collaboration et au partage, est appelée un <em>remote</em>.
+  Dans la suite de cet article, quand vous lisez «&nbsp;dépôt&nbsp;» ou 
+«&nbsp;dépôt Git&nbsp;», il s’agit d’un dépôt local interactif, 
+c’est-à-dire d’un répertoire de travail (<em>working directory</em>) avec un <code>.git</code> à sa base.</p>
+
+<p>Les submodules reposent sur <strong>l’imbrication de dépôts</strong>&nbsp;:
+ vous avez des dépôts… dans des dépôts.  Le module a son propre dépôt, 
+quelque part dans le répertoire de travail de son dépôt conteneur.</p>
+
+<p>Notez que dans la pratique, depuis Git 1.7.8, les submodules utilisent comme <code>.git</code> un simple fichier texte, contenant une ligne <code>gitdir:</code> indiquant le chemin du dépôt réel, désormais situé dans le <code>.git/modules</code>
+ du conteneur.  Ça permet surtout d’avoir dans le conteneur des branches
+ sans le submodule à l’intérieur, sans avoir à dégager tout le dépôt du 
+submodule à chaque fois.</p>
+
+<p><img src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/submodules-gitdir.png" title="&quot;La relation entre le fichier .git du submodule et le stockage effectif du dépôt imbriqué au niveau conteneur&quot;" alt="&quot;La relation entre le fichier .git du submodule et le stockage effectif du dépôt imbriqué au niveau conteneur&quot;"></p>
+
+<p>En tous les cas, le conteneur et le submodule agissent vraiment comme
+ deux dépôts distincts&nbsp;: chacun son historique (donc log), chacun 
+son statut, son diff, etc.  <strong>Attention donc au répertoire courant pour votre prompt et vos commandes</strong>&nbsp;:
+ selon que vous êtes dans le submodule ou ailleurs dans le conteneur, le
+ contexte et l’impact des commandes n’a rien à voir&nbsp;!</p>
+
+<p>Enfin, <strong>le commit exploité par le submodule dans le conteneur est référencé par son identifiant (SHA1)</strong>, et non par une référence volatile (genre nom de branche).  Et donc oui, <strong>un submodule ne se met pas automatiquement à jour</strong>, ce qui est une <strong>bénédiction</strong> en termes de fiabilité, de maintenance et d’assurance qualité (demandez donc aux Subversioniens qui ont recours aux <em>externals</em> le nombre de fois qu’ils indiquent <code>--ignore-externals</code> dans leurs commandes pour éviter une mise à jour intempestive…).</p>
+
+<p>Du coup, la majeure partie du temps, le submodule est en <strong>tête détachée</strong> dans ses conteneurs, puisqu’on le cale en faisant un <code>checkout</code> sur le SHA1 du commit en question (peu importe qu’il s’agisse ou non d’une tête de branche à ce moment-là).</p>
+
+<h2 id="une-pléthore de pièges">Une pléthore de pièges</h2>
+
+<p>Les submodules, c’est un peu <strong>la facilité la première fois contre les pièges tout le reste du temps</strong>&nbsp;: si un simple <code>git submodule add</code>
+ suffit à en mettre en place un, tous les contributeurs au dépôt devront
+ être vigilants pour toute la durée de vie du code, afin de ne pas 
+rencontrer de problèmes.</p>
+
+<p><img class="right" src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/submodules-sobmodules.png" title="&quot;iOS auto-corrige parfois «&nbsp;submodules&nbsp;» en «&nbsp;sobmodules&nbsp;», ce qui ne manque pas de pertinence…&quot;" alt="&quot;iOS auto-corrige parfois «&nbsp;submodules&nbsp;» en «&nbsp;sobmodules&nbsp;», ce qui ne manque pas de pertinence…&quot;"></p>
+
+<p>Évidemment, comme approche, c’est dangereux.  Parce que la vigilance 
+constante, ça ne marche jamais.  Ce n’est pas pour rien qu’on les 
+surnomme parfois <em>«&nbsp;sobmodules&nbsp;»</em> (en anglais, <em>«&nbsp;to sob&nbsp;»</em> signifie «&nbsp;sangloter&nbsp;»), comme en atteste même parfois l’auto-correction de l’iPhone&nbsp;:</p>
+
+<p>Au fil de cet article, notamment lors du pas-à-pas qui va suivre, 
+nous verrons dans le détail quels sont les pièges, et dans quelle mesure
+ la majorité d’entre eux peuvent être neutralisés, ou à tout le moins 
+minimisés, grâce à des réglages de configuration ou des options de ligne
+ de commande.</p>
+
+<p>Mais pour l’instant, listons-les rapidement&nbsp;:</p>
+
+<ul>
+<li>Tout ajout ou changement d’URL d’un submodule, toute mise à jour de commit référencé par l’un d’eux, nécessite une <strong>action de mise à jour explicite par les collaborateurs</strong>&nbsp;;</li>
+<li>L’oubli de cette action explicite peut entraîner une <strong>régression silencieuse</strong> du commit référencé par le submodule&nbsp;;</li>
+<li>Les commandes telles que <code>status</code> et <code>diff</code> n’affichent par défaut que <strong>très peu d’informations</strong> sur les états et modifications des submodules&nbsp;;</li>
+<li>La récupération des données depuis le <em>remote</em> (c’est à dire le <em>fetch</em>), par défaut, <strong>ne prend pas les submodules en compte</strong>&nbsp;;</li>
+<li>Les cycles de vie étant séparés, une mise à jour locale au conteneur du code d’un submodule nécessite <strong>deux commits et deux pushes distincts</strong>&nbsp;;</li>
+<li>Les têtes des submodules étant généralement détachées, toute mise à jour locale nécessite diverses <strong>actions préparatoires</strong> pour éviter un commit orphelin&nbsp;;</li>
+<li>La suppression d’un submodule nécessite plusieurs commandes et manipulations, dont certaines <strong>manuelles et non assistées</strong>.</li>
+</ul>
+
+
+<p>Bref, il va falloir être <strong>rigoureux</strong>, les amis…</p>
+
+<h2 id="les-submodules pas à pas">Les submodules pas à pas</h2>
+
+<p>Nous allons à présent explorer chaque étape de l’utilisation de 
+submodules dans un projet collaboratif, en prenant soin de bien mettre 
+en lumière les <strong>comportements par défaut</strong>, leurs <strong>pièges</strong>, et le cas échéant les <strong>améliorations</strong> disponibles.</p>
+
+<p>Afin que vous puissiez pratiquer ces exemples par vous-mêmes, je vous ai préparé une série de <strong>dépôts d’exemple</strong>
+ avec leurs «&nbsp;remotes&nbsp;» qui sont en fait juste des 
+répertoires.  Vous pouvez décompresser l’archive où vous voulez et 
+ouvrir un shell (ou un Git Bash, pour ceux sous Windows) dans le dossier
+ <code>git-subs</code> ainsi obtenu&nbsp;:</p>
+
+<p><a href="http://www.git-attitude.fr/assets/git-subs-demo.zip">Téléchargez les dépôts d’exemple</a></p>
+
+<p>Vous y trouverez trois dossiers&nbsp;:</p>
+
+<ul>
+<li><code>main</code> joue le rôle du dépôt <strong>conteneur</strong>, local à un premier collaborateur</li>
+<li><code>plugin</code> joue le rôle du <strong>dépôt central de maintenance</strong> d’un module</li>
+<li><code>remotes</code> contient les <em>filesystem remotes</em> pour ces dépôts</li>
+</ul>
+
+
+<p>Dans les exemples de commandes ci-après, le prompt indique toujours le dépôt dans lequel on se trouve.</p>
+
+<h3 id="ajouter-un submodule">Ajouter un submodule</h3>
+
+<p>Commençons par ajouter le plugin comme submodule à notre conteneur, situé dans <code>main</code>.  Le plugin a une structure assez simple&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">.
+</span><span class="line">├── README.md
+</span><span class="line">├── lib
+</span><span class="line">│&nbsp;&nbsp; └── index.js
+</span><span class="line">└── plugin-config.json
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Plaçons-nous donc dans <code>main</code>et utilisons la commande <code>git submodule add</code>.  Celle-ci prend une URL de <em>remote</em> et un sous-répertoire dans lequel «&nbsp;instancier&nbsp;» le submodule.</p>
+
+<p>Ici, comme nous utilisons des chemins plutôt que des URLs, nous 
+tombons sur une petite particularité&nbsp;: les chemins relatifs vont 
+être interprétés relativement à notre <em>remote</em> principal, et non 
+au répertoire courant.  C’est super bizarre, ce n’est décrit nulle part,
+ mais c’est ce que j’ai toujours constaté.  Du coup, au lieu de faire <code>../remotes/plugin</code> on fait <code>../plugin</code>.</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master u=) $ git submodule add ../plugin vendor/plugins/demo
+</span><span class="line">Cloning into 'vendor/plugins/demo'...
+</span><span class="line">done.
+</span><span class="line">main (master + u=) $
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Cet ajout a entraîné une modification de notre configuration locale&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master + u=) $ cat .git/config
+</span><span class="line">…
+</span><span class="line">[submodule "vendor/plugins/demo"]
+</span><span class="line">  url = ../remotes/plugin
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Mais aussi <strong>deux</strong> ajouts au <em>stage</em>&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master + u=) $ git status
+</span><span class="line">On branch master
+</span><span class="line">Your branch is up-to-date with 'origin/master'.
+</span><span class="line">Changes to be committed:
+</span><span class="line">  (use "git reset HEAD &lt;file&gt;..." to unstage)
+</span><span class="line">
+</span><span class="line">  new file:   .gitmodules
+</span><span class="line">  new file:   vendor/plugins/demo
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Tiens&nbsp;?!  Qu’est-ce donc que ce fichier <code>.gitmodules</code>&nbsp;?  Examinons-le&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master + u=) $ cat .gitmodules
+</span><span class="line">[submodule "vendor/plugins/demo"]
+</span><span class="line">  path = vendor/plugins/demo
+</span><span class="line">  url = ../plugin
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Voilà qui ressemble furieusement à notre configuration locale…  
+Alors, pourquoi ce doublon&nbsp;?  Justement parce que notre 
+configuration est… locale.  Nos collaborateurs ne la voient pas (et 
+c’est normal), du coup il leur faut un mécanisme pour <strong>récupérer les définitions de submodules à mettre en place dans leurs propres dépôts</strong>.  C’est le rôle du <code>.gitmodules</code>, qui sera exploité plus tard par la commande <code>git submodule init</code>, comme nous le verrons tout à l’heure.</p>
+
+<p>Tant qu’on est sur le statut, remarquez combien celui-ci est <strong>minimaliste</strong> quant à notre submodule&nbsp;: il se contente d’un très générique <code>new file</code>
+ au lieu de nous informer un peu plus sur ce qui se passe à l’intérieur.
+  Car en effet, notre submodule a bien injecté son contenu dans le 
+sous-répertoire&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">…
+</span><span class="line">└── vendor
+</span><span class="line">    └── plugins
+</span><span class="line">        └── demo
+</span><span class="line">            ├── .git
+</span><span class="line">            ├── README.md
+</span><span class="line">            ├── lib
+</span><span class="line">            │&nbsp;&nbsp; └── index.js
+</span><span class="line">            └── plugin-config.json
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Le statut, comme les logs et les diffs, se limite à notre propre <strong>dépôt actif</strong>
+ (le conteneur), pas aux submodules, qui sont en quelque sorte des 
+dépôts imbriqués.  C’est souvent gênant (il est très, très facile de 
+louper une régression en se limitant à ça), aussi je vous invite à <strong>configurer une bonne fois pour toutes vos statuts</strong> pour fouiller un peu plus dans les submodules&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">git config --global status.submoduleSummary true
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Et ainsi&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master + u=) $ git status
+</span><span class="line">On branch master
+</span><span class="line">Your branch is up-to-date with 'origin/master'.
+</span><span class="line">Changes to be committed:
+</span><span class="line">  (use "git reset HEAD &lt;file&gt;..." to unstage)
+</span><span class="line">
+</span><span class="line">  new file:   .gitmodules
+</span><span class="line">  new file:   vendor/plugins/demo
+</span><span class="line">
+</span><span class="line">Submodule changes to be committed:
+</span><span class="line">
+</span><span class="line">* vendor/plugins/demo 0000000...fe64799 (3):
+</span><span class="line">  &gt; Fix repo name for main project companion demo repo
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Aaaah, voilà qui est nettement mieux.  Le statut étend ses informations de base pour ajouter que le submodule présent dans <code>vendor/plugins/demo</code>
+ s’est pris 3 commits de plus qu’avant (vu qu’on vient de le créer, il 
+n’a donc que 3 commits), le dernier étant une introduction (chevron 
+droit <code>&gt;</code>) dont la première ligne de message était «&nbsp;Fix repo name…&nbsp;».</p>
+
+<p>Histoire de bien voir qu’on a ici affaire à <strong>deux dépôts distincts</strong>, plaçons-nous dans le sous-répertoire du submodule&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master + u=) $ cd vendor/plugins/demo
+</span><span class="line">demo (master u=) $ git status
+</span><span class="line">On branch master
+</span><span class="line">Your branch is up-to-date with 'origin/master'.
+</span><span class="line">nothing to commit, working directory clean
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p><strong>Le dépôt actif a changé</strong>, car un nouveau <code>.git</code> prend le relais&nbsp;: dans le répertoire courant (<code>demo</code>, le dossier du submodule), un <code>.git</code> existe en effet, mais remarquez qu’il ne s’agit pas de l’habituel répertoire&nbsp;: <strong>c’est un fichier</strong>.  Examinons l’intérieur&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">demo (master u=) $ cat .git
+</span><span class="line">gitdir: ../../../.git/modules/vendor/plugins/demo
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Depuis déjà plusieurs versions, Git ne place plus les dépôts de 
+submodules dans leurs dossiers propres, mais les centralise dans son <code>.git</code> conteneur (dans <code>.git/modules</code>) et se contente d’une référence <em>gitdir</em> dans les sous-dossiers.</p>
+
+<p>La raison de cette approche est simple&nbsp;: elle permet d’avoir, <strong>dans le dépôt conteneur, des branches ne contenant pas le submodule</strong>, sans qu’il soit nécessaire pour cela de purger le dépôt correspondant du <em>working directory</em>.</p>
+
+<p>Il est naturellement possible de choisir une branche précise, voire un commit précis au sein du <em>remote</em> avec l’option <code>-b</code> (comme toujours, ce sera par défaut <code>master</code>).
+ Remarquez au passage qu’on n’est pas ici en tête détachée, comme ce 
+sera le cas plus tard&nbsp;: on est sur la branche par défaut, <code>master</code>.  Ce serait le cas pour toute autre branche&nbsp;; il aurait fallu qu’on indique un SHA1 avec <code>-b</code> à la commande <code>git submodule add</code> pour être d’entrée de jeu en tête détachée.</p>
+
+<p>Enfin, s’il est aussi possible à l’ajout de nommer le submodule, en 
+pratique ça n’a que peu d’utilité&nbsp;: le nom logique est alors 
+présent dans les configurations et peut faciliter la mise à jour de 
+l’URL du <em>remote</em> du submodule, mais l’ensemble des sous-commandes de <code>git submodule</code> utilisent quant à elles le chemin (le sous-répertoire) pour identifier le submodule à manipuler.</p>
+
+<p>Revenons au dépôt conteneur, puis finalisons notre ajout de submodule et envoyons ça au <em>remote</em>&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">demo (master u=) $ cd -
+</span><span class="line">main (master + u=) $ git commit -m "Ajout submodule plugin demo"
+</span><span class="line">main (master u+1) $ git push
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h3 id="r-cupérer un dépôt exploitant des submodules">Récupérer un dépôt exploitant des submodules</h3>
+
+<p>Afin d’illustrer les problématiques relatives à la <strong>collaboration</strong> sur un dépôt exploitant des submodules, nous allons cloner le dépôt conteneur dans un dossier <code>collegue</code> (comme ça le dossier nous dira tout de suite quel rôle on joue dans ce petit exercice de dédoublement de personnalité).</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master u=) $ cd ..
+</span><span class="line">git-subs $ git clone remotes/main collegue
+</span><span class="line">Cloning into 'collegue'...
+</span><span class="line">done.
+</span><span class="line">git-subs $ cd collegue
+</span><span class="line">collegue (master u=) $
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>La première chose à remarquer, c’est que <strong>notre submodule n’est pas présent</strong> dans le <em>working directory</em>, seul son dossier de base est là&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">vendor
+</span><span class="line">└── plugins
+</span><span class="line">    └── demo
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>À quoi est-ce dû&nbsp;?  Simplement au fait qu’à ce stade, notre nouveau dépôt (<code>collegue</code>) <strong>n’est pas encore au courant</strong> qu’il a un submodule&nbsp;: l’info ne figure pas dans sa configuration locale (vous pouvez vérifier son <code>.git/config</code>).  Il va falloir retranscrire le contenu du <code>.gitmodules</code> dans <code>.git/config</code>, du coup, ce qui est précisément le rôle de <code>git submodule init</code>&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">collegue (master u=) $ git submodule init
+</span><span class="line">Submodule 'vendor/plugins/demo' (/tmp/git-subs/remotes/plugin) registered for path 'vendor/plugins/demo'
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Notre <code>.git/config</code> est désormais au courant des submodules.  Cependant, le nôtre n’a <strong>toujours pas été récupéré</strong> depuis son <em>remote</em> ni, à plus forte raison, retranscrit dans le <em>working directory</em>.  Et pourtant, notre statut est vide (<em>clean</em>)&nbsp;!</p>
+
+<p>Il faut en effet récupérer puis retranscrire «&nbsp;à la main&nbsp;» 
+les commits visés par l’info de submodule stockée dans la base.  Ce 
+n’est pas spécifique au <code>clone</code> initial, ça devra être fait, <strong>manuellement</strong>, à chaque <code>pull</code> ultérieur.  On y reviendra, d’autant qu’au <code>clone</code>, justement, ça peut être «&nbsp;automatisé&nbsp;» en partie.</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">collegue (master u=) $ git submodule update
+</span><span class="line">Cloning into 'vendor/plugins/demo'...
+</span><span class="line">done.
+</span><span class="line">Submodule path 'vendor/plugins/demo': checked out 'fe6479991d214f4d95ac2ae959d7252a866e01a3'
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Dans la pratique, quand on manipule des dépôts à submodules, on <strong>regroupe</strong> généralement ces deux commandes en une&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">collegue (master u=) $ git submodule update --init
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Il est tout de même dommage que Git ne fasse pas tout ça pour nous.  
+Imaginez, comme c’est le cas dans de (très) gros projets open-source, 
+que nos submodules aient eux-mêmes des submodules, et ainsi de suite…  
+Ce serait vite un cauchemar.</p>
+
+<p>Git fournit en effet une option de ligne de commande pour <code>clone</code> qui va automatiquement réaliser un <code>git submodule update --init</code> juste après le clone, et ceci en profondeur&nbsp;: <code>--recursive</code>, la bien nommée.</p>
+
+<p>Retentons toute l’opération avec&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">collegue (master u=) $ cd -
+</span><span class="line">git-subs $ rm -fr collegue
+</span><span class="line">git-subs $ git clone --recursive remotes/main collegue
+</span><span class="line">Cloning into 'collegue'...
+</span><span class="line">done.
+</span><span class="line">Submodule 'vendor/plugins/demo' (/tmp/git-subs/remotes/plugin) registered for path 'vendor/plugins/demo'
+</span><span class="line">Cloning into 'vendor/plugins/demo'...
+</span><span class="line">done.
+</span><span class="line">Submodule path 'vendor/plugins/demo': checked out 'fe6479991d214f4d95ac2ae959d7252a866e01a3'
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Voilà qui est mieux&nbsp;!  Remarquez bien qu’on est en tête détachée
+ sur le submodule, cette fois-ci (comme presque tout le temps)&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">git-subs $ cd collegue/vendor/plugins/demo
+</span><span class="line">demo ((master)) $
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Notez la double parenthèse dans mon prompt, au lieu d’une simple.  Si
+ vous n’avez pas un prompt configuré pour afficher les têtes détachées 
+en mode <em>describe</em> (dans le script de prompt fourni par Git, c’est géré par la variable d’environnement <code>GIT_PS1_DESCRIBE_STYLE=branch</code>), vous verrez plutôt&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">demo ((fe64799...)) $
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Mais en tous les cas, <code>status</code> nous confirme l’état&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">demo ((master)) $ git status
+</span><span class="line">HEAD detached at fe64799
+</span><span class="line">nothing to commit, working directory clean
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h3 id="r-cupérer une mise à jour au sein d’un submodule">Récupérer une mise à jour au sein d’un submodule</h3>
+
+<p>À présent que nous avons notre propre dépôt (<code>main</code>) et celui de notre «&nbsp;collègue&nbsp;» (<code>collegue</code>) mis en place pour collaborer, mettons-nous dans la peau d’une <strong>troisième personne</strong>&nbsp;: celle qui maintient le plugin.  Allez hop, on se met dedans&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">collegue (master u=) $ cd ../plugin
+</span><span class="line">plugin (master u=) $ git log --oneline
+</span><span class="line">fe64799 Fix repo name for main project companion demo repo
+</span><span class="line">89d24ad Main files (incl. subdir) for plugin, to populate its tree.
+</span><span class="line">cc88751 Initial commit
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Et maintenant, faisons deux pseudo-commits et publions-les sur le <em>remote</em>&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">plugin (master u=) $ date &gt; fake-work
+</span><span class="line">plugin (master % u=) $ git add fake-work
+</span><span class="line">plugin (master + u=) $ git commit -m "Pseudo-commit n°1"
+</span><span class="line">[master e6f5bb6] Pseudo-commit n°1
+</span><span class="line"> 1 file changed, 1 insertion(+)
+</span><span class="line"> create mode 100644 fake-work
+</span><span class="line">
+</span><span class="line">plugin (master u+1) $ date &gt;&gt; fake-work
+</span><span class="line">plugin (master * u+1) $ git commit -am "Pseudo-commit n°2"
+</span><span class="line">plugin (master u+2) $ git push
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Enfin, remettons notre casquette <strong>«&nbsp;premier développeur&nbsp;»</strong>&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">plugin (master u=) $ cd ../main
+</span><span class="line">main (master u=) $
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Imaginons à présent que nous souhaitions <strong>récupérer ces deux commits dans notre submodule</strong>.  Pour cela, il nous faut <strong>mettre à jour le dépôt local qui lui est dédié</strong>, en commençant donc par nous y placer pour que ce soit bien le dépôt actif.</p>
+
+<p>Par ailleurs, je vous invite à <strong>éviter de vous reposer sur <code>pull</code></strong> pour ce type de mise à jour.  En effet, cette commande nécessite, pour impacter le <em>working directory</em>,
+ que vous soyez sur une branche, ce qui n’est généralement pas le cas 
+(vous êtes le plus souvent en tête détachée au sein d’un submodule).  Il
+ faudrait donc commencer par un <code>checkout</code> sur la branche 
+appropriée.  Mais surtout, il peut très bien arriver qu’entre la 
+publication du dernier commit souhaité et le moment de la récupération 
+dans le submodule, la branche concernée ait évolué plus loin, et dans un
+ tel cas, un <code>pull</code> va incorporer plus de travail que vous ne le souhaitez.</p>
+
+<p>Du coup, je préconise plutôt de <strong>découper le processus</strong> à la main&nbsp;: d’abord un <code>git fetch</code> pour récupérer l’ensemble des nouveautés du <em>remote</em> dans le cache local du dépôt, puis un <code>log</code> de vérification et un <code>checkout</code> du SHA1 souhaité.  Outre un <strong>contrôle accru</strong>, cette séquence a l’avantage de ne pas se soucier de votre état actuel (branche active ou tête détachée).</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master u=) $ cd vendor/plugins/demo
+</span><span class="line">
+</span><span class="line">demo (master u=) $ git fetch
+</span><span class="line">remote: Counting objects: 6, done.
+</span><span class="line">remote: Compressing objects: 100% (5/5), done.
+</span><span class="line">remote: Total 6 (delta 1), reused 0 (delta 0)
+</span><span class="line">Unpacking objects: 100% (6/6), done.
+</span><span class="line">From /private/tmp/git-subs/main/../remotes/plugin
+</span><span class="line">   fe64799..0e90143  master     -&gt; origin/master
+</span><span class="line">
+</span><span class="line">demo (master u-2) $ git log --oneline origin/master -10
+</span><span class="line">0e90143 Pseudo-commit n°2
+</span><span class="line">e6f5bb6 Pseudo-commit n°1
+</span><span class="line">fe64799 Fix repo name for main project companion demo repo
+</span><span class="line">89d24ad Main files (incl. subdir) for plugin, to populate its tree.
+</span><span class="line">cc88751 Initial commit
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>OK, donc on est bons, aucun commit de plus.  Mais quoi qu’il en soit,
+ calons-nous sur celui qui nous intéresse (évidemment, le SHA1 n’est pas
+ le même chez vous)&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">demo (master u-2) $ git checkout -q 0e90143
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>(Le <code>-q</code> est juste là pour nous éviter la tartine 
+d’avertissements de Git sur le fait d’être en tête détachée.  En temps 
+normal ceux-ci sont une bonne idée, mais sur ce coup on sait ce qu’on 
+fait.)</p>
+
+<p>À présent que notre submodule est à jour, cette évolution se voit dans le <strong>statut du dépôt conteneur</strong>&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">demo ((remotes/origin/HEAD)) $ cd -
+</span><span class="line">main (master * u=) $ git status
+</span><span class="line">On branch master
+</span><span class="line">Your branch is up-to-date with 'origin/master'.
+</span><span class="line">Changes not staged for commit:
+</span><span class="line">  (use "git add &lt;file&gt;..." to update what will be committed)
+</span><span class="line">  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+</span><span class="line">
+</span><span class="line">  modified:   vendor/plugins/demo (new commits)
+</span><span class="line">
+</span><span class="line">Submodules changed but not updated:
+</span><span class="line">
+</span><span class="line">* vendor/plugins/demo fe64799...0e90143 (2):
+</span><span class="line">  &gt; Pseudo-commit n°2
+</span><span class="line">  &gt; Pseudo-commit n°1
+</span><span class="line">
+</span><span class="line">no changes added to commit (use "git add" and/or "git commit -a")
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Dans la partie «&nbsp;classique&nbsp;» du diff, on voit un changement de type <em>new commits</em>, ce qui indique un <strong>recalage du commit référencé</strong>.  Une autre possibilité (qui peut se cumuler) serait <em>new contents</em>, qui indiquerait qu’on a des modifs locales en cours sur le <em>working directory</em> du submodule.</p>
+
+<p>La partie basse, activée par notre réglage <code>status.submoduleSummary = true</code> de tout à l’heure, nous indique explicitement <strong>les commits introduits</strong> (puisqu’on a des chevrons à droite ‘&gt;’ à côté d’eux) depuis notre dernier commit conteneur touchant au submodule.</p>
+
+<p>Dans la série «&nbsp;les comportements pourris par défaut&nbsp;», le fonctionnement de <code>git diff</code> laisse aussi à désirer&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master * u=) $ git diff
+</span><span class="line">diff --git i/vendor/plugins/demo w/vendor/plugins/demo
+</span><span class="line">index fe64799..0e90143 160000
+</span><span class="line">--- i/vendor/plugins/demo
+</span><span class="line">+++ w/vendor/plugins/demo
+</span><span class="line">@@ -1 +1 @@
+</span><span class="line">-Subproject commit fe6479991d214f4d95ac2ae959d7252a866e01a3
+</span><span class="line">+Subproject commit 0e9014309fe6c663e806c9f91297a592ee04cb6c
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>OK, super, mais encore&nbsp;?  Il existe une option de ligne de commande qui permet d’en savoir plus&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master * u=) $ git diff --submodule=log
+</span><span class="line">Submodule vendor/plugins/demo fe64799..0e90143:
+</span><span class="line">  &gt; Pseudo-commit n°2
+</span><span class="line">  &gt; Pseudo-commit n°1
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Bon, là, vu qu’il n’y a aucune modif locale à part celle du 
+submodule…  Vous remarquez qu’il s’agit presque exactement de 
+l’affichage bas de <code>git status</code> lorsqu’il se préoccupe des submodules.</p>
+
+<p>Devoir taper manuellement ce genre d’option (laquelle ne dispose 
+d’ailleurs pas, pour le moment, de la complétion fournie par Git) est 
+assez pénible.  Heureusement pour nous, un <strong>réglage de configuration</strong> existe&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">git config --global diff.submodule log
+</span><span class="line">main (master * u=) $ git diff
+</span><span class="line">Submodule vendor/plugins/demo fe64799..0e90143:
+</span><span class="line">  &gt; Pseudo-commit n°2
+</span><span class="line">  &gt; Pseudo-commit n°1
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Il nous reste à faire le <strong>commit conteneur qui entérine la mise à jour du submodule</strong>.
+  Si vous avez eu besoin de toucher au code conteneur pour qu’il marche 
+avec la nouvelle version du submodule, committez-le aussi, 
+naturellement.  En revanche, <strong>évitez de mélanger des changements relatifs aux submodules à d’autres</strong>
+ qui ne concernent que le code conteneur&nbsp;: en séparant bien les 
+deux sujets, vous facilitez les conversions ultérieures du dépôt vers 
+d’autres types d’approches de partage de code.</p>
+
+<p>Comme nous allons juste après examiner la récupération de mises à 
+jour aux submodules par nos collègues, on pushe dans la foulée (ce qui 
+n’est pas une bonne pratique de façon générale).</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master * u=) $ git commit -am "Calage du submodule sur le PC2"
+</span><span class="line">main (master u+1) $ git push
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h3 id="mettre-jour un dépôt exploitant des submodules">Mettre à jour un dépôt exploitant des submodules</h3>
+
+<p>Hop&nbsp;! Casquette «&nbsp;collègue&nbsp;».</p>
+
+<p>Durant notre boulot, nous sommes amenés à récupérer les derniers commits partagés via le <em>remote</em>&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">collegue (master u=) $ git pull
+</span><span class="line">remote: Counting objects: 4, done.
+</span><span class="line">remote: Compressing objects: 100% (2/2), done.
+</span><span class="line">remote: Total 4 (delta 1), reused 0 (delta 0)
+</span><span class="line">Unpacking objects: 100% (4/4), done.
+</span><span class="line">From /tmp/git-subs/remotes/main
+</span><span class="line">   c995ed0..ac96c22  master     -&gt; origin/master
+</span><span class="line">Fetching submodule vendor/plugins/demo
+</span><span class="line">remote: Counting objects: 6, done.
+</span><span class="line">remote: Compressing objects: 100% (5/5), done.
+</span><span class="line">remote: Total 6 (delta 1), reused 0 (delta 0)
+</span><span class="line">Unpacking objects: 100% (6/6), done.
+</span><span class="line">From /tmp/git-subs/remotes/plugin
+</span><span class="line">   fe64799..0e90143  master     -&gt; origin/master
+</span><span class="line">Successfully rebased and updated refs/heads/master.
+</span><span class="line">collegue (master * u=) $
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Notez que toute la deuxième partie a trait au submodule&nbsp;: elle démarre par «&nbsp;<em>Fetching submodule…</em>&nbsp;».</p>
+
+<p>Ce comportement provient de la valeur par défaut du réglage de configuration <code>fetch.recurseSubmodules</code>&nbsp;: depuis Git 1.7.5, elle est à <code>on-demand</code>&nbsp;: si le projet conteneur a mis à jour des références de commits pour des submodules, ceux-ci sont récupérés par le <code>fetch</code> (lequel fait partie du <code>pull</code>).</p>
+
+<p>Cependant, et c’est là un point critique&nbsp;: <strong>Git auto-fetche, mais n’auto-update pas</strong>.  Votre cache local est à jour pour le dépôt du submodule, mais celui-ci <strong>n’a pas bougé dans votre <em>working directory</em></strong>.
+  Au moins, vous pouvez fermer le laptop et prendre le train pour 
+ensuite gérer le recalage sans avoir besoin de connectivité au <em>remote</em>.
+  Notez tout de même que c’est limité aux submodules déjà connus 
+localement&nbsp;: les nouveaux submodules éventuels, qu’on n’a pas 
+encore en local, ne sont pas auto-récupérés.</p>
+
+<p>D’ailleurs le prompt, avec son <code>*</code>, indique bien des 
+modifs locales, car le WD n’est pas synchro avec l’index, qui lui 
+connaît le nouveau commit référencé pour le submodule.  Voyez plutôt le 
+statut&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">collegue (master * u=) $ git status
+</span><span class="line">On branch master
+</span><span class="line">Your branch is up-to-date with 'origin/master'.
+</span><span class="line">Changes not staged for commit:
+</span><span class="line">  (use "git add &lt;file&gt;..." to update what will be committed)
+</span><span class="line">  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+</span><span class="line">
+</span><span class="line">  modified:   vendor/plugins/demo (new commits)
+</span><span class="line">
+</span><span class="line">Submodules changed but not updated:
+</span><span class="line">
+</span><span class="line">* vendor/plugins/demo 0e90143...fe64799 (2):
+</span><span class="line">  &lt; Pseudo-commit n°2
+</span><span class="line">  &lt; Pseudo-commit n°1
+</span><span class="line">
+</span><span class="line">no changes added to commit (use "git add" and/or "git commit -a")
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Vous avez remarqué les chevrons à gauche (<code>&lt;</code>)&nbsp;?  Git voit que le WD actuel n’a pas ces deux commits, par rapport à ce qu’attend le projet conteneur.</p>
+
+<p><strong>Voilà l’énorme danger&nbsp;: si on ne met pas à jour le <em>working directory</em> du submodule, au prochain commit conteneur on l’aura fait régresser.</strong>  C’est un piège de tout premier ordre.</p>
+
+<p>Il est donc <strong>impératif</strong> de finaliser la mise à jour&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">collegue (master * u=) $ git submodule update
+</span><span class="line">Submodule path 'vendor/plugins/demo': checked out '0e9014309fe6c663e806c9f91297a592ee04cb6c'
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>D’ailleurs, quitte à prendre des habitudes génériques, il est probablement préférable de faire un <code>git submodule update --init --recursive</code>, histoire d’initialiser ou de mettre à jour en profondeur tous les submodules, connus ou nouveaux.</p>
+
+<p>Il y a un autre cas à la marge&nbsp;: si l’URL du <em>remote</em> d’un submodule a changé depuis la dernière fois (un des collaborateurs a mis à jour le <code>.gitmodules</code>, mais il vous appartient de refléter ça dans votre configuration locale).  Dans un tel cas, <em>avant</em> le <code>git submodule update</code>, il vous faudra faire un <code>git submodule sync</code>.</p>
+
+<p>Notez que si, par défaut, le <code>git submodule update</code> se contente de faire un <code>checkout</code> sur tête détachée, il vous est possible de changer ça, si vous le souhaitez, pour systématiquement <em>rebaser</em>
+ vos éventuels commits locaux (voir la prochaine section) par-dessus le 
+nouveau commit référencé pour le submodule.  Ça se ferait en définissant
+ le réglage <code>update</code> de votre submodule à <code>rebase</code>, au sein de votre configuration locale (<code>.git/config</code>) du dépôt conteneur.</p>
+
+<p>Et non, <strong>il n’y a pas de réglage de configuration, ou même d’option de ligne de commande pour <code>pull</code>, qui automatise cette manip’</strong> après la mise à jour du <em>working directory</em>
+ conteneur.  Pour automatiser ces traitements, il faudra recourir soit à
+ des aliases, soit à des scripts personnalisés, soit à des hooks 
+soigneusement mis en place.  Voici un exemple d’alias, ‘spull’, qui 
+automatise les deux&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">git
+ config --global alias.spull '!git pull &amp;&amp; git submodule sync 
+--recursive &amp;&amp; git submodule update --init --recursive'
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Si vous voulez pouvoir passer des arguments complémentaires à <code>git pull</code>,
+ il faut soit en faire une fonction et l’appeler, soit préférer un 
+script personnalisé.  La première approche ressemblerait à ceci&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">git
+ config --global alias.spull '__git_spull() { git pull "$@" &amp;&amp; 
+git submodule sync --recursive &amp;&amp; git submodule update --init 
+--recursive; }; __git_spull'
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Pas très lisible, hein&nbsp;?  Je préfère la seconde.  Imaginons que vous placiez un fichier <code>git-spull</code> dans un répertoire qui fait partie de votre <code>PATH</code> (dans mon cas, j’ai un <code>~/perso/bin</code> qui sert à ça)&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="c">#! /bin/bash</span>
+</span><span class="line">git pull <span class="s2">"$@"</span> <span class="o">&amp;&amp;</span>
+</span><span class="line">  git submodule sync --recursive <span class="o">&amp;&amp;</span>
+</span><span class="line">  git submodule update --init --recursive
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>On lui donne les droits d’exécution&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">chmod +x git-spull
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Et on peut désormais l’utiliser comme on l’aurait fait pour l’alias.</p>
+
+<h3 id="mettre-jour un submodule au sein d’un projet conteneur">Mettre à jour un submodule au sein d’un projet conteneur</h3>
+
+<p>C’est le cas <strong>le plus compliqué</strong>, et autant que possible, il faut l’éviter, en préférant une maintenance centralisée au sein d’un dépôt dédié, autonome.</p>
+
+<p>Toutefois, il peut arriver qu’un code <strong>ne puisse être exploité qu’au sein d’un projet conteneur</strong>, notamment pour le mettre au point et le tester&nbsp;; on pense aux plugins, aux thèmes, etc.</p>
+
+<p>La première chose à bien comprendre, c’est que, vu que vous allez faire un ou plusieurs commits, <strong>il faut partir d’une base adaptée&nbsp;: ce sera forcément une pointe de branche</strong>.
+  Du coup, il vous appartient de vérifier que les commits de cette 
+branche, que vous n’exploitiez pas forcément tous jusqu’ici, ne viennent
+ pas «&nbsp;casser&nbsp;» votre projet conteneur.  Dans le cas 
+contraire, il est tentant de créer une branche dédiée à votre conteneur 
+au sein du dépôt submodule, qui partirait de votre dernier commit 
+référencé.  Mais attention&nbsp;: ce chemin mène à un <strong>couplage si fort</strong>
+ et à des ennuis de propagation de code inter-branches si épais qu’il 
+vaut peut-être mieux envisager directement d’arrêter les submodules pour
+ ce code-là…</p>
+
+<p>Mais admettons, par exemple, que vous puissiez en bonne conscience ajouter à l’actuel <code>master</code> du submodule.  Commençons par synchroniser notre état local sur le <em>remote</em>&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">collegue (master u=) $ cd vendor/plugins/demo
+</span><span class="line">
+</span><span class="line">demo ((remotes/origin/HEAD)) $ git checkout master
+</span><span class="line">Previous HEAD position was 0e90143... Pseudo-commit n°2
+</span><span class="line">Switched to branch 'master'
+</span><span class="line">Your branch is behind 'origin/master' by 2 commits, and can be fast-forwarded.
+</span><span class="line">  (use "git pull" to update your local branch)
+</span><span class="line">
+</span><span class="line">demo (master u-2) $ git pull --rebase
+</span><span class="line">First, rewinding head to replay your work on top of it...
+</span><span class="line">Fast-forwarded master to 0e9014309fe6c663e806c9f91297a592ee04cb6c.
+</span><span class="line">demo (master u=) $
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Une alternative consiste, dans le dépôt conteneur, à explicitement recaler la branche locale du submodule sur son équivalent <em>remote</em>&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">collegue (master u=) $ git submodule update --remote --rebase -- vendor/plugins/demo
+</span><span class="line">…
+</span><span class="line">
+</span><span class="line">collegue (master u=) $ cd vendor/plugins/demo
+</span><span class="line">demo (master u=) $
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Nous pouvons à présent modifier le code, le mettre au point, le 
+tester, etc.  Une fois que nous serons prêts, nous pourrons réaliser <strong>les deux commits et les deux pushes nécessaires</strong> (il est facile, et en pratique trop fréquent, d’en oublier une partie).</p>
+
+<p>Ajoutons simplement du faux travail, et faisons les commits au niveau submodule et conteneur&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">demo (master u=) $ date &gt;&gt; fake-work
+</span><span class="line">demo (master * u=) $ git commit -am "Pseudo-commit n°3"
+</span><span class="line">[master 12e3a52] Pseudo-commit n°3
+</span><span class="line"> 1 file changed, 1 insertion(+)
+</span><span class="line">demo (master u+1) $ cd ../../..
+</span><span class="line">collegue (master * u=) git commit -am "Utilisation du PC3 sur le submodule"
+</span><span class="line">[master ad9da82] Utilisation du PC3 sur le submodule
+</span><span class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)
+</span><span class="line">collegue (master u+1) $
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>À ce stade, <strong>le gros danger, c’est d’oublier de <em>pusher</em> le submodule</strong>.
+  On remonte dans le projet conteneur, on committe, et on ne pushe que 
+lui.  C’est une erreur facile à faire, surtout en EDI.  Du coup, à la 
+récupération par les collègues, c’est la chienlit.  Voyez plutôt&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">collegue (master u+1) $ git push
+</span><span class="line">Counting objects: 4, done.
+</span><span class="line">Delta compression using up to 4 threads.
+</span><span class="line">Compressing objects: 100% (2/2), done.
+</span><span class="line">Writing objects: 100% (4/4), 355 bytes | 0 bytes/s, done.
+</span><span class="line">Total 4 (delta 1), reused 0 (delta 0)
+</span><span class="line">To /tmp/git-subs/remotes/main
+</span><span class="line">   766cd47..ad9da82  master -&gt; master
+</span><span class="line">
+</span><span class="line">collegue (master u=) $ cd ../main
+</span><span class="line">main (master u=) $ git pull
+</span><span class="line">remote: Counting objects: 4, done.
+</span><span class="line">remote: Compressing objects: 100% (2/2), done.
+</span><span class="line">remote: Total 4 (delta 1), reused 0 (delta 0)
+</span><span class="line">Unpacking objects: 100% (4/4), done.
+</span><span class="line">From ../remotes/main
+</span><span class="line">   766cd47..ad9da82  master     -&gt; origin/master
+</span><span class="line">Fetching submodule vendor/plugins/demo
+</span><span class="line">Successfully rebased and updated refs/heads/master.
+</span><span class="line">
+</span><span class="line">main (master * u=) $
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Ici, aucune indication dans les messages de Git qu’il n’a pas pu récupérer auprès du <em>remote</em> du submodule le commit désormais référencé par le conteneur.  Le premier indice devient visible avec un statut&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master * u=) $ git status
+</span><span class="line">On branch master
+</span><span class="line">Your branch is up-to-date with 'origin/master'.
+</span><span class="line">Changes not staged for commit:
+</span><span class="line">  (use "git add &lt;file&gt;..." to update what will be committed)
+</span><span class="line">  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+</span><span class="line">
+</span><span class="line">  modified:   vendor/plugins/demo (new commits)
+</span><span class="line">
+</span><span class="line">Submodules changed but not updated:
+</span><span class="line">
+</span><span class="line">* vendor/plugins/demo 12e3a52...0e90143:
+</span><span class="line">  Warn: vendor/plugins/demo doesn't contain commit 12e3a529698c519b2fab790630f71bd531c45727
+</span><span class="line">
+</span><span class="line">no changes added to commit (use "git add" and/or "git commit -a")
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Voyez l’avertissement&nbsp;: apparemment, le nouveau commit référencé
+ pour le submodule est introuvable.  Et de fait, si on tente la mise à 
+jour du <em>working directory</em>&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master * u=) $ git submodule update
+</span><span class="line">fatal: reference is not a tree: 12e3a529698c519b2fab790630f71bd531c45727
+</span><span class="line">Unable to checkout '12e3a529698c519b2fab790630f71bd531c45727' in submodule path 'vendor/plugins/demo'
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>On voit bien l’importance de <strong>penser à faire le <code>push</code> au niveau du submodule</strong>, de préférence <em>avant</em> de faire celui au niveau conteneur.  Effectuons-le dans le submodule de <code>collegue</code> puis retentons la mise à jour de <code>main</code>&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master * u=) $ cd ../collegue/vendor/plugins/demo
+</span><span class="line">demo (master u+1) $ git push
+</span><span class="line">Counting objects: 3, done.
+</span><span class="line">Delta compression using up to 4 threads.
+</span><span class="line">Compressing objects: 100% (3/3), done.
+</span><span class="line">Writing objects: 100% (3/3), 329 bytes | 0 bytes/s, done.
+</span><span class="line">Total 3 (delta 1), reused 0 (delta 0)
+</span><span class="line">To /tmp/git-subs/remotes/plugin
+</span><span class="line">   0e90143..12e3a52  master -&gt; master
+</span><span class="line">
+</span><span class="line">demo (master u=) $ cd -
+</span><span class="line">main (master * u=) $ git submodule update
+</span><span class="line">remote: Counting objects: 3, done.
+</span><span class="line">remote: Compressing objects: 100% (3/3), done.
+</span><span class="line">remote: Total 3 (delta 1), reused 0 (delta 0)
+</span><span class="line">Unpacking objects: 100% (3/3), done.
+</span><span class="line">From /private/tmp/git-subs/main/../remotes/plugin
+</span><span class="line">   0e90143..12e3a52  master     -&gt; origin/master
+</span><span class="line">Submodule path 'vendor/plugins/demo': checked out '12e3a529698c519b2fab790630f71bd531c45727'
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Remarquez qu’il existe une <strong>option de ligne de commande</strong>
+ qui vérifiera toute seule si les commits référencés pour les submodules
+ locaux ont besoin d’être pushés, eux aussi, et le fera le cas 
+échéant&nbsp;: <code>git push --recurse-submodules=on-demand</code>.  
+Elle a toutefois besoin d’avoir quelque chose à pusher au niveau 
+conteneur pour se soucier ensuite des submodules.  Et qui plus est, il 
+n’existe <strong>pas de réglage de configuration</strong> qui automatise ce comportement&nbsp;: là aussi, un alias du genre <code>spush</code> peut s’avérer utile&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">git config --global alias.spush 'push --recurse-submodules=on-demand'
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h2 id="retirer-un submodule">Retirer un submodule</h2>
+
+<p>Il existe deux cas de figure lorsqu’on veut «&nbsp;retirer&nbsp;» un submodule&nbsp;:</p>
+
+<ul>
+<li>On souhaite <strong>juste retirer le <em>working directory</em></strong>
+ (en vue d’une archive, par exemple) et la configuration locale, tout en
+ gardant la possibilité de le restaurer plus tard (donc il persiste dans
+ <code>.gitmodules</code> et <code>.git/modules</code>)&nbsp;;</li>
+<li>On souhaite <strong>retirer définitivement le submodule</strong> de la branche courante.</li>
+</ul>
+
+
+<h3 id="temporairement">Temporairement</h3>
+
+<p>Le premier cas est géré par <code>git submodule deinit</code>.  Par exemple&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master u=) $ git submodule deinit vendor/plugins/demo
+</span><span class="line">Cleared directory 'vendor/plugins/demo'
+</span><span class="line">Submodule 'vendor/plugins/demo' (../remotes/plugin) unregistered for path 'vendor/plugins/demo'
+</span><span class="line">main (master u=) $
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Notez que ça ne change rien au statut.  Le submodule n’étant plus connu localement (plus de configuration dédiée dans <code>.git/config</code>), son absence du <em>working directory</em> n’est pas remarquée.  Il nous reste le dossier <code>vendor/plugins/demo</code>, mais vide, et on pourrait le retirer sans que ça gêne.</p>
+
+<p>Il faut que le submodule ne contienne pas de modifications locales, sans quoi vous devrez ajouter <code>--force</code> à l’appel.</p>
+
+<p>Toute sous-commande ultérieure de <code>git submodule</code> qui ne referait pas un <code>init</code> <strong>ignorera donc ce submodule</strong>, vu qu’il n’est pas retranscrit dans la configuration locale.  Ça inclue notamment <code>update</code>, <code>foreach</code> et <code>sync</code>.</p>
+
+<p>En revanche, <strong>le submodule est toujours défini</strong> dans <code>.gitmodules</code>&nbsp;: un <code>init</code> suivi d’un <code>update</code> (ou un <code>update --init</code>) va donc le remettre en place&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master u=) $ git submodule update --init
+</span><span class="line">Submodule 'vendor/plugins/demo' (../remotes/plugin) registered for path 'vendor/plugins/demo'
+</span><span class="line">Submodule path 'vendor/plugins/demo': checked out '12e3a529698c519b2fab790630f71bd531c45727'
+</span><span class="line">main (master u=) $
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h3 id="d-finitivement1">Définitivement<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup></h3>
+
+<p>Pour le second cas de figure, lorsque vous voulez vous débarrasser du submodule pour de bon, c’est tout simplement <code>git rm</code>
+ qui va s’en charger, comme ce serait le cas pour n’importe quelle 
+partie de notre dépôt.  Il faudra toutefois que le submodule utilise 
+bien un fichier <code>.git</code> (<em>gitfile</em>) et non un répertoire classique, ce qui est le cas à partir de Git 1.7.8, sinon vous devrez gérer ça plus manuellement.</p>
+
+<p>En plus du retrait du dossier qui contient le submodule, <strong>le <code>.gitmodules</code> sera mis à jour</strong> pour ne plus contenir les infos associées.  Voyez plutôt&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master u=) $ git rm vendor/plugins/demo
+</span><span class="line">rm 'vendor/plugins/demo'
+</span><span class="line">
+</span><span class="line">main (master + u=) $ git status
+</span><span class="line">On branch master
+</span><span class="line">Your branch is up-to-date with 'origin/master'.
+</span><span class="line">Changes to be committed:
+</span><span class="line">  (use "git reset HEAD &lt;file&gt;..." to unstage)
+</span><span class="line">
+</span><span class="line">  modified:   .gitmodules
+</span><span class="line">  deleted:    vendor/plugins/demo
+</span><span class="line">
+</span><span class="line">fatal: Not a git repository: 'vendor/plugins/demo/.git'
+</span><span class="line">Submodule changes to be committed:
+</span><span class="line">
+</span><span class="line">* vendor/plugins/demo 12e3a52...0000000:
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Naturellement, les infos avancées de statut se prennent les pieds dans le tapis, vu que le <em>gitfile</em> a disparu (en fait, le dossier <code>demo</code> entier a dégagé).</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">main (master + u=) $ git ci -m "Retrait du submodule de démo"
+</span><span class="line">[master 31cb27d] Retrait du submodule de démo
+</span><span class="line"> 2 files changed, 4 deletions(-)
+</span><span class="line"> delete mode 160000 vendor/plugins/demo
+</span><span class="line">
+</span><span class="line">main (master u+1) $ git status
+</span><span class="line">On branch master
+</span><span class="line">Your branch is ahead of 'origin/master' by 1 commit.
+</span><span class="line">  (use "git push" to publish your local commits)
+</span><span class="line">nothing to commit, working directory clean
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Ce qui reste curieux, c’est que la configuration locale, elle, porte 
+toujours les traces du submodule, contrairement au nettoyage opéré par 
+un <code>deinit</code>.  Du coup, pour un retrait complet, je vous 
+invite à faire les deux, en séquence, pour être bien au carré (ici ça ne
+ marcherait pas, car vous avez déjà mis à jour le <code>.gitmodules</code>)&nbsp;:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">git submodule deinit path/to/module <span class="c"># pour garantir la config locale</span>
+</span><span class="line">git rm path/to/module               <span class="c"># pour le WD et le .gitmodules</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Quelle que soit l’approche retenue, le dépôt du submodule, lui, reste bien présent dans <code>.git/modules/vendor/plugins/demo</code>, que vous êtes libre de purger quand bon vous semble.</p>
+
+<p>Si jamais vous devez retirer un submodule initialisé avant Git 1.7.8, et donc avec un dépôt <code>.git</code> directement dans son <em>working directory</em> (au lieu d’un <em>gitfile</em>),
+ c’est plus bourrin&nbsp;: il faut précéder les deux commandes ci-dessus
+ d’une suppression manuelle du dossier du submodule, par exemple <code>rm -fr vendor/plugins/demo</code>, car ces commandes refuseront toujours de supprimer un dépôt.</p>
+
+<h2 id="r-capitulatif des bonnes pratiques (tl;dr)">Récapitulatif des bonnes pratiques (TL;DR)</h2>
+
+<h3 id="en-configuration">En configuration</h3>
+
+<ul>
+<li><code>diff.submodule = log</code> — pour y voir plus clair dans les diffs conteneurs impliquant des changements de commit référencé sur des submodules.</li>
+<li><code>fetch.recurseSubmodules = on-demand</code> — pour être sûrs de pré-récupérer les nouveaux commits référencés par les submodules déjà connus.</li>
+<li><code>status.submoduleSummary = true</code> — pour avoir un <code>git status</code> digne de ce nom lorsqu’un submodule change son commit référencé.</li>
+</ul>
+
+
+<h3 id="en-opération">En opération</h3>
+
+<ul>
+<li>Ajout initial&nbsp;: <code>git submodule add &lt;url&gt; &lt;chemin&gt;</code></li>
+<li>Clone initial du conteneur&nbsp;: <code>git clone --recursive &lt;url&gt; [&lt;chemin&gt;]</code></li>
+<li>Récupérer une mise à jour au sein d’un submodule&nbsp;:
+
+<ol>
+<li> <code>cd path/to/module</code></li>
+<li> <code>git fetch</code></li>
+<li> <code>git checkout -q commit-sha1</code></li>
+<li> <code>cd -</code></li>
+<li> <code>git commit -am "Mise à jour du submodule blah&nbsp;: blah blah"</code></li>
+</ol>
+</li>
+<li>Mise à jour du conteneur&nbsp;:
+
+<ol>
+<li> <code>git pull</code></li>
+<li> <code>git submodule sync --recursive</code></li>
+<li> <code>git submodule update --init --recursive</code></li>
+</ol>
+</li>
+<li>Mise à jour d’un submodule au sein du conteneur
+
+<ol>
+<li> <code>git submodule update --remote --rebase -- path/to/module</code></li>
+<li> <code>cd path/to/module</code></li>
+<li> Boulot local, <em>staging</em></li>
+<li> <code>git commit -am "Mise à jour au submodule central"</code></li>
+<li> <code>git push</code></li>
+<li> <code>cd -</code></li>
+<li> <code>git commit -am "Mise à jour du submodule blah&nbsp;: blah blah"</code></li>
+</ol>
+</li>
+<li>Suppression définitive d’un submodule (post 1.7.8)
+
+<ol>
+<li> <code>git submodule deinit path/to/module</code></li>
+<li> <code>git rm path/to/module</code></li>
+<li> <code>git commit -am "Retrait du submodule blah"</code></li>
+</ol>
+</li>
+</ul>
+
+
+<h2 id="ce-qui reste dans les coins">Ce qui reste dans les coins</h2>
+
+<h3 id="commandes-git">Commandes Git</h3>
+
+<ul>
+<li><code>git submodule foreach</code> permet d’exécuter des commandes 
+libres sur tous les submodules actuellement connus (initialisés), 
+récursivement ou non&nbsp;; les commandes ont accès à plusieurs 
+variables leur fournissant notamment le chemin du submodule, son commit 
+référencé et la racine du dépôt conteneur.  Pratique pour des scripts 
+personnalisés.</li>
+<li><code>git submodule status</code> est un affichage de statut dédié 
+aux submodules présents dans le conteneur (voire récursivement), qui 
+nous indique notamment les commits référencés, les écarts locaux 
+éventuels, le statut initialisé ou non, voire des conflits de fusion.  
+Plus rapide qu’une série de vérifs dans le <em>working directory</em>.</li>
+<li><code>git submodule summary</code> liste les écarts d’historique 
+entre le dernier commit référencé par la submodule dans le HEAD ou 
+l’index du projet conteneur, et celui effectivement présent dans son <em>working directory</em>.  En fait, c’est ce qu’affichent <code>git status</code> ou <code>git diff</code> quand on a pensé à configurer le mode log.</li>
+<li><code>git mv</code> sur un dossier de submodule post 1.7.8 (avec un <em>gitfile</em>) fait normalement ce qu’il faut&nbsp;:
+
+<ol>
+<li> Mise à jour du chemin relatif dans le <em>gitfile</em></li>
+<li> Mise à jour du <code>core.worktree</code> dans le dépôt du submodule au sein de <code>.git/modules</code></li>
+<li> Mise à jour du <code>.gitmodules</code> et <em>staging</em> de celui-ci</li>
+</ol>
+</li>
+</ul>
+
+
+<h3 id="options-de ligne de commande">Options de ligne de commande</h3>
+
+<ul>
+<li><code>git diff --ignore-submodules</code>, comme <code>git status --ignore-submodules</code>, suppriment toute info de submodules dans leurs affichages.  Contre-productif, à mon sens.</li>
+</ul>
+
+
+<h3 id="param-tres de configuration">Paramètres de configuration</h3>
+
+<ul>
+<li><code>diff.ignoreSubmodules</code> rend permanent le fait de zapper toute info sur les submodules pendant les diffs.  Très mauvaise idée selon moi.</li>
+</ul>
+
+
+<h2 id="envie-d’en savoir plus&nbsp;?">Envie d’en savoir plus&nbsp;?</h2>
+
+<p>Notre formation <a href="http://www.git-attitude.fr/git-total/">Git Total</a>
+ explore ces thématiques et bien d’autres pour vous donner une 
+compréhension en profondeur de Git, vous transformant en experts en 
+seulement 3 jours, pour un tarif très raisonnable&nbsp;!  Disponible en 
+inter-entreprises tous les 2 mois (hors été) et en intra-entreprises <a href="http://www.git-attitude.fr/demander-une-intra-ou-custom">sur demande</a>.</p>
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><a href="http://youtu.be/AfeAhCWaMD0?t=37s">comme une Bamba triste</a><a href="#fnref:1" rev="footnote">↩</a></p></li>
+</ol>
+</div>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Publié par <span class="fn">Christophe Porteneuve</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-31T00:00:00+01:00" pubdate="" data-updated="true">31 décembre 2014</time>
+      
+
+<span class="categories">
+  
+    <a class="category" href="http://www.git-attitude.fr/categories/didacticiels/">Didacticiels</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <iframe data-url="http://www.git-attitude.fr/2014/12/31/git-submodules/" src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/tweet_button.html" title="Twitter Tweet Button" style="position: static; visibility: visible; width: 70px; height: 20px;" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" allowtransparency="true" scrolling="no" id="twitter-widget-1" frameborder="0"></iframe>
+  
+  
+  <div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; background: transparent none repeat scroll 0% 0%; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 90px; height: 20px;"><iframe title="+1" data-gapiattached="true" src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/fastbutton.html" name="I0_1460367814487" id="I0_1460367814487" vspace="0" tabindex="0" style="position: static; top: 0px; width: 90px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" scrolling="no" marginwidth="0" marginheight="0" hspace="0" width="100%" frameborder="0"></iframe></div>
+  
+  
+    <div fb-iframe-plugin-query="app_id=212934732101925&amp;container_width=789&amp;href=http%3A%2F%2Fwww.git-attitude.fr%2F2014%2F12%2F31%2Fgit-submodules%2F&amp;locale=fr_FR&amp;sdk=joey&amp;send=true&amp;show_faces=false&amp;width=450" fb-xfbml-state="rendered" class="fb-like fb_iframe_widget" data-send="true" data-width="450" data-show-faces="false"><span style="vertical-align: bottom; width: 450px; height: 20px;"><iframe class="" src="http://www.facebook.com/plugins/like.php?app_id=212934732101925&amp;channel=http%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D42%23cb%3Df2c2bffac5cdda2%26domain%3Dwww.git-attitude.fr%26origin%3Dhttp%253A%252F%252Fwww.git-attitude.fr%252Ff744f0c74d4ae4%26relation%3Dparent.parent&amp;container_width=789&amp;href=http%3A%2F%2Fwww.git-attitude.fr%2F2014%2F12%2F31%2Fgit-submodules%2F&amp;locale=fr_FR&amp;sdk=joey&amp;send=true&amp;show_faces=false&amp;width=450" style="border: medium none; visibility: visible; width: 450px; height: 20px;" title="fb:like Facebook Social Plugin" scrolling="no" allowfullscreen="true" allowtransparency="true" name="fffdae9d791816" width="450px" frameborder="0" height="1000px"></iframe></span></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="http://www.git-attitude.fr/2014/12/09/git-bisect/" title="Article précédent&nbsp;: Git Bisect : débusquer rapidement l'origine d'un bug">« Git Bisect : débusquer rapidement l'origine d'un bug</a>
+      
+      
+        <a class="basic-alignment right" href="http://www.git-attitude.fr/2015/01/12/bilan-2014/" title="Article suivant&nbsp;: 2014 est terminée, vive 2015&nbsp;!">2014 est terminée, vive 2015&nbsp;! »</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Commentaires</h1>
+    <div id="disqus_thread" aria-live="polite"><iframe verticalscrolling="no" horizontalscrolling="no" src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/a.html" style="width: 1px ! important; min-width: 100% ! important; border: medium none ! important; overflow: hidden ! important; height: 962px ! important;" title="Disqus" tabindex="0" scrolling="no" allowtransparency="true" name="dsq-app2" id="dsq-app2" width="100%" frameborder="0"></iframe></div>
+  </section>
+
+</div>
+
+<aside class="sidebar thirds">
+  
+    <section class="first odd">
+  <h1>Articles récents</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="http://www.git-attitude.fr/2016/01/28/bilan-2015/">2015 est terminée, vive 2016&nbsp;!</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://www.git-attitude.fr/2016/01/27/sessions-t2-2016/">Les sessions du 2e trimestre 2016 sont arrivées&nbsp;!</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://www.git-attitude.fr/2015/12/18/learning-github/">Notre cours vidéo GitHub est sorti&nbsp;!</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://www.git-attitude.fr/2015/04/16/sessions-juin-juillet-2015/">Les sessions de juin et juillet sont arrivées&nbsp;!</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/">Comprendre et maîtriser les subtrees Git</a>
+      </li>
+    
+  </ul>
+</section>
+<section class="even">
+  <h1>Restez au courant&nbsp;!</h1>
+  <!-- Begin MailChimp Signup Form -->
+  <div style="margin-top: 1em;">
+  <form action="http://delicious-insights.us5.list-manage.com/subscribe/post?u=c58a0a11f0bd6570e6ca66605&amp;id=2c1e1e675a" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="">
+    <p>
+      <label for="mce-EMAIL">E-mail&nbsp;:</label>
+      <input name="EMAIL" class="email" id="mce-EMAIL" placeholder="adresse@email.tld" required="" type="email">
+      <input value="Et hop&nbsp;!" name="subscribe" id="mc-embedded-subscribe" class="button" type="submit">
+      <small>(juste pour nous, de temps en temps)</small>
+    </p>
+  </form>
+  </div>
+  <!--End mc_embed_signup-->
+</section><section class="odd">
+  <h1>Prochaines sessions</h1>
+  <p><small>(sauf mention contraire, il reste au moins 4 places)</small></p>
+  <ul id="upcomingSessions" class="" data-dev="true"><li><a href="http://www.git-attitude.fr/git-total/">Git Total</a> <span class="dates">mercredi 11 mai 2016 • 3 jours</span> </li></ul><p><a href="http://www.git-attitude.fr/demander-une-convention/">Demander une convention de formation</a></p>
+</section>
+<section class="first even">
+  <h1>Envie d’une formation sur mesure ou chez vous&nbsp;?</h1>
+  <p>Vous avez une équipe d’une certaine taille et souhaitez organiser 
+une session de formation directement auprès d’elle, dans vos 
+locaux&nbsp;?</p>
+
+<p>Vous aimeriez bénéficier d’une formation sur mesure, reprenant des 
+parties de nos programmes existants et en explorant d’autres&nbsp;?</p>
+
+<p>Vous souhaitez disposer d’une formation combinée recroisant les programmes de nos univers Git Attitude et JS Attitude&nbsp;?</p>
+
+<p>Nous sommes à votre disposition pour élaborer avec vous un programme parfaitement adapté à vos besoins.</p>
+
+<p><a href="http://www.git-attitude.fr/demander-une-intra-ou-custom">Contactez-nous pour tout nous dire&nbsp;!</a></p>
+</section>
+<section class="odd">
+  <h1>Tweets récents</h1>
+  <iframe data-widget-id="389419081465487361" style="position: static; visibility: visible; display: inline-block; width: 520px; height: 600px; padding: 0px; border: medium none; max-width: 100%; min-width: 180px; margin-top: 0px; margin-bottom: 0px; min-height: 200px;" class="twitter-timeline twitter-timeline-rendered" allowfullscreen="true" allowtransparency="true" scrolling="no" id="twitter-widget-0" frameborder="0"></iframe>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    <span class="toggle-sidebar"></span></div>
+  </div>
+  <p id="logos">
+  Ils nous font confiance&nbsp;:
+  Kelkoo, MisterGoodDeal, PriceMinister, Blablacar / Comuto, Sarenza, 
+Voyages-SNCF, LeMonde.fr, Fnac DIRECT, 20minutes, Orange, l’OCDE, Cisco,
+ Alcatel-Lucent, Dassault Systèmes, EADS, Atos, Lagardère Interactive, 
+Lesieur, L’Occitane en Provence, Météo France, 4D, Securitas, Digitas, 
+Vivaki, Fullsix, Ekino, TBWA \ Paris, Valtech, Is Cool Entertainment, 
+Open Wide…
+</p>
+
+  <footer role="contentinfo"><p>
+  Copyright © 2010–2016 Christophe Porteneuve &amp; Delicious Insights •
+  <span class="credit">Propulsé par l’extraordinaire <a href="http://octopress.org/">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'gitattitude';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.git-attitude.fr/2014/12/31/git-submodules/';
+        var disqus_url = 'http://www.git-attitude.fr/2014/12/31/git-submodules/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div class=" fb_reset" id="fb-root"><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/xd_arbiter.html" style="border: medium none;" tabindex="-1" title="Facebook Cross Domain Communication Frame" aria-hidden="true" id="fb_xdm_frame_http" scrolling="no" allowfullscreen="true" allowtransparency="true" name="fb_xdm_frame_http" frameborder="0"></iframe><iframe src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/xd_arbiter_002.html" style="border: medium none;" tabindex="-1" title="Facebook Cross Domain Communication Frame" aria-hidden="true" id="fb_xdm_frame_https" scrolling="no" allowfullscreen="true" allowtransparency="true" name="fb_xdm_frame_https" frameborder="0"></iframe></div></div><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/ping.html" style="display: none;" scrolling="no" allowfullscreen="true" allowtransparency="true" name="f2d6f1e34a67408" frameborder="0"></iframe></div></div></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/fr_FR/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    window.___gcfg = { lang: 'fr-FR' };
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+<script>!function(d,s,id){var 
+js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+
+
+
+
+
+
+<iframe tabindex="-1" style="width: 1px; height: 1px; position: absolute; top: -100px;" src="Comprendre%20et%20ma%C3%AEtriser%20les%20submodules%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0:%20formations%20Git%20qualitatives%20et%20sympathiques_fichiers/postmessageRelay.html" id="oauth2relay404703683" name="oauth2relay404703683"></iframe><iframe style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: medium none;" allowfullscreen="true" allowtransparency="true" scrolling="no" id="rufous-sandbox" frameborder="0"></iframe></body></html>

@@ -160,6 +160,7 @@ ErrorGlobalVariableUpdater1=Invalid JSON format '%s'
 ErrorGlobalVariableUpdater2=Missing parameter '%s'
 ErrorGlobalVariableUpdater3=The requested data was not found in result
 ErrorGlobalVariableUpdater4=SOAP client failed with error '%s'
+ErrorTryTosellOnNegativeStock=Error, trying to sell product % on negative stock when not allowed by option
 ErrorGlobalVariableUpdater5=No global variable selected
 ErrorFieldMustBeANumeric=Field <b>%s</b> must be a numeric value
 ErrorMandatoryParametersNotProvided=Mandatory parameter(s) not provided

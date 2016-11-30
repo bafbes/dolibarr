@@ -28,6 +28,19 @@ global $user;
 $langs = $GLOBALS['langs'];
 $linkedObjectBlock = $GLOBALS['linkedObjectBlock'];
 
+$langs->load("expensereports");
+echo '<br>';
+print_titre($langs->trans("RelatedExpenseReports"));
+?>
+<table class="noborder allwidth">
+<tr class="liste_titre">
+	<td><?php echo $langs->trans("Ref"); ?></td>
+	<td align="center"><?php echo $langs->trans("Date"); ?></td>
+	<td align="right"><?php echo $langs->trans("AmountHTShort"); ?></td>
+	<td align="right"><?php echo $langs->trans("Status"); ?></td>
+	<td></td>
+</tr>
+<?php
 $var=true;
 $total=0;
 foreach($linkedObjectBlock as $key => $objectlink)
@@ -50,5 +63,15 @@ foreach($linkedObjectBlock as $key => $objectlink)
 <?php
 }
 ?>
+<tr class="liste_total">
+	<td align="left" colspan="3"><?php echo $langs->trans("TotalHT"); ?></td>
+	<td align="right"><?php
+		if ($user->rights->expensereport->lire) {
+			echo price($total);
+		} ?></td>
+	<td></td>
+	<td></td>
+</tr>
+</table>
 
 <!-- END PHP TEMPLATE -->

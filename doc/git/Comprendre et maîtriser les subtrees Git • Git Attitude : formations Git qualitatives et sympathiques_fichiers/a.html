@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html lang="en" dir="ltr" class="ie8"><![endif]-->
+<!--[if IE 9]><html lang="en" dir="ltr" class="ie9"><![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="js no-touch localstorage sessionstorage contenteditable use-opacity-transitions" dir="ltr" lang="en"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Disqus Comments</title>
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    
+    
+    <style>
+        html {
+            overflow: hidden;
+        }
+
+        
+    </style>
+
+<link href="a_data/lounge.css" rel="stylesheet"><script src="a_data/config.js" data-requiremodule="remote/config" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="a_data/common.js" data-requiremodule="common.bundle" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="a_data/lounge.js" data-requiremodule="lounge.bundle" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><style id="css_1460368360955"></style><!-- base href="http://disqus.com/embed/comments/?base=default&version=d074862f091cd9585b295f3979a4eb15&f=gitattitude&t_i=http%3A%2F%2Fwww.git-attitude.fr%2F2015%2F01%2F30%2Fgit-subtrees%2F&t_u=http%3A%2F%2Fwww.git-attitude.fr%2F2015%2F01%2F30%2Fgit-subtrees%2F&t_d=Comprendre%20et%20ma%C3%AEtriser%20les%20subtrees%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0%3A%20formations%20Git%20qualitatives%20et%20sympathiques&t_t=Comprendre%20et%20ma%C3%AEtriser%20les%20subtrees%20Git%20%E2%80%A2%20Git%20Attitude%C2%A0%3A%20formations%20Git%20qualitatives%20et%20sympathiques&s_o=default" --><link href="a_data/discovery.css" rel="stylesheet"><script src="a_data/ga.js" data-requiremodule="ga" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="a_data/discovery.js" data-requiremodule="discovery/main" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script></head>
+<body class="serif">
+    
+
+    
+    <!--[if lt IE 10]><p style="color: #fff; background-color: #f05f70; padding: 10px; margin-top: 20px;">
+        You're using a browser that Disqus plans to stop supporting soon. For more information, visit our list of 
+        <a href="https://help.disqus.com/customer/portal/articles/466228-which-browsers-does-disqus-work-with-" style="color: #fff; text-decoration: underline;">supported browsers</a>
+        and consider upgrading.
+    </p><![endif]-->
+    <div id="error" style="display:none; text-align: center">
+        <p>We were unable to load Disqus. If you are a moderator please see our <a href="https://docs.disqus.com/help/83/"> troubleshooting guide</a>. </p>
+    </div>
+
+    
+    <script type="text/json" id="disqus-forumData">{"session":{"canModerate":false,"audienceSyncVerified":false,"mustVerify":false,"canReply":true,"mustVerifyEmail":false},"features":{},"forum":{"category":null,"description":"","founder":"29957304","twitterName":"","url":"http://www.git-attitude.fr/","raw_description":"","guidelines":null,"favicon":{"permalink":"http://disqus.com/api/forums/favicons/gitattitude.jpg","cache":"//a.disquscdn.com/1457379538/images/favicon-default.png"},"raw_guidelines":null,"language":"en","daysThreadAlive":0,"avatar":{"small":{"permalink":"http://disqus.com/api/forums/avatars/gitattitude.jpg?size=32","cache":"//a.disquscdn.com/1457379538/images/noavatar32.png"},"large":{"permalink":"http://disqus.com/api/forums/avatars/gitattitude.jpg?size=92","cache":"//a.disquscdn.com/1457379538/images/noavatar92.png"}},"channel":null,"daysAlive":0,"pk":"1726488","signedUrl":"http://disq.us/?url=http%3A%2F%2Fwww.git-attitude.fr%2F&key=3bfdrujkG_Q5iOeBZT-Syg","settings":{"supportLevel":0,"adsDRNativeEnabled":false,"disable3rdPartyTrackers":false,"adsVideoEnabled":false,"adsProductVideoEnabled":false,"adsPositionTopEnabled":false,"ssoRequired":false,"linkAffiliationEnabled":true,"adsProductLinksThumbnailsEnabled":false,"adsProductStoriesEnabled":false,"organicDiscoveryEnabled":true,"allowMedia":true,"discoveryMax":false,"discoveryLocked":false,"moderatorText":"","adsEnabled":false,"allowAnonPost":true,"hasCustomAvatar":false,"adultContent":false,"promotedDiscoveryEnabled":false,"allowAnonVotes":false,"mustVerify":false,"colorScheme":"auto","adsSettingsLocked":false,"mustVerifyEmail":false,"audienceSyncEnabled":false,"typeface":"auto","adsPositionBottomEnabled":false,"mediaembedEnabled":true,"adsProductLinksEnabled":false,"discoveryThumbnailsEnabled":false,"isVIP":false},"id":"gitattitude","createdAt":"2012-09-14T09:15:04.214291","name":"Git Attitude"}}</script>
+
+    
+    <script type="text/json" id="disqus-threadData">{"cursor":{"hasPrev":false,"prev":null,"total":5,"hasNext":false,"next":"1:0:0"},"code":0,"response":{"lastModified":1453199615,"posts":[{"forum":"gitattitude","parent":null,"isApproved":true,"author":{"username":"dadaxr","about":"","name":"damien huteau","disable3rdPartyTrackers":false,"isPowerContributor":false,"isAnonymous":false,"rep":1.2324929999999998,"profileUrl":"https://disqus.com/by/dadaxr/","url":"","reputation":1.2324929999999998,"location":"","isPrivate":false,"signedUrl":"","isPrimary":true,"joinedAt":"2015-08-04T14:23:47","id":"168102274","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/dadaxr.jpg","cache":"//a.disquscdn.com/uploads/users/16810/2274/avatar32.jpg?1459151835"},"isCustom":true,"permalink":"http://disqus.com/api/users/avatars/dadaxr.jpg","cache":"//a.disquscdn.com/uploads/users/16810/2274/avatar92.jpg?1459151835","large":{"permalink":"http://disqus.com/api/users/avatars/dadaxr.jpg","cache":"//a.disquscdn.com/uploads/users/16810/2274/avatar92.jpg?1459151835"}}},"media":[],"isDeleted":false,"isFlagged":false,"dislikes":0,"raw_message":"Merci pour cet article tr\u00e8s int\u00e9ressant.\nJuste pour signaler que les liens vers le projet ( http://tdd.github.io/git-stree/ ) sont mort, en attendant le projet est sur github : https://github.com/deliciousinsights/git-stree","createdAt":"2016-01-19T10:33:35","id":"2466094074","thread":"3469127804","depth":0,"numReports":0,"isDeletedByAuthor":false,"likes":0,"isEdited":false,"message":"\u003cp>Merci pour cet article tr\u00e8s int\u00e9ressant.\u003cbr>Juste pour signaler que les liens vers le projet ( \u003ca href=\"http://tdd.github.io/git-stree/\" rel=\"nofollow\">http://tdd.github.io/git-stree...\u003c/a> ) sont mort, en attendant le projet est sur github : \u003ca href=\"https://github.com/deliciousinsights/git-stree\" rel=\"nofollow\">https://github.com/deliciousin...\u003c/a>\u003c/p>","isSpam":false,"isHighlighted":false,"points":0},{"forum":"gitattitude","parent":null,"isApproved":true,"author":{"username":"christophelallement","about":"","name":"ouaibsky","disable3rdPartyTrackers":false,"isPowerContributor":false,"isAnonymous":false,"rep":1.2336,"profileUrl":"https://disqus.com/by/christophelallement/","url":"","reputation":1.2336,"location":"","isPrivate":false,"signedUrl":"","isPrimary":true,"joinedAt":"2015-05-28T10:28:48","id":"159395652","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/christophelallement.jpg","cache":"//a.disquscdn.com/1457379538/images/noavatar32.png"},"isCustom":false,"permalink":"http://disqus.com/api/users/avatars/christophelallement.jpg","cache":"//a.disquscdn.com/1457379538/images/noavatar92.png","large":{"permalink":"http://disqus.com/api/users/avatars/christophelallement.jpg","cache":"//a.disquscdn.com/1457379538/images/noavatar92.png"}}},"media":[],"isDeleted":false,"isFlagged":false,"dislikes":0,"raw_message":"Bonjour\n\n\nVraiment int\u00e9ressant, je ne connaissais pas les subtrees.\nUne subtilit\u00e9 que je ne suis pas sur de comprendre: Est-ce possible de faire un push sur le conteneur avec une ref remote ?\nJe comprends que oui mais dans ce cas que contient exactement le remote ?\nDu coup as-tu pu avancer sur le .gitstrees ?\nMerci pour cet article\nChristophe","createdAt":"2015-05-28T10:31:04","id":"2049390686","thread":"3469127804","depth":0,"numReports":0,"isDeletedByAuthor":false,"likes":0,"isEdited":false,"message":"\u003cp>Bonjour\u003c/p>\u003cp>Vraiment int\u00e9ressant, je ne connaissais pas les subtrees.\u003cbr>Une subtilit\u00e9 que je ne suis pas sur de comprendre: Est-ce possible de faire un push sur le conteneur avec une ref remote ?\u003cbr>Je comprends que oui mais dans ce cas que contient exactement le remote ?\u003cbr>Du coup as-tu pu avancer sur le .gitstrees ?\u003cbr>Merci pour cet article\u003cbr>Christophe\u003c/p>","isSpam":false,"isHighlighted":false,"points":0},{"forum":"gitattitude","parent":2049390686,"isApproved":true,"author":{"username":"porteneuve","about":"All-around web evangelist and developer, with a focus on JS/Node/CoffeeScript, Ruby/Rails, Git and more generally best-of-breed techs.\r\n\r\nBest-selling tech author, speaker and trainer.\r\n\r\nSuper-lucky husband to \u00c9lodie.","name":"Christophe Porteneuve","disable3rdPartyTrackers":false,"isPowerContributor":false,"isAnonymous":false,"rep":1.2928119999999999,"profileUrl":"https://disqus.com/by/porteneuve/","url":"","reputation":1.2928119999999999,"location":"Paris, France","isPrivate":false,"signedUrl":"","isPrimary":true,"joinedAt":"2012-08-02T12:13:01","id":"29957304","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/porteneuve.jpg","cache":"//a.disquscdn.com/uploads/users/2995/7304/avatar32.jpg?1456907574"},"isCustom":true,"permalink":"http://disqus.com/api/users/avatars/porteneuve.jpg","cache":"//a.disquscdn.com/uploads/users/2995/7304/avatar92.jpg?1456907574","large":{"permalink":"http://disqus.com/api/users/avatars/porteneuve.jpg","cache":"//a.disquscdn.com/uploads/users/2995/7304/avatar92.jpg?1456907574"}}},"media":[],"isDeleted":false,"isFlagged":false,"dislikes":0,"raw_message":"Salut Christophe,\n\nQu'entends-tu exactement par \"un push sur le conteneur avec une ref remote\" ?! Peux-tu m'illustrer \u00e7a dans un Gist avec une s\u00e9rie de commandes, ou un truc du genre ?","createdAt":"2015-05-28T11:15:36","id":"2049426844","thread":"3469127804","depth":1,"numReports":0,"isDeletedByAuthor":false,"likes":0,"isEdited":false,"message":"\u003cp>Salut Christophe,\u003c/p>\u003cp>Qu'entends-tu exactement par \"un push sur le conteneur avec une ref remote\" ?! Peux-tu m'illustrer \u00e7a dans un Gist avec une s\u00e9rie de commandes, ou un truc du genre ?\u003c/p>","isSpam":false,"isHighlighted":false,"points":0},{"forum":"gitattitude","parent":2049426844,"isApproved":true,"author":{"username":"christophelallement","about":"","name":"ouaibsky","disable3rdPartyTrackers":false,"isPowerContributor":false,"isAnonymous":false,"rep":1.2336,"profileUrl":"https://disqus.com/by/christophelallement/","url":"","reputation":1.2336,"location":"","isPrivate":false,"signedUrl":"","isPrimary":true,"joinedAt":"2015-05-28T10:28:48","id":"159395652","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/christophelallement.jpg","cache":"//a.disquscdn.com/1457379538/images/noavatar32.png"},"isCustom":false,"permalink":"http://disqus.com/api/users/avatars/christophelallement.jpg","cache":"//a.disquscdn.com/1457379538/images/noavatar92.png","large":{"permalink":"http://disqus.com/api/users/avatars/christophelallement.jpg","cache":"//a.disquscdn.com/1457379538/images/noavatar92.png"}}},"media":[],"isDeleted":false,"isFlagged":false,"dislikes":0,"raw_message":"Je travaille en entreprise et je voudrais partager avec les autres membres de l'\u00e9quipe (WW) un repo avec des subtrees. Donc partager un repo remote contenant les subtrees.\nJ'ai cru comprendre que que c'\u00e9tait l'objectif du .gitrees.\nJe me demande si ce n'est pas plus simple de partager un script qui effectue les git stree ...","createdAt":"2015-05-28T15:26:31","id":"2049753981","thread":"3469127804","depth":2,"numReports":0,"isDeletedByAuthor":false,"likes":0,"isEdited":false,"message":"\u003cp>Je travaille en entreprise et je voudrais partager avec les autres membres de l'\u00e9quipe (WW) un repo avec des subtrees. Donc partager un repo remote contenant les subtrees.\u003cbr>J'ai cru comprendre que que c'\u00e9tait l'objectif du .gitrees.\u003cbr>Je me demande si ce n'est pas plus simple de partager un script qui effectue les git stree ...\u003c/p>","isSpam":false,"isHighlighted":false,"points":0},{"forum":"gitattitude","parent":2049753981,"isApproved":true,"author":{"username":"porteneuve","about":"All-around web evangelist and developer, with a focus on JS/Node/CoffeeScript, Ruby/Rails, Git and more generally best-of-breed techs.\r\n\r\nBest-selling tech author, speaker and trainer.\r\n\r\nSuper-lucky husband to \u00c9lodie.","name":"Christophe Porteneuve","disable3rdPartyTrackers":false,"isPowerContributor":false,"isAnonymous":false,"rep":1.2928119999999999,"profileUrl":"https://disqus.com/by/porteneuve/","url":"","reputation":1.2928119999999999,"location":"Paris, France","isPrivate":false,"signedUrl":"","isPrimary":true,"joinedAt":"2012-08-02T12:13:01","id":"29957304","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/porteneuve.jpg","cache":"//a.disquscdn.com/uploads/users/2995/7304/avatar32.jpg?1456907574"},"isCustom":true,"permalink":"http://disqus.com/api/users/avatars/porteneuve.jpg","cache":"//a.disquscdn.com/uploads/users/2995/7304/avatar92.jpg?1456907574","large":{"permalink":"http://disqus.com/api/users/avatars/porteneuve.jpg","cache":"//a.disquscdn.com/uploads/users/2995/7304/avatar92.jpg?1456907574"}}},"media":[],"isDeleted":false,"isFlagged":false,"dislikes":0,"raw_message":"Alors tout d\u00e9pend si \"les autres\" doivent aussi faire des manips de synchro sur ces subtrees (r\u00e9cup de leur upstream, backport vers leur upstream) ou non.\n\n\nDans le cas o\u00f9 ils ne font pas de telles op\u00e9rations de maintenance, tu n'as **rien de sp\u00e9cial \u00e0 faire** : ton d\u00e9p\u00f4t principal reste un seul et unique d\u00e9p\u00f4t.\n\n\nDans le cas o\u00f9 il y a en effet ce besoin, ils peuvent pour le moment faire le m\u00eame git stree add que toi, une seule fois, apr\u00e8s avoir clon\u00e9 le d\u00e9p\u00f4t (ou en cours d'utilisation de ce d\u00e9p\u00f4t).  \u00c0 terme, le \u003ccode>.gitstrees\u003c/code> automatisera \u00e7a, en effet.","createdAt":"2015-05-28T22:48:36","id":"2050633614","thread":"3469127804","depth":3,"numReports":0,"isDeletedByAuthor":false,"likes":0,"isEdited":false,"message":"\u003cp>Alors tout d\u00e9pend si \"les autres\" doivent aussi faire des manips de synchro sur ces subtrees (r\u00e9cup de leur upstream, backport vers leur upstream) ou non.\u003c/p>\u003cp>Dans le cas o\u00f9 ils ne font pas de telles op\u00e9rations de maintenance, tu n'as **rien de sp\u00e9cial \u00e0 faire** : ton d\u00e9p\u00f4t principal reste un seul et unique d\u00e9p\u00f4t.\u003c/p>\u003cp>Dans le cas o\u00f9 il y a en effet ce besoin, ils peuvent pour le moment faire le m\u00eame git stree add que toi, une seule fois, apr\u00e8s avoir clon\u00e9 le d\u00e9p\u00f4t (ou en cours d'utilisation de ce d\u00e9p\u00f4t).  \u00c0 terme, le \u003ccode>.gitstrees\u003c/code> automatisera \u00e7a, en effet.\u003c/p>","isSpam":false,"isHighlighted":false,"points":0}],"thread":{"feed":"https://gitattitude.disqus.com/comprendre_et_maitriser_les_subtrees_git_git_attitude_formations_git_qualitatives_et_sympathiques_17/latest.rss","identifiers":["http://www.git-attitude.fr/2015/01/30/git-subtrees/"],"dislikes":0,"likes":0,"message":"","id":"3469127804","isDeleted":false,"category":"1757781","author":"29957304","userScore":0,"userSubscription":false,"isSpam":false,"signedLink":"http://disq.us/?url=http%3A%2F%2Fwww.git-attitude.fr%2F2015%2F01%2F30%2Fgit-subtrees%2F&key=URyG7JXVUscWb2m5pHGv9A","createdAt":"2015-01-30T10:14:26","hasStreaming":false,"raw_message":"","isClosed":false,"link":"http://www.git-attitude.fr/2015/01/30/git-subtrees/","slug":"comprendre_et_maitriser_les_subtrees_git_git_attitude_formations_git_qualitatives_et_sympathiques_17","forum":"gitattitude","clean_title":"Comprendre et ma\u00eetriser les subtrees Git \u2022 Git Attitude\u00a0: formations Git qualitatives et sympathiques","posts":5,"moderators":[29957304],"title":"Comprendre et ma\u00eetriser les subtrees Git \u2022 Git Attitude\u00a0: formations Git qualitatives et sympathiques","highlightedPost":null}},"order":"popular"}</script>
+
+    
+
+    <div id="fixed-content"></div>
+
+
+    
+        
+        <!--[if lte IE 8]>
+<script src="//a.disquscdn.com/1457379538/build/vendor/ie8.js"></script>
+<![endif]-->
+<!--[if IE 9]>
+<script src="//a.disquscdn.com/1457379538/build/vendor/ie9.js"></script>
+<![endif]-->
+
+        
+<script type="text/json" id="disqus-urls">{
+    "root":"//disqus.com",
+    "next":"//a.disquscdn.com/next/current/embed"
+}</script>
+
+        <script src="a_data/lounge_002.js" id="bootstrap-script" data-app="lounge" async=""></script>
+    
+
+
+<div id="layout" data-tracking-area="layout">
+
+<div id="onboard" data-tracking-area="onboard"></div>
+
+<div style="display: none;" id="highlighted-post" data-tracking-area="highlighted" class="highlighted-post"></div>
+
+<div id="global-alert"></div>
+
+<header id="main-nav" data-tracking-area="main-nav">
+<nav class="nav nav-primary">
+<ul>
+<li class="tab-conversation active" data-role="post-count"><a class="publisher-nav-color">
+<span class="comment-count">
+5 comments
+</span>
+
+<span class="comment-count-placeholder">
+Comments
+</span>
+</a>
+</li>
+<li class="tab-community">
+<a href="https://disqus.com/home/forums/gitattitude/" class="publisher-nav-color" data-action="community-sidebar" data-forum="gitattitude" id="community-tab">
+<span class="community-name">
+<strong>Git Attitude</strong>
+
+</span>
+
+<strong class="community-name-placeholder">Community</strong>
+</a>
+</li>
+<li class="dropdown user-menu" data-role="logout"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+<span class="dropdown-toggle-wrapper">
+
+<span>
+Login
+</span>
+
+</span> <span class="caret"></span>
+</a>
+<ul class="dropdown-menu">
+
+
+<li>
+<a href="#" data-action="auth:disqus">Disqus</a>
+</li>
+<li>
+<a href="#" data-action="auth:facebook">Facebook</a>
+</li>
+<li>
+<a href="#" data-action="auth:twitter">Twitter</a>
+</li>
+<li>
+<a href="#" data-action="auth:google">Google</a>
+</li>
+
+
+
+</ul>
+</li>
+<li class="notification-menu unread" data-role="notification-menu"><a href="https://disqus.com/home/inbox/" class="notification-container" data-action="home" data-home-path="home/inbox/">
+<span class="notification-icon icon-comment" aria-hidden=""></span>
+<span class="notification-count" data-role="notification-count">1</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+
+<section id="conversation" data-role="main" data-tracking-area="main">
+<div class="nav nav-secondary" data-tracking-area="secondary-nav">
+<ul>
+<li id="recommend-button" class="recommend dropdown">
+<div class="thread-likes"><a href="#" data-action="recommend" title="Recommend this discussion" class="dropdown-toggle ">
+<span class="icon-heart"></span>
+<span class="label label-default">Recommend</span>
+<span class="label label-recommended">Recommended</span>
+</a>
+<ul class="dropdown-menu coachmark">
+<li>
+<h2>Discussion Recommended!</h2>
+<p>Recommending means this is a discussion worth sharing. It gets shared
+ to your followers' Disqus feeds, and gives the creator kudos!</p>
+<a href="http://disqus.com/home/?utm_source=disqus_embed&amp;utm_content=recommend_btn" class="btn btn-primary" target="_blank">
+ Find More Discussions 
+</a>
+</li>
+</ul>
+</div></li>
+<li id="thread-share-menu" class="dropdown share-menu hidden-sm"><a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Share">
+<span class="icon-export"></span>
+<span class="label">Share</span>
+</a>
+<ul class="share-menu dropdown-menu">
+<li class="share">Share this discussion on
+<ul>
+<li class="twitter">
+<a data-action="share:twitter" href="#">Twitter</a>
+</li>
+<li class="facebook">
+<a data-action="share:facebook" href="#">Facebook</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li data-role="post-sort" class="dropdown sorting pull-right">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+Sort by Best
+
+
+<span class="caret"></span>
+</a>
+<ul class="dropdown-menu pull-right">
+<li class="selected">
+<a href="#" data-action="sort" data-sort="popular">Best<i aria-hidden="true" class="icon-checkmark"></i></a>
+</li>
+
+<li>
+<a href="#" data-action="sort" data-sort="desc">Newest<i aria-hidden="true" class="icon-checkmark"></i></a>
+</li>
+
+<li>
+<a href="#" data-action="sort" data-sort="asc">Oldest<i aria-hidden="true" class="icon-checkmark"></i></a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<div id="posts">
+<div id="form"><form class="reply">
+<div class="postbox">
+<div role="alert"></div>
+<div class="avatar">
+<span class="user">
+<img data-role="user-avatar" src="a_data/noavatar92.png" alt="Avatar">
+</span>
+</div>
+
+<div class="textarea-wrapper" data-role="textarea" dir="auto"><div><span class="placeholder">Join the discussion…</span><div aria-label="Join the discussion…" style="overflow: auto; max-height: 350px;" data-role="editable" aria-multiline="true" role="textbox" tabindex="0" class="textarea" contenteditable="true"><p><br></p></div><div style="display: none;"><ul class="suggestions">
+<li class="header">
+<h5>in this conversation</h5>
+</li>
+</ul>
+</div></div>
+<div data-role="drag-drop-placeholder" class="media-drag-hover" style="display: none">
+<div class="drag-text">
+⬇ Drag and drop your images here to upload them.
+</div>
+</div>
+<div class="media-preview empty" data-role="media-preview"><ul data-role="media-legacy-list"></ul>
+<ul data-role="media-progress-list"></ul>
+<ul data-role="media-rich-list"></ul>
+<div class="media-expanded empty" data-role="media-preview-expanded">
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-role="media-preview-expanded-image" alt="Media preview placeholder">
+</div>
+</div>
+<div class="edit-alert" role="postbox-alert"></div>
+<div class="post-actions">
+<ul class="wysiwyg">
+<li data-role="media-uploader"><a href="#" tabindex="-1" data-action="attach" class="attach" title="Upload Images"><span>Attach</span></a>
+<input data-role="media-upload" tabindex="-1" accept="image/*" type="file">
+</li>
+</ul>
+</div>
+</div>
+
+<div data-role="login-form"><div><section class="auth-section logged-out">
+<div class="connect">
+<h6>Log in with</h6>
+<ul data-role="login-menu" class="services login-buttons">
+
+
+<li class="auth-disqus">
+<button type="button" data-action="auth:disqus" title="Disqus"><i class="icon-disqus"></i></button>
+</li>
+<li class="auth-facebook">
+<button type="button" data-action="auth:facebook" title="Facebook"><i class="icon-facebook-circle"></i></button>
+</li>
+<li class="auth-twitter">
+<button type="button" data-action="auth:twitter" title="Twitter"><i class="icon-twitter-circle"></i></button>
+</li>
+<li class="auth-google">
+<button type="button" data-action="auth:google" title="Google"><i class="icon-google-plus-circle"></i></button>
+</li>
+</ul>
+</div>
+<div class="guest">
+<h6 class="guest-form-title">
+<span class="register-text"> or sign up with Disqus </span>
+<span class="guest-text"> or pick a name </span>
+</h6>
+
+<div class="what-is-disqus help-icon">
+<div id="rules" class="tooltip show">
+<h3>Disqus is a discussion network</h3>
+<ul>
+<li><span>Disqus never moderates or censors. The rules on this community are its own.</span></li>
+<li><span>Your email is safe with us. It's only used for moderation and optional notifications.</span></li>
+<li><span>Don't be a jerk or do anything illegal. Everything is easier that way.</span></li>
+</ul>
+<p class="clearfix"><a href="https://docs.disqus.com/kb/terms-and-policies/" class="btn btn-small" target="_blank">Read full terms and conditions</a></p>
+</div>
+</div>
+
+<p class="input-wrapper">
+<input dir="auto" placeholder="Name" name="display_name" id="view40_display_name" maxlength="30" type="text">
+</p>
+
+<div class="guest-details " data-role="guest-details">
+<p class="input-wrapper">
+<input dir="auto" placeholder="Email" name="email" id="view40_email" type="email">
+</p>
+
+<p class="input-wrapper">
+<input dir="auto" class="register-text" placeholder="Password" name="password" id="view40_password" type="password">
+</p>
+
+<div class="acceptance-wrapper register-text">
+By signing up, you agree to the Disqus <a target="_blank" href="https://help.disqus.com/customer/portal/articles/1753105-basic-rules-for-disqus-powered-profiles-and-discussions">Basic Rules</a>, <a target="_blank" href="https://help.disqus.com/customer/portal/articles/466260-terms-of-service">Terms of Service</a>, and <a target="_blank" href="https://help.disqus.com/customer/portal/articles/466259-privacy-policy">Privacy Policy</a>.
+</div>
+<div class="acceptance-wrapper guest-text">
+By posting, you agree to the Disqus <a target="_blank" href="https://help.disqus.com/customer/portal/articles/1753105-basic-rules-for-disqus-powered-profiles-and-discussions">Basic Rules</a>, <a target="_blank" href="https://help.disqus.com/customer/portal/articles/466260-terms-of-service">Terms of Service</a>, and <a target="_blank" href="https://help.disqus.com/customer/portal/articles/466259-privacy-policy">Privacy Policy</a>.
+</div>
+
+<div class="guest-checkbox">
+<label>
+<input name="author-guest" type="checkbox">
+I'd rather post as a guest
+</label>
+</div>
+
+<div class="proceed" data-role="submit-btn-container">
+<button type="submit" class="btn submit" aria-label="Post"><span class="icon-proceed"></span><div class="spinner"></div></button>
+<button type="submit" class="btn next" aria-label="Next"><span class="icon-proceed"></span><div class="spinner"></div></button>
+</div>
+</div>
+</div>
+</section>
+
+</div></div>
+</div>
+</form></div>
+
+<button class="alert realtime" style="display: none" data-role="realtime-notification">
+</button>
+
+<div id="no-posts" style="display:none"></div>
+
+<ul id="post-list" class="post-list"><li id="post-2466094074" class="post"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/by/dadaxr/" class="user" data-action="profile" data-username="dadaxr">
+<img data-role="user-avatar" data-user="168102274" src="a_data/noavatar92_002.png" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/by/dadaxr/" data-action="profile" data-username="dadaxr" data-role="username">damien huteau</a></span>
+
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2466094074" data-role="relative-time" class="time-ago" title="Tuesday, January 19, 2016 11:33 AM">
+3 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>Merci pour cet article très intéressant.<br>Juste pour signaler que les liens vers le projet ( <a href="http://tdd.github.io/git-stree/" rel="nofollow">http://tdd.github.io/git-stree...</a> ) sont mort, en attendant le projet est sur github : <a href="https://github.com/deliciousinsights/git-stree" rel="nofollow">https://github.com/deliciousin...</a></p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" data-action="downvote" title="Vote down">
+
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2466094074">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:2466094074">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"></ul>
+
+</li><li id="post-2049390686" class="post"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/by/christophelallement/" class="user" data-action="profile" data-username="christophelallement">
+<img data-role="user-avatar" data-user="159395652" src="a_data/noavatar92_002.png" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/by/christophelallement/" data-action="profile" data-username="christophelallement" data-role="username">ouaibsky</a></span>
+
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2049390686" data-role="relative-time" class="time-ago" title="Thursday, May 28, 2015 11:31 AM">
+10 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>Bonjour</p><p>Vraiment intéressant, je ne connaissais pas les subtrees.<br>Une subtilité que je ne suis pas sur de comprendre: Est-ce possible de faire un push sur le conteneur avec une ref remote ?<br>Je comprends que oui mais dans ce cas que contient exactement le remote ?<br>Du coup as-tu pu avancer sur le .gitstrees ?<br>Merci pour cet article<br>Christophe</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" data-action="downvote" title="Vote down">
+
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2049390686">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:2049390686">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"><li id="post-2049426844" class="post"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/by/porteneuve/" class="user" data-action="profile" data-username="porteneuve">
+<img data-role="user-avatar" data-user="29957304" src="a_data/noavatar92_002.png" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/by/porteneuve/" data-action="profile" data-username="porteneuve" data-role="username">Christophe Porteneuve</a></span>
+<span class="badge moderator">Mod</span>
+
+<span><a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2049390686" class="parent-link" data-role="parent-link"><i aria-hidden="true" class="icon-forward" title="in reply to"></i> ouaibsky</a></span>
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2049426844" data-role="relative-time" class="time-ago" title="Thursday, May 28, 2015 12:15 PM">
+10 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>Salut Christophe,</p><p>Qu'entends-tu exactement par "un push sur le 
+conteneur avec une ref remote" ?! Peux-tu m'illustrer ça dans un Gist 
+avec une série de commandes, ou un truc du genre ?</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" data-action="downvote" title="Vote down">
+
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2049426844">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:2049426844">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"><li id="post-2049753981" class="post"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/by/christophelallement/" class="user" data-action="profile" data-username="christophelallement">
+<img data-role="user-avatar" data-user="159395652" src="a_data/noavatar92_002.png" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/by/christophelallement/" data-action="profile" data-username="christophelallement" data-role="username">ouaibsky</a></span>
+
+<span><a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2049426844" class="parent-link" data-role="parent-link"><i aria-hidden="true" class="icon-forward" title="in reply to"></i> Christophe Porteneuve</a></span>
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2049753981" data-role="relative-time" class="time-ago" title="Thursday, May 28, 2015 4:26 PM">
+10 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>Je travaille en entreprise et je voudrais partager avec les autres 
+membres de l'équipe (WW) un repo avec des subtrees. Donc partager un 
+repo remote contenant les subtrees.<br>J'ai cru comprendre que que c'était l'objectif du .gitrees.<br>Je me demande si ce n'est pas plus simple de partager un script qui effectue les git stree ...</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" data-action="downvote" title="Vote down">
+
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2049753981">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:2049753981">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"><li id="post-2050633614" class="post"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/by/porteneuve/" class="user" data-action="profile" data-username="porteneuve">
+<img data-role="user-avatar" data-user="29957304" src="a_data/noavatar92_002.png" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/by/porteneuve/" data-action="profile" data-username="porteneuve" data-role="username">Christophe Porteneuve</a></span>
+<span class="badge moderator">Mod</span>
+
+<span><a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2049753981" class="parent-link" data-role="parent-link"><i aria-hidden="true" class="icon-forward" title="in reply to"></i> ouaibsky</a></span>
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2050633614" data-role="relative-time" class="time-ago" title="Thursday, May 28, 2015 11:48 PM">
+10 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>Alors tout dépend si "les autres" doivent aussi faire des manips de 
+synchro sur ces subtrees (récup de leur upstream, backport vers leur 
+upstream) ou non.</p><p>Dans le cas où ils ne font pas de telles 
+opérations de maintenance, tu n'as **rien de spécial à faire** : ton 
+dépôt principal reste un seul et unique dépôt.</p><p>Dans le cas où il y
+ a en effet ce besoin, ils peuvent pour le moment faire le même git 
+stree add que toi, une seule fois, après avoir cloné le dépôt (ou en 
+cours d'utilisation de ce dépôt).  À terme, le <code>.gitstrees</code> automatisera ça, en effet.</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" data-action="downvote" title="Vote down">
+
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://www.git-attitude.fr/2015/01/30/git-subtrees/#comment-2050633614">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:2050633614">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"></ul>
+
+</li></ul>
+
+</li></ul>
+
+</li></ul>
+
+</li></ul>
+
+<div class="load-more" data-role="more" style="display:none">
+<a href="#" data-action="more-posts" class="btn">Load more comments</a>
+</div>
+</div>
+
+</section>
+
+<div id="placement-bottom" data-tracking-area="discovery-south"><div style="height: auto; visibility: visible;" class="post-list"><div style="display: block; width: 100%;"><div id="discovery-main-c158" class="discovery-main">
+
+<section id="col-organic-c176" class="col-organic">
+<header class="discovery-col-header">
+<h2>Also on <strong>Git Attitude</strong>
+</h2>
+</header>
+<ul class="discovery-posts" data-role="discovery-posts"><li class="discovery-post post-0" id="discovery-link-organic-3070160793">
+<a href="http://disq.us/url?url=http%3A%2F%2Fwww.git-attitude.fr%2F2014%2F09%2F30%2Fconferences-automne-2014%2F%3AGjxI1HcnVIXOiVmdrmbVnjVXbjA&amp;imp=a69bkmvjq4us&amp;prev_imp=a5orbcuqpoud&amp;forum_id=1726488&amp;forum=gitattitude&amp;thread_id=3469127804&amp;thread=3070160793&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=3070160793" class="publisher-anchor-color">
+
+<header class="discovery-post-header">
+<h3 title="Retrouvez-nous en conférences&nbsp;! • Git Attitude&nbsp;: formations Git qualitatives et sympathiques">
+<span data-role="discovery-thread-title" class="title line-truncate" data-line-truncate="2">
+Retrouvez-nous en conférences&nbsp;! • Git Attitude&nbsp;: formations Git qualitatives et sympathiques
+</span>
+</h3>
+
+<ul class="meta">
+<li class="comments">
+3 comments
+</li>
+<li class="time">2 years ago</li>
+</ul>
+</header>
+
+</a><a href="http://disq.us/url?url=http%3A%2F%2Fwww.git-attitude.fr%2F2014%2F09%2F30%2Fconferences-automne-2014%2F%3AGjxI1HcnVIXOiVmdrmbVnjVXbjA&amp;imp=a69bkmvjq4us&amp;prev_imp=a5orbcuqpoud&amp;forum_id=1726488&amp;forum=gitattitude&amp;thread_id=3469127804&amp;thread=3070160793&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=3070160793" class="top-comment" data-role="discovery-top-comment">
+<img data-src="//a.disquscdn.com/uploads/users/11260/1699/avatar92.jpg?1433339544" alt="Avatar" data-role="discovery-avatar">
+<p><span class="user" data-role="discovery-top-comment-author">Cot</span> — <span data-role="discovery-top-comment-snippet" class="line-truncate" data-line-truncate="3">Tenez nous au courant !</span></p>
+</a>
+
+</li>
+<li class="discovery-post post-1" id="discovery-link-organic-4414181391">
+<a href="http://disq.us/url?url=http%3A%2F%2Fwww.git-attitude.fr%2F2015%2F12%2F18%2Flearning-github%2F%3ACiLGNwq8dQoXy3HbbFxDU00pAM0&amp;imp=a69bkmvjq4us&amp;prev_imp=a5orbcuqpoud&amp;forum_id=1726488&amp;forum=gitattitude&amp;thread_id=3469127804&amp;thread=4414181391&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=4414181391" class="publisher-anchor-color">
+
+<header class="discovery-post-header">
+<h3 title="Notre cours vidéo GitHub est sorti&nbsp;! • Git Attitude&nbsp;: formations Git qualitatives et sympathiques">
+<span data-role="discovery-thread-title" class="title line-truncate" data-line-truncate="2">
+Notre cours vidéo GitHub est sorti&nbsp;! • Git Attitude&nbsp;: formations Git qualitatives et sympathiques
+</span>
+</h3>
+
+<ul class="meta">
+<li class="comments">
+3 comments
+</li>
+<li class="time">4 months ago</li>
+</ul>
+</header>
+
+</a><a href="http://disq.us/url?url=http%3A%2F%2Fwww.git-attitude.fr%2F2015%2F12%2F18%2Flearning-github%2F%3ACiLGNwq8dQoXy3HbbFxDU00pAM0&amp;imp=a69bkmvjq4us&amp;prev_imp=a5orbcuqpoud&amp;forum_id=1726488&amp;forum=gitattitude&amp;thread_id=3469127804&amp;thread=4414181391&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=4414181391" class="top-comment" data-role="discovery-top-comment">
+<img data-src="//a.disquscdn.com/uploads/users/2995/7304/avatar92.jpg?1456907574" alt="Avatar" data-role="discovery-avatar">
+<p><span class="user" data-role="discovery-top-comment-author">Christophe Porteneuve</span> — <span data-role="discovery-top-comment-snippet" class="line-truncate" data-line-truncate="3"> Si j'étais (à peine) mauvaise langue je te dirais : « ben y' a pas besoin : tu utilises les vidéos pour GitHub, c'est à peu près pareil et quand …</span></p>
+</a>
+
+</li>
+<li class="discovery-post post-2" id="discovery-link-organic-1875551869">
+<a href="http://disq.us/url?url=http%3A%2F%2Fwww.git-attitude.fr%2F2013%2F10%2F19%2Fdotrb%2F%3AKLzlacFTA5RdIV6ekGFjQ-gQsDQ&amp;imp=a69bkmvjq4us&amp;prev_imp=a5orbcuqpoud&amp;forum_id=1726488&amp;forum=gitattitude&amp;thread_id=3469127804&amp;thread=1875551869&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=1875551869" class="publisher-anchor-color">
+
+<header class="discovery-post-header">
+<h3 title="My day at dotRB.eu 2013 • Git Attitude&nbsp;: formations Git qualitatives et sympathiques">
+<span data-role="discovery-thread-title" class="title line-truncate" data-line-truncate="2">
+My day at dotRB.eu 2013 • Git Attitude&nbsp;: formations Git qualitatives et sympathiques
+</span>
+</h3>
+
+<ul class="meta">
+<li class="comments">
+2 comments
+</li>
+<li class="time">2 years ago</li>
+</ul>
+</header>
+
+</a><a href="http://disq.us/url?url=http%3A%2F%2Fwww.git-attitude.fr%2F2013%2F10%2F19%2Fdotrb%2F%3AKLzlacFTA5RdIV6ekGFjQ-gQsDQ&amp;imp=a69bkmvjq4us&amp;prev_imp=a5orbcuqpoud&amp;forum_id=1726488&amp;forum=gitattitude&amp;thread_id=3469127804&amp;thread=1875551869&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=1875551869" class="top-comment" data-role="discovery-top-comment">
+<img data-src="//a.disquscdn.com/uploads/users/2995/7304/avatar92.jpg?1456907574" alt="Avatar" data-role="discovery-avatar">
+<p><span class="user" data-role="discovery-top-comment-author">Christophe Porteneuve</span> — <span data-role="discovery-top-comment-snippet" class="line-truncate" data-line-truncate="3">Thanks, man! I couldn't get that name anywhere and had missed it on-screen.</span></p>
+</a>
+
+</li>
+<li class="discovery-post post-3" id="discovery-link-organic-3362223824">
+<a href="http://disq.us/url?url=http%3A%2F%2Fwww.git-attitude.fr%2F2014%2F12%2F31%2Fgit-submodules%2F%3ABsgu7aA944Hdi5udgkLDk0_plEI&amp;imp=a69bkmvjq4us&amp;prev_imp=a5orbcuqpoud&amp;forum_id=1726488&amp;forum=gitattitude&amp;thread_id=3469127804&amp;thread=3362223824&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=3362223824" class="publisher-anchor-color">
+
+<header class="discovery-post-header">
+<h3 title="Comprendre et maîtriser les submodules Git • Git Attitude&nbsp;: formations Git qualitatives et sympathiques">
+<span data-role="discovery-thread-title" class="title line-truncate" data-line-truncate="2">  Comprendre et maîtriser les submodules Git • Git Attitude : formations Git qualitatives et …</span>
+</h3>
+
+<ul class="meta">
+<li class="comments">
+3 comments
+</li>
+<li class="time">a year ago</li>
+</ul>
+</header>
+
+</a><a href="http://disq.us/url?url=http%3A%2F%2Fwww.git-attitude.fr%2F2014%2F12%2F31%2Fgit-submodules%2F%3ABsgu7aA944Hdi5udgkLDk0_plEI&amp;imp=a69bkmvjq4us&amp;prev_imp=a5orbcuqpoud&amp;forum_id=1726488&amp;forum=gitattitude&amp;thread_id=3469127804&amp;thread=3362223824&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=3362223824" class="top-comment" data-role="discovery-top-comment">
+<img data-src="//a.disquscdn.com/1457379538/images/noavatar92.png" alt="Avatar" data-role="discovery-avatar">
+<p><span class="user" data-role="discovery-top-comment-author">Thomas</span> — <span data-role="discovery-top-comment-snippet" class="line-truncate" data-line-truncate="3"> Pour info, la version 2.7.0 de git (qui date du 4/01/2016) ajoute le paramètre de configuration "push.recurseSubmodules". Il est donc maintenant …</span></p>
+</a>
+
+</li>
+</ul>
+</section>
+
+</div>
+</div></div></div>
+
+<div id="footer" data-tracking-area="footer">
+<ul class="disqus-footer">
+<li class="logo disqus-footer__item"><a href="https://disqus.com/" rel="nofollow" title="Powered by Disqus">Powered by Disqus</a></li>
+<li id="thread-subscribe-button" class="email disqus-footer__item"> 
+<div class="default">
+<a href="#" rel="nofollow" data-action="subscribe" title="Subscribe and get email updates from this discussion"><i aria-hidden="true" class="icon icon-mail"></i><span class="clip">Subscribe</span> <i aria-hidden="true" class="icon icon-checkmark"></i></a>
+</div>
+<div class="form">
+<div class="input-wrapper"><input id="thread-subscribe-email" placeholder="yourname@email.com" type="email"></div>
+</div>
+</li>
+<li class="install disqus-footer__item">
+<a href="https://publishers.disqus.com/engage?utm_source=gitattitude&amp;utm_medium=Disqus-Footer" rel="nofollow" target="_blank">
+<i aria-hidden="true" class="icon icon-disqus"></i>
+<span class="clip hidden-sm">Add Disqus to your site</span>
+<span class="clip visible-sm hidden-xs">Add Disqus</span>
+<span class="clip visible-xs">Add</span>
+</a>
+</li>
+<li class="privacy disqus-footer__item">
+<a href="https://help.disqus.com/customer/portal/articles/1657951?utm_source=disqus&amp;utm_medium=embed-footer&amp;utm_content=privacy-btn" rel="nofollow" target="_blank">
+<i aria-hidden="true" class="icon icon-lock"></i>
+<span class="clip">Privacy</span>
+</a>
+</li>
+</ul>
+</div>
+</div></body></html>

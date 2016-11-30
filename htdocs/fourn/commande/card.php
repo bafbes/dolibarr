@@ -983,16 +983,13 @@ if (empty($reshook))
        			// If creation from another object of another module (Example: origin=propal, originid=1)
 				if (! empty($origin) && ! empty($originid))
 				{
-					if ($origin == 'order' || $origin == 'commande')
-					{
+					if ($origin == 'order' || $origin == 'commande') {
                         $element = $subelement = 'commande';
                     }
-                    else
-                    {
-						$element = 'supplier_proposal';
-						$subelement = 'supplier_proposal';
-					}
-
+                    else { 
+                        $element = 'comm/askpricesupplier';
+                        $subelement = 'askpricesupplier';
+                    }    
 					$object->origin = $origin;
 					$object->origin_id = $originid;
 
@@ -1054,7 +1051,7 @@ if (empty($reshook))
 								}
 
 								$result = $productsupplier->find_min_price_product_fournisseur($lines[$i]->fk_product, $lines[$i]->qty);
-								if ($result>=0)
+ 								if ($result>=0)
 								{
 								    $tva_tx = $lines[$i]->tva_tx;
 

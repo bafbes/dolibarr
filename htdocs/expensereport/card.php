@@ -29,8 +29,8 @@ require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/CMailFile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formmail.class.php';
-require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
-require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
+if (! empty($conf->projet->enabled)) require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
+if (! empty($conf->projet->enabled)) require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 require_once DOL_DOCUMENT_ROOT . '/compta/bank/class/account.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/expensereport.lib.php';
 require_once DOL_DOCUMENT_ROOT . '/core/lib/price.lib.php';
@@ -48,7 +48,7 @@ $cancel=GETPOST('cancel');
 $date_start = dol_mktime(0, 0, 0, GETPOST('date_debutmonth'), GETPOST('date_debutday'), GETPOST('date_debutyear'));
 $date_end = dol_mktime(0, 0, 0, GETPOST('date_finmonth'), GETPOST('date_finday'), GETPOST('date_finyear'));
 $date = dol_mktime(0, 0, 0, GETPOST('datemonth'), GETPOST('dateday'), GETPOST('dateyear'));
-$fk_projet=GETPOST('fk_projet');
+if (! empty($conf->projet->enabled)) $fk_projet=GETPOST('fk_projet');
 $vatrate=GETPOST('vatrate');
 $ref=GETPOST("ref",'alpha');
 $comments=GETPOST('comments');
@@ -970,6 +970,7 @@ if ($action == "updateligne" && $user->rights->expensereport->creer)
 
 	$rowid = $_POST['rowid'];
 	$type_fees_id = GETPOST('fk_c_type_fees');
+	$object_ligne->vatrate = price2num(GETPOST('vatrate'));
 	$projet_id = $fk_projet;
 	$comments = GETPOST('comments');
 	$qty = GETPOST('qty');
@@ -1084,8 +1085,8 @@ llxHeader('', $langs->trans("ExpenseReport"));
 
 $form = new Form($db);
 $formfile = new FormFile($db);
-$formproject = new FormProjets($db);
-$projecttmp = new Project($db);
+if (! empty($conf->projet->enabled)) $formproject = new FormProjets($db);
+if (! empty($conf->projet->enabled)) $projecttmp = new Project($db);
 
 // Create
 if ($action == 'create')
@@ -1614,10 +1615,11 @@ else
 				print '<br>';
 
 				// Fetch Lines of current expense report
-				$sql = 'SELECT fde.rowid, fde.fk_expensereport, fde.fk_c_type_fees, fde.fk_projet, fde.date,';
+				$sql = 'SELECT fde.rowid, fde.fk_expensereport, fde.fk_c_type_fees, fde.date,';
+                if (! empty($conf->projet->enabled)) $sql.= ' fde.fk_projet,';
 				$sql.= ' fde.tva_tx as vatrate, fde.comments, fde.qty, fde.value_unit, fde.total_ht, fde.total_tva, fde.total_ttc,';
-				$sql.= ' ctf.code as type_fees_code, ctf.label as type_fees_libelle,';
-				$sql.= ' pjt.rowid as projet_id, pjt.title as projet_title, pjt.ref as projet_ref';
+				$sql.= ' ctf.code as type_fees_code, ctf.label as type_fees_libelle';
+				if (! empty($conf->projet->enabled)) $sql.= ', pjt.rowid as projet_id, pjt.title as projet_title, pjt.ref as projet_ref';
 				$sql.= ' FROM '.MAIN_DB_PREFIX.'expensereport_det as fde';
 				$sql.= ' LEFT JOIN '.MAIN_DB_PREFIX.'c_type_fees as ctf ON fde.fk_c_type_fees=ctf.id';
 				$sql.= ' LEFT JOIN '.MAIN_DB_PREFIX.'projet as pjt ON fde.fk_projet=pjt.rowid';
@@ -1901,7 +1903,7 @@ if ($action != 'create' && $action != 'edit')
 	*/
 	if ($user->rights->expensereport->creer && $object->fk_statut==0)
 	{
-		if ($object->fk_user_author == $user->id)
+		if ($object->fk_user_author == $user->id || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
 		{
 			// Modify
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&id='.$object->id.'">'.$langs->trans('Modify').'</a>';
@@ -1921,7 +1923,7 @@ if ($action != 'create' && $action != 'edit')
 	 */
 	if($user->rights->expensereport->creer && $object->fk_statut==99)
 	{
-		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid)
+		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
 		{
 			// Modify
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=edit&id='.$object->id.'">'.$langs->trans('Modify').'</a>';
@@ -1935,7 +1937,7 @@ if ($action != 'create' && $action != 'edit')
 
 	if ($user->rights->expensereport->to_paid && $object->fk_statut==5)
 	{
-		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid)
+		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
 		{
 			// Brouillonner
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=brouillonner&id='.$object->id.'">'.$langs->trans('SetToDraft').'</a>';
@@ -1949,7 +1951,7 @@ if ($action != 'create' && $action != 'edit')
 	 */
 	if ($object->fk_statut == 2)
 	{
-		if ($object->fk_user_author == $user->id)
+		if ($object->fk_user_author == $user->id || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
 		{
 			// Brouillonner
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=brouillonner&id='.$object->id.'">'.$langs->trans('SetToDraft').'</a>';
@@ -1966,7 +1968,7 @@ if ($action != 'create' && $action != 'edit')
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=refuse&id='.$object->id.'">'.$langs->trans('Deny').'</a>';
 		//}
 
-		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid)
+		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
 		{
 			// Cancel
 			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=cancel&id='.$object->id.'">'.$langs->trans('Cancel').'</a>';
@@ -2002,6 +2004,18 @@ if ($action != 'create' && $action != 'edit')
 		if ((round($remaintopay) == 0 || empty($conf->banque->enabled)) && $object->paid == 0)
 		{
 			print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id='.$object->id.'&action=set_paid">'.$langs->trans("ClassifyPaid")."</a></div>";
+		}
+
+		// Cancel
+		if ($user->id == $object->fk_user_author || $user->id == $object->fk_user_valid || !empty($conf->global->EXPENSEREPORT_IGNORE_USER_AUTHOR))
+		{
+			print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?action=cancel&id='.$object->id.'">'.$langs->trans('Cancel').'</a>';
+		}
+
+		// Delete
+		if($user->rights->expensereport->supprimer)
+		{
+			print '<a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?action=delete&id='.$object->id.'">'.$langs->trans('Delete').'</a>';
 		}
 	}
 	

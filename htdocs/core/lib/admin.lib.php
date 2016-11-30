@@ -207,6 +207,11 @@ function run_sql($sqlfile,$silent=1,$entity='',$usesavepoint=1,$handler='',$oker
     $listofmaxrowid=array();	// This is a cache table
     foreach($arraysql as $i => $sql)
     {
+        // Replace the prefix tables
+        if (MAIN_DB_PREFIX != 'llx_')
+        {
+            $sql=preg_replace('/llx_/i',MAIN_DB_PREFIX,$sql);
+        }
         $newsql=$sql;
 
         // Replace __+MAX_table__ with max of table

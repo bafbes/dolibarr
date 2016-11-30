@@ -53,7 +53,7 @@ CKEDITOR.editorConfig = function( config )
 	 	['Bold','Italic','Underline','Strike','Subscript','Superscript','-','TextColor','RemoveFormat'],
 	 	['NumberedList','BulletedList','Outdent','Indent','CreateDiv'],
 	 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-	 	['Link','Unlink','Anchor','Image','Table','HorizontalRule','SpecialChar']
+	 	['Link','Unlink','Anchor','Image','Table','HorizontalRule','SpecialChar','Iframe']
 	 ];
 	
 	// Used for notes fields

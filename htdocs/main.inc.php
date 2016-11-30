@@ -1504,6 +1504,7 @@ function top_menu($head, $title='', $target='', $disablejs=0, $disablehead=0, $a
 	        $mode='';
 
 	        if (empty($helppagename)) $helppagename='EN:User_documentation|FR:Documentation_utilisateur|ES:Documentación_usuarios';
+            if (!empty($conf->global->MAIN_HIDE_HELP_LINK)) $helppagename='';
 
 	        // Get helpbaseurl, helppage and mode from helppagename and langs
 	        $arrayres=getHelpParamFor($helppagename,$langs);

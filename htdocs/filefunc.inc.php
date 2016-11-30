@@ -54,7 +54,6 @@ if (! defined('LOG_DEBUG'))
 // End of common declaration part
 if (defined('DOL_INC_FOR_VERSION_ERROR')) return;
 
-
 // Define vars
 $conffiletoshowshort = "conf.php";
 // Define localization of conf file
@@ -70,7 +69,7 @@ $conffiletoshow = "htdocs/conf/conf.php";
 // --- End of part replaced by Dolibarr packager makepack-dolibarr
 
 // Replace conf filename with "conf" parameter on url by GET
-/* Disabled. This is a serious security hole
+//* Disabled. This is a serious security hole
 if (! empty($_GET['conf']))
 {
 	$confname=basename($_GET['conf']);
@@ -80,10 +79,34 @@ if (! empty($_GET['conf']))
 	$confname=basename(empty($_COOKIE['dolconf']) ? 'conf' : $_COOKIE['dolconf']);
 	$conffile = 'conf/'.$confname.'.php';
 }
-*/
+//*/
 
 // Include configuration
 $result=@include_once $conffile;	// Keep @ because with some error reporting this break the redirect
+
+if (! defined('DOL_APPLICATION_TITLE')) define('DOL_APPLICATION_TITLE','Dolibarr');
+if (! defined('DOL_VERSION')) define('DOL_VERSION','4.0.1');
+
+if (! defined('EURO')) define('EURO',chr(128));
+
+// Define syslog constants
+if (! defined('LOG_DEBUG'))
+{
+	if (! function_exists("syslog")) {
+		// For PHP versions without syslog (like running on Windows OS)
+		define('LOG_EMERG',0);
+		define('LOG_ALERT',1);
+		define('LOG_CRIT',2);
+		define('LOG_ERR',3);
+		define('LOG_WARNING',4);
+		define('LOG_NOTICE',5);
+		define('LOG_INFO',6);
+		define('LOG_DEBUG',7);
+	}
+}
+
+// End of common declaration part
+if (defined('DOL_INC_FOR_VERSION_ERROR')) return;
 
 if (! $result && ! empty($_SERVER["GATEWAY_INTERFACE"]))    // If install not done and we are in a web session
 {
@@ -134,6 +157,10 @@ else
 
 // Disable php display errors
 if (! empty($dolibarr_main_prod)) ini_set('display_errors','Off');
+else { 
+    ini_set('display_errors','On');
+    ini_set('display_startup_errors','On');    
+}
 
 // Clean parameters
 $dolibarr_main_data_root=trim($dolibarr_main_data_root);

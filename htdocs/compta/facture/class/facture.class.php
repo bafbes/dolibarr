@@ -1977,22 +1977,39 @@ class Facture extends CommonInvoice
 			if (! $error)
 			{
 				// Define third party as a customer
-				$result=$this->thirdparty->set_as_client();
+				$result = $this->thirdparty->set_as_client();
 
-				// Si active on decremente le produit principal et ses composants a la validation de facture
-				if ($this->type != self::TYPE_DEPOSIT && $result >= 0 && ! empty($conf->stock->enabled) && ! empty($conf->global->STOCK_CALCULATE_ON_BILL) && $idwarehouse > 0)
-				{
-					require_once DOL_DOCUMENT_ROOT.'/product/stock/class/mouvementstock.class.php';
-					$langs->load("agenda");
+                // Si active on decremente le produit principal et ses composants a la validation de facture
+                if ($this->type != self::TYPE_DEPOSIT && $result >= 0 && !empty($conf->stock->enabled) && !empty($conf->global->STOCK_CALCULATE_ON_BILL) && $idwarehouse > 0) {
+                    require_once DOL_DOCUMENT_ROOT . '/product/stock/class/mouvementstock.class.php';
+                    $langs->load("agenda");
 
-					// Loop on each line
-					$cpt=count($this->lines);
-					for ($i = 0; $i < $cpt; $i++)
-					{
-						if ($this->lines[$i]->fk_product > 0)
-						{
-							$mouvP = new MouvementStock($this->db);
-							$mouvP->origin = &$this;
+                    // Loop on each line
+                    $cpt = count($this->lines);
+                    for ($i = 0; $i < $cpt; $i++) {
+                        if (!empty($conf->global->PREVENT_NEGATIVE_STOCK_CALCULATE_ON_BILL)) {
+                            $sql = "SELECT reel FROM " . MAIN_DB_PREFIX . "product_stock";
+                            $sql.= " WHERE fk_entrepot = " . $idwarehouse . " AND fk_product = " . $this->lines[$i]->fk_product;
+                            $resql = $this->db->query($sql);
+                            if ($resql) {
+                                $num = $this->db->num_rows($resql);
+                                if ($num > 0)
+                                    $obj = $this->db->fetch_object($resql);
+                            }
+                            if (($num > 0) && $this->type != self::TYPE_CREDIT_NOTE && ($obj->reel - $this->lines[$i]->qty < 0)) {
+                                $langs->load('errors');
+                                $product=new product($this->db);
+                                $product->fetch($this->lines[$i]->fk_product);
+                                $this->errors[] = $langs->trans("ErrorTryTosellOnNegativeStock", $product->ref);
+                                dol_syslog("Try to make a movement of a product with status_batch on without any batch data");
+
+                                $this->db->rollback();
+                                return -2;
+                            }
+                        }
+                        if ($this->lines[$i]->fk_product > 0) {
+                            $mouvP = new MouvementStock($this->db);
+                            $mouvP->origin = &$this;
 							// We decrease stock for product
 							if ($this->type == self::TYPE_CREDIT_NOTE) $result=$mouvP->reception($user, $this->lines[$i]->fk_product, $idwarehouse, $this->lines[$i]->qty, 0, $langs->trans("InvoiceValidatedInDolibarr",$num));
 							else $result=$mouvP->livraison($user, $this->lines[$i]->fk_product, $idwarehouse, $this->lines[$i]->qty, $this->lines[$i]->subprice, $langs->trans("InvoiceValidatedInDolibarr",$num));

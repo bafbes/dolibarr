@@ -75,7 +75,7 @@ else
 
 // Get list of ponderated percent for each status
 $listofoppstatus=array(); $listofopplabel=array(); $listofoppcode=array();
-$sql = "SELECT cls.rowid, cls.code, cls.percent, cls.label";
+$sql = "SELECT cls.rowid, cls.code, cls.label";
 $sql.= " FROM ".MAIN_DB_PREFIX."c_lead_status as cls";
 $resql = $db->query($sql);
 if ( $resql )
@@ -86,7 +86,6 @@ if ( $resql )
 	while ($i < $num)
 	{
 		$objp = $db->fetch_object($resql);
-		$listofoppstatus[$objp->rowid]=$objp->percent;
 		$listofopplabel[$objp->rowid]=$objp->label;
 		$listofoppcode[$objp->rowid]=$objp->code;
 		$i++;
