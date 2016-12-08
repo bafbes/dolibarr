@@ -1,9 +1,0 @@
-On /var/www/html/doliclone :
-
-I got errors on last in last ftp push in file : "errors last git ftp.txt"
-
-$ git remote -v
-bafbes	https://bafbes@github.com/bafbes/dolibarr.git (fetch) (push)
-origin	https://github.com/Dolibarr/dolibarr.git (fetch)(push)
-usb	/media/abb/USB/dolibarr.git (fetch)(push)
-local	/media/abb/mes donnees/gitclones/dolibarr.git (fetch)t push)
