@@ -22,6 +22,7 @@
  *  \brief		Library for file auguria menus
  */
 require_once DOL_DOCUMENT_ROOT.'/core/class/menubase.class.php';
+require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php';
 
 
 
