@@ -1102,7 +1102,7 @@ class FactureFournisseur extends CommonInvoice
      *	@param	int		$idwarehouse	Id warehouse to use for stock change.
      *	@return	int						<0 if KO, >0 if OK
      */
-    function set_draft($user, $idwarehouse=-1)
+    function set_draft($user, $idwarehouse=1)
     {
         global $conf,$langs;
 
