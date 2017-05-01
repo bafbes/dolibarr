@@ -2023,32 +2023,33 @@ class User extends CommonObject
 	        {
 	        	$label.= '<div class="photointooltip">';
 			$label.= Form::showphoto('userphoto', $this, 80, 0, 0, 'photowithmargin photologintooltip', 'small', 0, 1);
-	        	$label.= '</div><div style="clear: both;"></div>';
-	        }
+                $label .= '</div><div style="clear: both;"></div>';
+            }
 
-	        // Info Login
-	        if ($infologin)
-	        {
-	            $label.= '<br>';
-	            $label.= '<br><u>'.$langs->trans("Connection").'</u>';
-	            $label.= '<br><b>'.$langs->trans("IPAddress").'</b>: '.$_SERVER["REMOTE_ADDR"];
-	            if (! empty($conf->global->MAIN_MODULE_MULTICOMPANY)) $label.= '<br><b>'.$langs->trans("ConnectedOnMultiCompany").':</b> '.$conf->entity.' (user entity '.$this->entity.')';
-	            $label.= '<br><b>'.$langs->trans("AuthenticationMode").':</b> '.$_SESSION["dol_authmode"].(empty($dolibarr_main_demo)?'':' (demo)');
-	            $label.= '<br><b>'.$langs->trans("ConnectedSince").':</b> '.dol_print_date($this->datelastlogin,"dayhour",'tzuser');
-	            $label.= '<br><b>'.$langs->trans("PreviousConnexion").':</b> '.dol_print_date($this->datepreviouslogin,"dayhour",'tzuser');
-	            $label.= '<br><b>'.$langs->trans("CurrentTheme").':</b> '.$conf->theme;
-	            $label.= '<br><b>'.$langs->trans("CurrentMenuManager").':</b> '.$menumanager->name;
-	            $s=picto_from_langcode($langs->getDefaultLang());
-	            $label.= '<br><b>'.$langs->trans("CurrentUserLanguage").':</b> '.($s?$s.' ':'').$langs->getDefaultLang();
-	            $label.= '<br><b>'.$langs->trans("Browser").':</b> '.$conf->browser->name.($conf->browser->version?' '.$conf->browser->version:'').' ('.$_SERVER['HTTP_USER_AGENT'].')';
-	            $label.= '<br><b>'.$langs->trans("Layout").':</b> '.$conf->browser->layout;
-	            $label.= '<br><b>'.$langs->trans("Screen").':</b> '.$_SESSION['dol_screenwidth'].' x '.$_SESSION['dol_screenheight'];
-	            if (! empty($conf->browser->phone)) $label.= '<br><b>'.$langs->trans("Phone").':</b> '.$conf->browser->phone;
-	            if (! empty($_SESSION["disablemodules"])) $label.= '<br><b>'.$langs->trans("DisabledModules").':</b> <br>'.join(', ',explode(',',$_SESSION["disablemodules"]));
-	        }
+        // Info Login
+        if ($infologin) {
+            $label .= '<br>';
+            $label .= '<br><u>' . $langs->trans("Connection") . '</u>';
+            $label .= '<br><b>' . $langs->trans("IPAddress") . '</b>: ' . $_SERVER["REMOTE_ADDR"];
+            if (!empty($conf->global->MAIN_MODULE_MULTICOMPANY)) $label .= '<br><b>' . $langs->trans("ConnectedOnMultiCompany") . ':</b> ' . $conf->entity . ' (user entity ' . $this->entity . ')';
+            $label .= '<br><b>' . $langs->trans("AuthenticationMode") . ':</b> ' . $_SESSION["dol_authmode"] . (empty($dolibarr_main_demo) ? '' : ' (demo)');
+            $label .= '<br><b>' . $langs->trans("ConnectedSince") . ':</b> ' . dol_print_date($this->datelastlogin, "dayhour");
+            $label .= '<br><b>' . $langs->trans("PreviousConnexion") . ':</b> ' . dol_print_date($this->datepreviouslogin, "dayhour");
+            $label .= '<br><b>' . $langs->trans("CurrentTheme") . ':</b> ' . $conf->theme;
+            $label .= '<br><b>' . $langs->trans("CurrentMenuManager") . ':</b> ' . $menumanager->name;
+            $s = picto_from_langcode($langs->getDefaultLang());
+            $label .= '<br><b>' . $langs->trans("CurrentUserLanguage") . ':</b> ' . ($s ? $s . ' ' : '') . $langs->getDefaultLang();
+            $label .= '<br><b>' . $langs->trans("Browser") . ':</b> ' . $conf->browser->name . ($conf->browser->version ? ' ' . $conf->browser->version : '') . ' (' . $_SERVER['HTTP_USER_AGENT'] . ')';
+            $label .= '<br><b>' . $langs->trans("Layout") . ':</b> ' . $conf->browser->layout;
+            $label .= '<br><b>' . $langs->trans("Screen") . ':</b> ' . $_SESSION['dol_screenwidth'] . ' x ' . $_SESSION['dol_screenheight'];
+            if (!empty($conf->browser->phone)) $label .= '<br><b>' . $langs->trans("Phone") . ':</b> ' . $conf->browser->phone;
+            if (!empty($_SESSION["disablemodules"])) $label .= '<br><b>' . $langs->trans("DisabledModules") . ':</b> <br>' . join(', ', explode(',', $_SESSION["disablemodules"]));
+            $label .= '<br><b>' . $langs->trans("Database") . ':</b> ' . $db->database_name;
+
+        }
 
 
-	        if ($option == 'leave') $link.= '<a href="'.DOL_URL_ROOT.'/holiday/list.php?id='.$this->id.'"';
+        if ($option == 'leave') $link .= '<a href="' . DOL_URL_ROOT . '/holiday/list.php?id=' . $this->id . '"';
 	        else $link.= '<a href="'.DOL_URL_ROOT.'/user/card.php?id='.$this->id.'"';
 
 	        $linkclose="";
