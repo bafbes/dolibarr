@@ -61,6 +61,7 @@ class Entrepot extends CommonObject
 	var $zip;
 	var $town;
 	var $fk_parent;
+    protected $isnolinkedbythird = 1;     // No field fk_soc
 
 	// List of short language codes for status
 	var $statuts = array();
