@@ -61,9 +61,10 @@ class FormProduct
 	 *										'warehouseinternal' = select products from warehouses for internal correct/transfer only
 	 * @param	boolean	$sumStock		    sum total stock of a warehouse, default true
 	 * @param	array	$exclude		    warehouses ids to exclude
+     * @param	string  $filter             filter to use in sql command
 	 * @return  int  		    		    Nb of loaded lines, 0 if already loaded, <0 if KO
 	 */
-	function loadWarehouses($fk_product=0, $batch = '', $status='', $sumStock = true, $exclude='')
+	function loadWarehouses($fk_product=0, $batch = '', $status='', $sumStock = true, $exclude='',$filter='')
 	{
 		global $conf, $langs;
 
@@ -121,8 +122,14 @@ class FormProduct
 		{
 			$sql.= " AND e.statut = 1";
 		}
+<<<<<<< HEAD
 
 		if(!empty($exclude)) $sql.= ' AND e.rowid NOT IN('.$this->db->escape(implode(',', $exclude)).')';
+=======
+		
+		if(!empty($exclude)) $sql.= ' AND e.rowid NOT IN('.implode(',', $exclude).')';
+		if(!empty($filter)) $sql.= " AND $filter";
+>>>>>>> master501
 
 		if ($sumStock && empty($fk_product)) $sql.= " GROUP BY e.rowid, e.label, e.description, e.fk_parent";
 		$sql.= " ORDER BY e.label";
@@ -203,7 +210,7 @@ class FormProduct
 	 *  @param  int     $showfullpath   1=Show full path of name (parent ref into label), 0=Show only ref of current warehouse
 	 * 	@return	string					HTML select
 	 */
-	function selectWarehouses($selected='',$htmlname='idwarehouse',$filterstatus='',$empty=0,$disabled=0,$fk_product=0,$empty_label='', $showstock=0, $forcecombo=0, $events=array(), $morecss='minwidth200', $exclude='', $showfullpath=1)
+	function selectWarehouses($selected='',$htmlname='idwarehouse',$filterstatus='',$empty=0,$disabled=0,$fk_product=0,$empty_label='', $showstock=0, $forcecombo=0, $events=array(), $morecss='minwidth200', $exclude='', $showfullpath=1,$filter='')
 	{
 		global $conf,$langs,$user;
 
@@ -211,7 +218,7 @@ class FormProduct
 
 		$out='';
 		if (empty($conf->global->ENTREPOT_EXTRA_STATUS)) $filterstatus = '';
-		$this->loadWarehouses($fk_product, '', $filterstatus, true, $exclude);
+		$this->loadWarehouses($fk_product, '', $filterstatus, true, $exclude,$filter);
 		$nbofwarehouses=count($this->cache_warehouses);
 
 		if ($conf->use_javascript_ajax && ! $forcecombo)
