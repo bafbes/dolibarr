@@ -122,14 +122,9 @@ class FormProduct
 		{
 			$sql.= " AND e.statut = 1";
 		}
-<<<<<<< HEAD
 
 		if(!empty($exclude)) $sql.= ' AND e.rowid NOT IN('.$this->db->escape(implode(',', $exclude)).')';
-=======
-		
-		if(!empty($exclude)) $sql.= ' AND e.rowid NOT IN('.implode(',', $exclude).')';
 		if(!empty($filter)) $sql.= " AND $filter";
->>>>>>> master501
 
 		if ($sumStock && empty($fk_product)) $sql.= " GROUP BY e.rowid, e.label, e.description, e.fk_parent";
 		$sql.= " ORDER BY e.label";

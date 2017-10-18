@@ -80,6 +80,7 @@ if (! empty($_GET['conf']))
 	$confname=basename(empty($_COOKIE['dolconf']) ? 'conf' : $_COOKIE['dolconf']);
 	$conffile = 'conf/'.$confname.'.php';
 }
+
 //*/
 
 // Include configuration
