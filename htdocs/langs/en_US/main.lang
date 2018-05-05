@@ -919,3 +919,5 @@ CommentDeleted=Comment deleted
 Everybody=Everybody
 PayedBy=Payed by
 PayedTo=Payed to
+Deletedraft=Delete draft
+ConfirmMassDraftDeletion=Draft Bulk delete confirmation

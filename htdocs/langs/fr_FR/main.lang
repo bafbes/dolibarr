@@ -916,3 +916,5 @@ CommentDeleted=Commentaire supprimé
 Everybody=Tout le monde
 PayedBy=Payé par
 PayedTo=Payé à
+Deletedraft=Supprimer brouillon
+ConfirmMassDraftDeletion=Confirmation de suppression brouillons en masse
