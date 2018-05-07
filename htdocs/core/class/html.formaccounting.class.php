@@ -63,7 +63,7 @@ class FormAccounting extends Form
 	 */
 	function select_journal($selectid, $htmlname = 'journal', $nature=0, $showempty = 0, $select_in = 0, $select_out = 0, $morecss='maxwidth300 maxwidthonsmartphone', $usecache='', $disabledajaxcombo=0)
 	{
-		global $conf;
+		global $conf,$langs;
 
 		$out = '';
 
@@ -92,9 +92,10 @@ class FormAccounting extends Form
 			}
 
     		$selected = 0;
+			$langs->load('accountancy');
 			while ($obj = $this->db->fetch_object($resql))
 			{
-				$label = $obj->code . ' - ' . $obj->label;
+				$label = $obj->code . ' - ' . $langs->trans($obj->label);
 
     			$select_value_in = $obj->rowid;
 				$select_value_out = $obj->rowid;
