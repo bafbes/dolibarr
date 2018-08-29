@@ -126,7 +126,7 @@ if (empty($reshook))
 			if ($country_code)
 			{
 				$sqlfile = DOL_DOCUMENT_ROOT.'/install/mysql/data/llx_accounting_account_'.strtolower($country_code).'.sql';
-				$result = run_sql($sqlfile, 1, 0, 1);
+				$result = run_sql($sqlfile, 1, 0, 1,'','default',1);
 			}
 
             if (! dolibarr_set_const($db, 'CHARTOFACCOUNTS', $chartofaccounts, 'chaine', 0, '', $conf->entity)) {
