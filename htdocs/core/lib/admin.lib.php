@@ -123,7 +123,7 @@ function versiondolibarrarray()
  *	@param 		string	$okerror		Family of errors we accept ('default', 'none')
  * 	@return		int						<=0 if KO, >0 if OK
  */
-function run_sql($sqlfile,$silent=1,$entity='',$usesavepoint=1,$handler='',$okerror='default')
+function run_sql($sqlfile,$silent=1,$entity='',$usesavepoint=1,$handler='',$okerror='default',$returnonfirsterror=false)
 {
     global $db, $conf, $langs, $user;
 
@@ -374,7 +374,7 @@ function run_sql($sqlfile,$silent=1,$entity='',$usesavepoint=1,$handler='',$oker
 				    dol_syslog('Admin.lib::run_sql Request '.($i+1)." Error ".$db->errno()." ".$newsql."<br>".$db->error(), LOG_ERR);
 				    $error++;
 				}
-				return 0;
+				if($returnonfirsterror) return 0;
             }
 
             if (! $silent) print '</tr>'."\n";
