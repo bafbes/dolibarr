@@ -6374,7 +6374,7 @@ class wsdl extends nusoap_base {
 	    	$elements = $eElements;
 		}
 
-		if (count($attrs) > 0) {
+		if (is_array($attrs) && count($attrs) > 0) {
 	    	foreach($attrs as $n => $a){
 	            // expand each attribute
 	            foreach ($a as $k => $v) {
