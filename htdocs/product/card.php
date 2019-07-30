@@ -909,7 +909,7 @@ else
         // Label
         print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('label')).'"></td></tr>';
 
-        // On sell
+/*        // On sell
         print '<tr><td class="fieldrequired">'.$langs->trans("Status").' ('.$langs->trans("Sell").')</td><td colspan="3">';
         $statutarray=array('1' => $langs->trans("OnSell"), '0' => $langs->trans("NotOnSell"));
         print $form->selectarray('statut',$statutarray,GETPOST('statut'));
@@ -919,7 +919,7 @@ else
         print '<tr><td class="fieldrequired">'.$langs->trans("Status").' ('.$langs->trans("Buy").')</td><td colspan="3">';
         $statutarray=array('1' => $langs->trans("ProductStatusOnBuy"), '0' => $langs->trans("ProductStatusNotOnBuy"));
         print $form->selectarray('statut_buy',$statutarray,GETPOST('statut_buy'));
-        print '</td></tr>';
+        print '</td></tr>';*/
 
 	    // Batch number management
 		if (! empty($conf->productbatch->enabled))
@@ -954,7 +954,7 @@ else
 	        print '</td></tr>';
         }
 
-        // Description (used in invoice, propal...)
+/*        // Description (used in invoice, propal...)
         print '<tr><td class="tdtop">'.$langs->trans("Description").'</td><td colspan="3">';
 
         $doleditor = new DolEditor('desc', GETPOST('desc'), '', 160, 'dolibarr_details', '', false, true, $conf->global->FCKEDITOR_ENABLE_PRODUCTDESC, ROWS_4, '90%');
@@ -1081,13 +1081,13 @@ else
 			$cate_arbo = $form->select_all_categories(Categorie::TYPE_PRODUCT, '', 'parent', 64, 0, 1);
 			print $form->multiselectarray('categories', $cate_arbo, $arrayselected, '', 0, '', 0, '100%');
 			print "</td></tr>";
-		}
+		}*/
 
         print '</table>';
 
         print '<br>';
 
-        if (! empty($conf->global->PRODUIT_MULTIPRICES))
+/*        if (! empty($conf->global->PRODUIT_MULTIPRICES))
         {
             // We do no show price array on create when multiprices enabled.
             // We must set them on prices tab.
@@ -1146,7 +1146,7 @@ else
             print '<td class="maxwidthonsmartphone"><input class="minwidth100" name="accountancy_code_buy" value="'.$object->accountancy_code_buy.'">';
             print '</td></tr>';
         }
-		print '</table>';
+		print '</table>';*/
 
         dol_fiche_end();
 
