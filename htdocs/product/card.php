@@ -1724,11 +1724,8 @@ else
 			}*/
 			
             print "</table>\n";
-    		print '</div>';
-    		
-            print '</div></div>';
             print '<div style="clear:both"></div>';
-        
+
             dol_fiche_end();
         }
 
@@ -1786,7 +1783,6 @@ if (($action == 'clone' && (empty($conf->use_javascript_ajax) || ! empty($conf->
 /* Barre d'action                                                             */
 /*                                                                            */
 /* ************************************************************************** */
-
 print "\n".'<div class="tabsAction">'."\n";
 
 $parameters=array();
