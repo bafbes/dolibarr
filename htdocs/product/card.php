@@ -1195,7 +1195,7 @@ else
             // Label
             print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->label).'"></td></tr>';
 
-            // Status To sell
+/*            // Status To sell
             print '<tr><td class="fieldrequired">'.$langs->trans("Status").' ('.$langs->trans("Sell").')</td><td colspan="3">';
             print '<select class="flat" name="statut">';
             if ($object->status)
@@ -1234,7 +1234,7 @@ else
 				print $form->selectarray('status_batch',$statutarray,$object->status_batch);
 				print '</td></tr>';
 			}
-
+*/
             // Barcode
             $showbarcode=empty($conf->barcode->enabled)?0:1;
             if (! empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode=0;
@@ -1261,7 +1261,7 @@ else
 		        print '</td></tr>';
 	        }
 
-            // Description (used in invoice, propal...)
+/*            // Description (used in invoice, propal...)
             print '<tr><td class="tdtop">'.$langs->trans("Description").'</td><td colspan="3">';
 
             // We use dolibarr_details as type of DolEditor here, because we must not accept images as description is included into PDF and not accepted by TCPDF.
@@ -1277,7 +1277,7 @@ else
             print '</td></tr>';
 
             // Stock
-            /*
+
             if ($object->isProduct() && ! empty($conf->stock->enabled))
             {
                 print "<tr>".'<td>'.$langs->trans("StockLimit").'</td><td>';
@@ -1292,7 +1292,7 @@ else
             {
                 print '<input name="seuil_stock_alerte" type="hidden" value="'.$object->seuil_stock_alerte.'">';
                 print '<input name="desiredstock" type="hidden" value="'.$object->desiredstock.'">';
-            }*/
+            }
 
             // Nature
             if($object->type!= Product::TYPE_SERVICE)
@@ -1401,14 +1401,14 @@ else
     
                 print "</td></tr>";
 			}
-			
+			*/
             print '</table>';
 
             print '<br>';
 
             print '<table class="border" width="100%">';
 
-			if (! empty($conf->accounting->enabled))
+/*			if (! empty($conf->accounting->enabled))
 			{
                 // Accountancy_code_sell
                 print '<tr><td class="titlefield">'.$langs->trans("ProductAccountancySellCode").'</td>';
@@ -1421,8 +1421,8 @@ else
                 print '<td>';
 				print $formaccountancy->select_account($object->accountancy_code_buy, 'accountancy_code_buy', 1, '', 1, 1);
                 print '</td></tr>';
-			}			
-			else // For external software 
+			}
+			else // For external software
 			{
                 // Accountancy_code_sell
                 print '<tr><td class="titlefield">'.$langs->trans("ProductAccountancySellCode").'</td>';
@@ -1433,7 +1433,7 @@ else
                 print '<tr><td>'.$langs->trans("ProductAccountancyBuyCode").'</td>';
                 print '<td><input name="accountancy_code_buy" class="maxwidth200" value="'.$object->accountancy_code_buy.'">';
                 print '</td></tr>';
-            }
+            }*/
 			print '</table>';
 
             dol_fiche_end();
