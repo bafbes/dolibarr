@@ -1462,7 +1462,7 @@ else
 
             dol_banner_tab($object, 'ref', $linkback, ($user->societe_id?0:1), 'ref');
             
-            
+            print '</div>';
             print '<div class="fichecenter">';
             print '<div class="fichehalfleft">';
             
