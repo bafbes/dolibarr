@@ -1470,14 +1470,14 @@ else
             print '<table class="border tableforfield" width="100%">';
             
             // Type
-            if (! empty($conf->produit->enabled) && ! empty($conf->service->enabled))
+/*            if (! empty($conf->produit->enabled) && ! empty($conf->service->enabled))
             {
             	// TODO change for compatibility with edit in place
             	$typeformat='select;0:'.$langs->trans("Product").',1:'.$langs->trans("Service");
                 print '<tr><td class="titlefield">'.$form->editfieldkey("Type",'fk_product_type',$object->type,$object,$user->rights->produit->creer||$user->rights->service->creer,$typeformat).'</td><td colspan="2">';
                 print $form->editfieldval("Type",'fk_product_type',$object->type,$object,$user->rights->produit->creer||$user->rights->service->creer,$typeformat);
                 print '</td></tr>';
-            }
+            }*/
 
             if ($showbarcode)
             {
@@ -1533,7 +1533,7 @@ else
                 print '</td></tr>'."\n";
             }
 
-            // Accountancy sell code
+/*            // Accountancy sell code
 			print '<tr><td class="nowrap">';
             print $langs->trans("ProductAccountancySellCode");
             print '</td><td colspan="2">';
@@ -1553,7 +1553,7 @@ else
             } else {
 				print $object->accountancy_code_buy;
 			}
-            print '</td></tr>';
+            print '</td></tr>';*/
 
             // Status (to sell)
             /*
@@ -1575,7 +1575,7 @@ else
             print '</td></tr>';
             */
             
-            // Batch number management (to batch)
+/*            // Batch number management (to batch)
             if (! empty($conf->productbatch->enabled)) {
                 print '<tr><td>'.$langs->trans("ManageLotSerial").'</td><td colspan="2">';
                 if (! empty($conf->use_javascript_ajax) && $user->rights->produit->creer && ! empty($conf->global->MAIN_DIRECT_STATUS_UPDATE)) {
@@ -1599,9 +1599,9 @@ else
             print '<div class="fichehalfright"><div class="ficheaddleft">';
        
             print '<div class="underbanner clearboth"></div>';
-            print '<table class="border tableforfield" width="100%">';
+            print '<table class="border tableforfield" width="100%">';*/
             
-            // Nature
+/*            // Nature
             if($object->type!= Product::TYPE_SERVICE)
             {
                 print '<tr><td class="titlefield">'.$langs->trans("Nature").'</td><td colspan="2">';
@@ -1698,8 +1698,8 @@ else
 
             	// Origin country code
             	print '<tr><td>'.$langs->trans("CountryOrigin").'</td><td colspan="2">'.getCountry($object->country_id,0,$db).'</td>';
-        	}
-
+        	}*/
+/*
             // Other attributes
             $parameters=array('colspan' => ' colspan="'.(2+(($showphoto||$showbarcode)?1:0)).'"');
             $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
@@ -1713,15 +1713,15 @@ else
 				print '<tr><td valign="middle">'.$langs->trans("Categories").'</td><td colspan="3">';
 				print $form->showCategories($object->id,'product',1);
 				print "</td></tr>";
-			}
-
+			}*/
+/*
             // Note private
 			if (! empty($conf->global->MAIN_DISABLE_NOTES_TAB))
 			{
     			print '<!-- show Note --> '."\n";
                 print '<tr><td class="tdtop">'.$langs->trans("NotePrivate").'</td><td colspan="'.(2+(($showphoto||$showbarcode)?1:0)).'">'.(dol_textishtml($object->note_private)?$object->note_private:dol_nl2br($object->note_private,1,true)).'</td></tr>'."\n";
                 print '<!-- End show Note --> '."\n";
-			}
+			}*/
 			
             print "</table>\n";
     		print '</div>';
@@ -1967,7 +1967,7 @@ if (! empty($conf->global->PRODUCT_ADD_FORM_ADD_TO) && $object->id && ($action =
 /*
  * Documents generes
  */
-if ($action == '' || $action == 'view')
+/*if ($action == '' || $action == 'view')
 {
     print '<div class="fichecenter"><div class="fichehalfleft">';
     print '<a name="builddoc"></a>'; // ancre
@@ -1986,7 +1986,7 @@ if ($action == '' || $action == 'view')
     print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
     print '</div></div></div>';
-}
+}*/
 
 
 llxFooter();
