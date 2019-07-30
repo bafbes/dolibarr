@@ -63,8 +63,11 @@
 		{
 		    print '<td width="15%" class="fieldrequired">'.$langs->trans("WarehouseSource").'</td>';
 		    print '<td width="15%">';
-		    print $formproduct->selectWarehouses((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'ifone')), 'id_entrepot', 'warehouseopen,warehouseinternal', 1);
-		    print '</td>';
+//		    print $formproduct->selectWarehouses((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'ifone')), 'id_entrepot', 'warehouseopen,warehouseinternal', 1);
+            $htmlname='id_entrepot';
+            $urloption = "htmlname=$htmlname&XDEBUG_SESSION_START=PHPSTORM";
+            print entrepot_ajax_autocompleter((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'')), 1, $htmlname, dol_buildpath('/equipement/ajax/entrepots.php', 1), $urloption, 2, 1, array(),'search_id_entrepot_destination');
+            print '</td>';
 		}
 		if ($object->element == 'stock')
 		{
@@ -75,9 +78,12 @@
 		}
 		
 		print '<td width="15%" class="fieldrequired">'.$langs->trans("WarehouseTarget").'</td><td width="15%">';
-		print $formproduct->selectWarehouses(GETPOST('id_entrepot_destination'), 'id_entrepot_destination', 'warehouseopen,warehouseinternal', 1);
+//		print $formproduct->selectWarehouses(GETPOST('id_entrepot_destination'), 'id_entrepot_destination', 'warehouseopen,warehouseinternal', 1);
+        $htmlname='id_entrepot_destination';
+        $urloption = "htmlname=$htmlname&XDEBUG_SESSION_START=PHPSTORM";
+        print entrepot_ajax_autocompleter(GETPOST("id_entrepot_destination"), 1, $htmlname, dol_buildpath('/equipement/ajax/entrepots.php', 1), $urloption, 2, 1, array(),'nbpiece');
 		print '</td>';
-		print '<td width="15%" class="fieldrequired">'.$langs->trans("NumberOfUnit").'</td><td width="15%"><input type="text" class="flat" name="nbpiece" size="10" value="'.dol_escape_htmltag(GETPOST("nbpiece")).'"></td>';
+		print '<td width="15%" class="fieldrequired">'.$langs->trans("NumberOfUnit").'</td><td width="15%"><input type="text" class="flat" id="nbpiece"  name="nbpiece" size="10" value="'.dol_escape_htmltag(GETPOST("nbpiece")).'"></td>';
 		print '</tr>';
 
 		// Serial / Eat-by date
@@ -117,7 +123,7 @@
 		print '<td colspan="3">';
 		print '<input type="text" name="label" size="60" value="'.dol_escape_htmltag($valformovementlabel).'">';
 		print '</td>';
-		print '<td width="20%">'.$langs->trans("InventoryCode").'</td><td width="20%"><input class="flat maxwidth100onsmartphone" name="inventorycode" id="inventorycode" value="'.(GETPOST("inventorycode")?GETPOST("inventorycode",'alpha'):dol_print_date(dol_now(),'%y%m%d%H%M%S')).'"></td>';
+//		print '<td width="20%">'.$langs->trans("InventoryCode").'</td><td width="20%"><input class="flat maxwidth100onsmartphone" name="inventorycode" id="inventorycode" value="'.(GETPOST("inventorycode")?GETPOST("inventorycode",'alpha'):dol_print_date(dol_now(),'%y%m%d%H%M%S')).'"></td>';
 		print '</tr>';
 
 		print '</table>';
@@ -129,5 +135,11 @@
 		print '</div>';
 
 		print '</form>';
+print '<script type="text/javascript">
+$(document).ready(function() {
+    $("#search_id_entrepot").focus()
+});
+</script>';
+
 ?>
 <!-- END PHP STOCKCORRECTION.TPL.PHP -->

@@ -36,6 +36,7 @@ require_once DOL_DOCUMENT_ROOT.'/fourn/class/fournisseur.product.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/product.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/product/class/html.formproduct.class.php';
 require_once DOL_DOCUMENT_ROOT.'/product/stock/class/productstockentrepot.class.php';
+require_once DOL_DOCUMENT_ROOT.'/core/lib/functions.lib.php';
 if (! empty($conf->productbatch->enabled)) require_once DOL_DOCUMENT_ROOT.'/product/class/productbatch.class.php';
 
 $langs->load("products");
@@ -540,7 +541,7 @@ if ($id > 0 || $ref)
 			print '</td></tr>';
 		}
 
-		// PMP
+/*		// PMP
 		print '<tr><td class="titlefield">'.$langs->trans("AverageUnitPricePMP").'</td>';
 		print '<td>';
 		if ($object->pmp > 0) print price($object->pmp).' '.$langs->trans("HT");
@@ -604,7 +605,7 @@ if ($id > 0 || $ref)
         print '<tr><td>'.$form->editfieldkey($form->textwithpicto($langs->trans("DesiredStock"), $langs->trans("DesiredStockDesc"), 1),'desiredstock',$object->desiredstock,$object,$user->rights->produit->creer);
         print '</td><td colspan="2">';
         print $form->editfieldval("DesiredStock",'desiredstock',$object->desiredstock,$object,$user->rights->produit->creer,'string');
-        print '</td></tr>';
+        print '</td></tr>';*/
 
         // Real stock
         $text_stock_options = '';
@@ -622,7 +623,7 @@ if ($id > 0 || $ref)
 		print '</td>';
 		print '</tr>';
 
-		$stocktheo = price2num($object->stock_theorique, 'MS');
+/*		$stocktheo = price2num($object->stock_theorique, 'MS');
 		
         // Calculating a theorical value
         print '<tr><td>'.$langs->trans("VirtualStock").'</td>';
@@ -673,7 +674,7 @@ if ($id > 0 || $ref)
             print $langs->trans("ProductQtyInSuppliersShipmentAlreadyRecevied").': '.$object->stats_reception['qty'];
         }
 
-        print '</td></tr>';
+        print '</td></tr>';*/
 
 		// Last movement
 		$sql = "SELECT max(m.datem) as datem";
@@ -771,10 +772,10 @@ print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre">';
 print '<td colspan="4">'.$langs->trans("Warehouse").'</td>';
 print '<td align="right">'.$langs->trans("NumberOfUnit").'</td>';
-print '<td align="right">'.$langs->trans("AverageUnitPricePMPShort").'</td>';
+/*print '<td align="right">'.$langs->trans("AverageUnitPricePMPShort").'</td>';
 print '<td align="right">'.$langs->trans("EstimatedStockValueShort").'</td>';
 print '<td align="right">'.$langs->trans("SellPriceMin").'</td>';
-print '<td align="right">'.$langs->trans("EstimatedStockValueSellShort").'</td>';
+print '<td align="right">'.$langs->trans("EstimatedStockValueSellShort").'</td>';*/
 print '</tr>';
 if ((! empty($conf->productbatch->enabled)) && $object->hasbatch())
 {
@@ -816,7 +817,8 @@ if ($resql)
 		print '<tr '.$bc[$var].'>';
 		print '<td colspan="4">'.$entrepotstatic->getNomUrl(1).'</td>';
 		print '<td align="right">'.$stock_real.($stock_real < 0 ?' '.img_warning():'').'</td>';
-		// PMP
+        $total += $obj->reel;
+/*		// PMP
 		print '<td align="right">'.(price2num($object->pmp)?price2num($object->pmp,'MU'):'').'</td>';
 		// Value purchase
 		print '<td align="right">'.(price2num($object->pmp)?price(price2num($object->pmp*$obj->reel,'MT')):'').'</td>';
@@ -830,7 +832,6 @@ if ($resql)
         if (empty($conf->global->PRODUIT_MULTIPRICES)) print price(price2num($object->price*$obj->reel,'MT'),1).'</td>';
         else print $langs->trans("Variable");
 		print '</tr>'; ;
-		$total += $obj->reel;
 		if (price2num($object->pmp)) $totalwithpmp += $obj->reel;
 		$totalvalue = $totalvalue + ($object->pmp*$obj->reel);
         $totalvaluesell = $totalvaluesell + ($object->price*$obj->reel);
@@ -877,7 +878,7 @@ if ($resql)
                     print '<td colspan="4"></td></tr>';
 			    }
 			}
-		}
+		}*/
 		$i++;
 		$var=!$var;
 	}
@@ -886,7 +887,7 @@ else dol_print_error($db);
 
 print '<tr class="liste_total"><td align="right" class="liste_total" colspan="4">'.$langs->trans("Total").':</td>';
 print '<td class="liste_total" align="right">'.price2num($total, 'MS').'</td>';
-print '<td class="liste_total" align="right">';
+/*print '<td class="liste_total" align="right">';
 print ($totalwithpmp?price(price2num($totalvalue/$totalwithpmp,'MU')):'&nbsp;');	// This value may have rounding errors
 print '</td>';
 // Value purchase
@@ -901,7 +902,7 @@ print '</td>';
 print '<td class="liste_total" align="right">';
 if (empty($conf->global->PRODUIT_MULTIPRICES)) print price(price2num($totalvaluesell,'MT'),1);
 else print $langs->trans("Variable");
-print '</td>';
+print '</td>';*/
 print "</tr>";
 print "</table>";
 print '</div>';

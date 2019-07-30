@@ -56,8 +56,11 @@
 		{
 			print '<td width="20%" class="fieldrequired" colspan="2">'.$langs->trans("Warehouse").'</td>';
 			print '<td width="20%">';
-			print $formproduct->selectWarehouses((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'ifone')), 'id_entrepot', 'warehouseopen,warehouseinternal', 1, 0, 0, '', 0, 0, null, 'minwidth100');
-			print '</td>';
+//			print $formproduct->selectWarehouses((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'ifone')), 'id_entrepot', 'warehouseopen,warehouseinternal', 1, 0, 0, '', 0, 0, null, 'minwidth100');
+            $htmlname='id_entrepot';
+            $urloption = "htmlname=$htmlname&XDEBUG_SESSION_START=PHPSTORM";
+            print entrepot_ajax_autocompleter((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'')), 1, $htmlname, dol_buildpath('/equipement/ajax/entrepots.php', 1), $urloption, 2, 1, array(),'nbpiece');
+            print '</td>';
 		}
 		if ($object->element == 'stock')
 		{
@@ -74,11 +77,11 @@
 		print '<td width="20%" class="fieldrequired">'.$langs->trans("NumberOfUnit").'</td><td width="20%"><input class="flat" name="nbpiece" id="nbpiece" size="10" value="'.GETPOST("nbpiece").'"></td>';
 		print '</tr>';
 
-		// Purchase price
+/*		// Purchase price
 		print '<tr>';
 		print '<td width="20%" colspan="2">'.$langs->trans("UnitPurchaseValue").'</td>';
 		print '<td colspan="4"><input class="flat" name="unitprice" id="unitprice" size="10" value="'.GETPOST("unitprice").'"></td>';
-		print '</tr>';
+		print '</tr>';*/
 
 		// Serial / Eat-by date
 		if (! empty($conf->productbatch->enabled) && 
@@ -103,7 +106,7 @@
 			print '</tr>';
 		}
 
-		// Label of mouvement of id of inventory
+/*		// Label of mouvement of id of inventory
 		$valformovementlabel=((GETPOST("label") && (GETPOST('label') != $langs->trans("MovementCorrectStock",''))) ? GETPOST("label") : $langs->trans("MovementCorrectStock", $productref));
 		print '<tr>';
 		print '<td width="20%" colspan="2">'.$langs->trans("MovementLabel").'</td>';
@@ -111,7 +114,7 @@
 		print '<input type="text" name="label" size="60" value="'.$valformovementlabel.'">';
 		print '</td>';
 		print '<td width="20%">'.$langs->trans("InventoryCode").'</td><td width="20%"><input class="flat maxwidth100onsmartphone" name="inventorycode" id="inventorycode" value="'.GETPOST("inventorycode").'"></td>';
-		print '</tr>';
+		print '</tr>';*/
 
 		print '</table>';
 
