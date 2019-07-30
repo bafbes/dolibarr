@@ -45,7 +45,7 @@ function product_prepare_head($object)
 	$head[$h][2] = 'card';
 	$h++;
 
-	if (! empty($object->status))
+/*	if (! empty($object->status))
 	{
     	$head[$h][0] = DOL_URL_ROOT."/product/price.php?id=".$object->id;
     	$head[$h][1] = $langs->trans("SellingPrices");
@@ -93,7 +93,7 @@ function product_prepare_head($object)
 	$head[$h][1] = $langs->trans('Referers');
 	$head[$h][2] = 'referers';
 	$h++;
-
+*/
     if ($object->isProduct() || ($object->isService() && ! empty($conf->global->STOCK_SUPPORTS_SERVICES)))    // If physical product we can stock (or service with option)
     {
         if (! empty($conf->stock->enabled) && $user->rights->stock->lire)
@@ -111,7 +111,7 @@ function product_prepare_head($object)
     // $this->tabs = array('entity:-tabname);   												to remove a tab
     complete_head_from_modules($conf,$langs,$object,$head,$h,'product');
 
-    // Notes
+/*    // Notes
     if (empty($conf->global->MAIN_DISABLE_NOTES_TAB))
     {
         $nbNote = 0;
@@ -148,7 +148,7 @@ function product_prepare_head($object)
     $head[$h][0] = DOL_URL_ROOT.'/product/info.php?id='.$object->id;
     $head[$h][1] = $langs->trans("Info");
     $head[$h][2] = 'info';
-    $h++;
+    $h++;*/
 
 	return $head;
 }
