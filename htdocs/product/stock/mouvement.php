@@ -547,10 +547,10 @@ if ($resql)
         	
         print '<table class="border centpercent">';
         
-        // Value
+/*        // Value
         print '<tr><td class="titlefield">'.$langs->trans("EstimatedStockValueShort").'</td><td>';
         print price((empty($calcproducts['qty'])?'0':price2num($calcproducts['qty'],'MT')), 0, $langs, 0, -1, -1, $conf->currency);
-        print "</td></tr>";
+        print "</td></tr>";*/
 
         // Last movement
         $sql = "SELECT MAX(m.datem) as datem";
