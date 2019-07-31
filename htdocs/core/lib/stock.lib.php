@@ -69,10 +69,10 @@ function stock_prepare_head($object)
     // $this->tabs = array('entity:-tabname);   												to remove a tab
     complete_head_from_modules($conf,$langs,$object,$head,$h,'stock');
 
-    $head[$h][0] = DOL_URL_ROOT.'/product/stock/info.php?id='.$object->id;
+/*    $head[$h][0] = DOL_URL_ROOT.'/product/stock/info.php?id='.$object->id;
 	$head[$h][1] = $langs->trans("Info");
 	$head[$h][2] = 'info';
-	$h++;
+	$h++;*/
 
     complete_head_from_modules($conf,$langs,$object,$head,$h,'stock','remove');
 
