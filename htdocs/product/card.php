@@ -1433,46 +1433,41 @@ else
 
             dol_banner_tab($object, 'ref', $linkback, ($user->societe_id?0:1), 'ref');
             
-            print '</div>';
+            if(!empty($conf->patrimoine->enabled)) print '</div>';
             print '<div class="fichecenter">';
             print '<div class="fichehalfleft">';
-            
+
             print '<div class="underbanner clearboth"></div>';
             print '<table class="border tableforfield" width="100%">';
-            
+
             // Type
-            if (! empty($conf->produit->enabled) && ! empty($conf->service->enabled) && empty($conf->patrimoine->enabled))
-            {
-            	// TODO change for compatibility with edit in place
-            	$typeformat='select;0:'.$langs->trans("Product").',1:'.$langs->trans("Service");
-                print '<tr><td class="titlefield">'.$form->editfieldkey("Type",'fk_product_type',$object->type,$object,$user->rights->produit->creer||$user->rights->service->creer,$typeformat).'</td><td colspan="2">';
-                print $form->editfieldval("Type",'fk_product_type',$object->type,$object,$user->rights->produit->creer||$user->rights->service->creer,$typeformat);
+            if (!empty($conf->produit->enabled) && !empty($conf->service->enabled) && empty($conf->patrimoine->enabled)) {
+                // TODO change for compatibility with edit in place
+                $typeformat = 'select;0:' . $langs->trans("Product") . ',1:' . $langs->trans("Service");
+                print '<tr><td class="titlefield">' . $form->editfieldkey("Type", 'fk_product_type', $object->type, $object, $user->rights->produit->creer || $user->rights->service->creer, $typeformat) . '</td><td colspan="2">';
+                print $form->editfieldval("Type", 'fk_product_type', $object->type, $object, $user->rights->produit->creer || $user->rights->service->creer, $typeformat);
                 print '</td></tr>';
             }
 
-            if ($showbarcode)
-            {
+            if ($showbarcode) {
                 // Barcode type
                 print '<tr><td class="nowrap">';
                 print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
                 print $langs->trans("BarcodeType");
                 print '</td>';
-                if (($action != 'editbarcodetype') && ! empty($user->rights->produit->creer) && $createbarcode) print '<td align="right"><a href="'.$_SERVER["PHP_SELF"].'?action=editbarcodetype&amp;id='.$object->id.'">'.img_edit($langs->trans('Edit'),1).'</a></td>';
+                if (($action != 'editbarcodetype') && !empty($user->rights->produit->creer) && $createbarcode) print '<td align="right"><a href="' . $_SERVER["PHP_SELF"] . '?action=editbarcodetype&amp;id=' . $object->id . '">' . img_edit($langs->trans('Edit'), 1) . '</a></td>';
                 print '</tr></table>';
                 print '</td><td colspan="2">';
-                if ($action == 'editbarcodetype' || $action == 'editbarcode')
-                {
-                    require_once DOL_DOCUMENT_ROOT.'/core/class/html.formbarcode.class.php';
+                if ($action == 'editbarcodetype' || $action == 'editbarcode') {
+                    require_once DOL_DOCUMENT_ROOT . '/core/class/html.formbarcode.class.php';
                     $formbarcode = new FormBarCode($db);
-		}
-                if ($action == 'editbarcodetype')
-                {
-                    $formbarcode->form_barcode_type($_SERVER['PHP_SELF'].'?id='.$object->id,$object->barcode_type,'fk_barcode_type');
                 }
-                else
-                {
+                if ($action == 'editbarcodetype') {
+                    $formbarcode->form_barcode_type($_SERVER['PHP_SELF'] . '?id=' . $object->id, $object->barcode_type, 'fk_barcode_type');
+                }
+                else {
                     $object->fetch_barcode();
-                    print $object->barcode_type_label?$object->barcode_type_label:($object->barcode?'<div class="warning">'.$langs->trans("SetDefaultBarcodeType").'<div>':'');
+                    print $object->barcode_type_label ? $object->barcode_type_label : ($object->barcode ? '<div class="warning">' . $langs->trans("SetDefaultBarcodeType") . '<div>' : '');
                 }
                 print '</td></tr>'."\n";
 
