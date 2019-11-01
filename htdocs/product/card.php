@@ -1676,6 +1676,10 @@ else
                 }
             }
             print "</table>\n";
+            if (empty($conf->patrimoine->enabled)) {
+                print '</div>';
+                print '</div></div>';
+            }
             print '<div style="clear:both"></div>';
 
             dol_fiche_end();
