@@ -2806,8 +2806,9 @@ else if ($id > 0 || ! empty($ref))
 				$label = $object->type == Facture::TYPE_CREDIT_NOTE ? $langs->trans("WarehouseForStockIncrease".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''), current($warehouse_array)) : $langs->trans("WarehouseForStockDecrease".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'').(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''), current($warehouse_array));
 				$value = '<input type="hidden" id="idwarehouse" name="idwarehouse" value="' . key($warehouse_array) . '">';
 			} else {
-				$label = $object->type == Facture::TYPE_CREDIT_NOTE ? $langs->trans("SelectWarehouseForStockIncrease".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')) : $langs->trans("SelectWarehouseForStockDecrease".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''));
-				$value = $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1);
+                $_=(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'');
+				$label = $object->type == Facture::TYPE_CREDIT_NOTE ?$langs->trans("SelectWarehouseForStockIncrease$_"): $langs->trans("SelectWarehouseForStockDecrease$_");
+				$value = $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):(!empty($conf->global->MAIN_FACTURE_WAREHOUSE)?$conf->global->MAIN_FACTURE_WAREHOUSE:'ifone'), 'idwarehouse', '', 1);
 			}
 			$formquestion = array(
 								// 'text' => $langs->trans("ConfirmClone"),
@@ -2846,8 +2847,9 @@ else if ($id > 0 || ! empty($ref))
 				$label = $object->type == Facture::TYPE_CREDIT_NOTE ? $langs->trans("WarehouseForStockDecrease".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''), current($warehouse_array)) : $langs->trans("WarehouseForStockIncrease".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''), current($warehouse_array));
 				$value = '<input type="hidden" id="idwarehouse" name="idwarehouse" value="' . key($warehouse_array) . '">';
 			} else {
-				$label = $object->type == Facture::TYPE_CREDIT_NOTE ? $langs->trans("SelectWarehouseForStockDecrease".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')) : $langs->trans("SelectWarehouseForStockIncrease".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''));
-				$value = $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1);
+                $_=(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'');
+				$label = $object->type == Facture::TYPE_CREDIT_NOTE ? $langs->trans("SelectWarehouseForStockDecrease$_") : $langs->trans("SelectWarehouseForStockIncrease$_");
+				$value = $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):(!empty($conf->global->MAIN_FACTURE_WAREHOUSE)?$conf->global->MAIN_FACTURE_WAREHOUSE:'ifone'), 'idwarehouse', '', 1);
 			}
 			$formquestion = array(
 								// 'text' => $langs->trans("ConfirmClone"),

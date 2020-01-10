@@ -226,6 +226,24 @@ if ($action == 'set_FACTURE_DRAFT_WATERMARK')
     }
 }
 
+if ($action == 'set_MAIN_FACTURE_WAREHOUSE')
+{
+	$draft = GETPOST('MAIN_FACTURE_WAREHOUSE','alpha');
+
+    $res = dolibarr_set_const($db, "MAIN_FACTURE_WAREHOUSE",trim($draft),'chaine',0,'',$conf->entity);
+
+	if (! $res > 0) $error++;
+
+ 	if (! $error)
+    {
+        setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+    }
+    else
+    {
+        setEventMessages($langs->trans("Error"), null, 'errors');
+    }
+}
+
 if ($action == 'set_INVOICE_FREE_TEXT')
 {
 	$freetext = GETPOST('INVOICE_FREE_TEXT');	// No alpha here, we want exact string
@@ -762,6 +780,21 @@ print '<input type="hidden" name="action" value="set_FACTURE_DRAFT_WATERMARK" />
 print '<tr '.$bc[$var].'><td colspan="2">';
 print $langs->trans("WatermarkOnDraftBill").'<br>';
 print '<input size="50" class="flat" type="text" name="FACTURE_DRAFT_WATERMARK" value="'.$conf->global->FACTURE_DRAFT_WATERMARK.'" />';
+print '</td><td align="right">';
+print '<input type="submit" class="button" value="'.$langs->trans("Modify").'" />';
+print "</td></tr>\n";
+
+$var=!$var;
+print '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';
+print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'" />';
+print '<input type="hidden" name="action" value="set_MAIN_FACTURE_WAREHOUSE" />';
+print '<tr '.$bc[$var].'><td colspan="2">';
+print $langs->trans("MAIN_FACTURE_WAREHOUSE").'<br>';
+require_once DOL_DOCUMENT_ROOT . '/product/class/html.formproduct.class.php';
+$formproduct = new FormProduct($db);
+
+print $formproduct->selectWarehouses((!empty($conf->global->MAIN_FACTURE_WAREHOUSE)?$conf->global->MAIN_FACTURE_WAREHOUSE:1), 'MAIN_FACTURE_WAREHOUSE');
+//print '<input size="50" class="flat" type="text" name="MAIN_FACTURE_WAREHOUSE" value="'.$conf->global->MAIN_FACTURE_WAREHOUSE.'" />';
 print '</td><td align="right">';
 print '<input type="submit" class="button" value="'.$langs->trans("Modify").'" />';
 print "</td></tr>\n";
