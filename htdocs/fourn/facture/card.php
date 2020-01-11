@@ -867,225 +867,293 @@ if (empty($reshook))
 	        }
 	}
 
-	elseif ($action == 'addline' && $user->rights->fournisseur->facture->creer)
-	{
-		$db->begin();
+    elseif ($action == 'addline' && $user->rights->fournisseur->facture->creer)
+    {
+        $db->begin();
 
-	    $ret=$object->fetch($id);
-	    if ($ret < 0)
-	    {
-	        dol_print_error($db,$object->error);
-	        exit;
-	    }
-	    $ret=$object->fetch_thirdparty();
+        $ret=$object->fetch($id);
+        if ($ret < 0)
+        {
+            dol_print_error($db, $object->error);
+            exit;
+        }
+        $ret=$object->fetch_thirdparty();
 
-	    $langs->load('errors');
-		$error=0;
+        $langs->load('errors');
+        $error=0;
 
-		// Set if we used free entry or predefined product
-		$predef='';
-		$product_desc=(GETPOST('dp_desc')?GETPOST('dp_desc'):'');
-		if (GETPOST('prod_entry_mode') == 'free')
-		{
-			$idprod=0;
-			$price_ht = GETPOST('price_ht');
-			$tva_tx = (GETPOST('tva_tx') ? GETPOST('tva_tx') : 0);
-		}
-		else
-		{
-			$idprod=GETPOST('idprod', 'int');
-			$price_ht = '';
-			$tva_tx = '';
-		}
+        // Set if we used free entry or predefined product
+        $predef='';
+        $product_desc=(GETPOST('dp_desc')?GETPOST('dp_desc'):'');
+        $date_start=dol_mktime(GETPOST('date_start'.$predef.'hour'), GETPOST('date_start'.$predef.'min'), GETPOST('date_start' . $predef . 'sec'), GETPOST('date_start'.$predef.'month'), GETPOST('date_start'.$predef.'day'), GETPOST('date_start'.$predef.'year'));
+        $date_end=dol_mktime(GETPOST('date_end'.$predef.'hour'), GETPOST('date_end'.$predef.'min'), GETPOST('date_end' . $predef . 'sec'), GETPOST('date_end'.$predef.'month'), GETPOST('date_end'.$predef.'day'), GETPOST('date_end'.$predef.'year'));
 
-		$qty = GETPOST('qty'.$predef);
-		$remise_percent=GETPOST('remise_percent'.$predef);
-		$price_ht_devise = GETPOST('multicurrency_price_ht');
+        $prod_entry_mode = GETPOST('prod_entry_mode');
+        if ($prod_entry_mode == 'free')
+        {
+            $idprod=0;
+            $price_ht = GETPOST('price_ht');
+            $tva_tx = (GETPOST('tva_tx') ? GETPOST('tva_tx') : 0);
+        }
+        else
+        {
+            $idprod=GETPOST('idprod', 'int');
+            $price_ht = '';
+            $tva_tx = '';
+        }
 
-		$date_start=dol_mktime(GETPOST('date_start'.$predef.'hour'), GETPOST('date_start'.$predef.'min'), GETPOST('date_start' . $predef . 'sec'), GETPOST('date_start'.$predef.'month'), GETPOST('date_start'.$predef.'day'), GETPOST('date_start'.$predef.'year'));
-		$date_end=dol_mktime(GETPOST('date_end'.$predef.'hour'), GETPOST('date_end'.$predef.'min'), GETPOST('date_end' . $predef . 'sec'), GETPOST('date_end'.$predef.'month'), GETPOST('date_end'.$predef.'day'), GETPOST('date_end'.$predef.'year'));
+        $qty = GETPOST('qty'.$predef);
+        $remise_percent=GETPOST('remise_percent'.$predef);
+        $price_ht_devise = GETPOST('multicurrency_price_ht');
 
-	    // Extrafields
-	    $extrafieldsline = new ExtraFields($db);
-	    $extralabelsline = $extrafieldsline->fetch_name_optionals_label($object->table_element_line);
-	    $array_options = $extrafieldsline->getOptionalsFromPost($extralabelsline, $predef);
-	    // Unset extrafield
-	    if (is_array($extralabelsline)) {
-	    	// Get extra fields
-	    	foreach ($extralabelsline as $key => $value) {
-	    		unset($_POST["options_" . $key]);
-	    	}
-	    }
+        // Extrafields
+        $extrafieldsline = new ExtraFields($db);
+        $extralabelsline = $extrafieldsline->fetch_name_optionals_label($object->table_element_line);
+        $array_options = $extrafieldsline->getOptionalsFromPost($object->table_element_line, $predef);
+        // Unset extrafield
+        if (is_array($extralabelsline)) {
+            // Get extra fields
+            foreach ($extralabelsline as $key => $value) {
+                unset($_POST["options_" . $key]);
+            }
+        }
 
-	    if (GETPOST('prod_entry_mode')=='free' && GETPOST('price_ht') < 0 && $qty < 0)
-	    {
-	        setEventMessages($langs->trans('ErrorBothFieldCantBeNegative', $langs->transnoentitiesnoconv('UnitPrice'), $langs->transnoentitiesnoconv('Qty')), null, 'errors');
-	        $error++;
-	    }
-	    if (GETPOST('prod_entry_mode')=='free'  && ! GETPOST('idprodfournprice') && GETPOST('type') < 0)
-	    {
-	        setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Type')), null, 'errors');
-	        $error++;
-	    }
-	    if (GETPOST('prod_entry_mode')=='free' && GETPOST('price_ht')==='' && GETPOST('price_ttc')==='' && $price_ht_devise==='') // Unit price can be 0 but not ''
-	    {
-	        setEventMessages($langs->trans($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('UnitPrice'))), null, 'errors');
-	        $error++;
-	    }
-	    if (GETPOST('prod_entry_mode')=='free' && ! GETPOST('dp_desc'))
-	    {
-	        setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Description')), null, 'errors');
-	        $error++;
-	    }
-	    if (! GETPOST('qty'))
-	    {
-	        setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Qty')), null, 'errors');
-	        $error++;
-	    }
+        if ($prod_entry_mode =='free' && GETPOST('price_ht') < 0 && $qty < 0)
+        {
+            setEventMessages($langs->trans('ErrorBothFieldCantBeNegative', $langs->transnoentitiesnoconv('UnitPrice'), $langs->transnoentitiesnoconv('Qty')), null, 'errors');
+            $error++;
+        }
+        if ($prod_entry_mode =='free'  && ! GETPOST('idprodfournprice') && GETPOST('type') < 0)
+        {
+            setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Type')), null, 'errors');
+            $error++;
+        }
+        if ($prod_entry_mode =='free' && GETPOST('price_ht')==='' && GETPOST('price_ttc')==='' && $price_ht_devise==='') // Unit price can be 0 but not ''
+        {
+            setEventMessages($langs->trans($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('UnitPrice'))), null, 'errors');
+            $error++;
+        }
+        if ($prod_entry_mode =='free' && ! GETPOST('dp_desc'))
+        {
+            setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Description')), null, 'errors');
+            $error++;
+        }
+        if (! GETPOST('qty'))
+        {
+            setEventMessages($langs->trans('ErrorFieldRequired', $langs->transnoentitiesnoconv('Qty')), null, 'errors');
+            $error++;
+        }
 
-	    if (GETPOST('prod_entry_mode') != 'free' && empty($error))	// With combolist mode idprodfournprice is > 0 or -1. With autocomplete, idprodfournprice is > 0 or ''
-	    {
-	    	$idprod=0;
-	    	$productsupplier=new ProductFournisseur($db);
+        if (!$error && !empty($conf->variants->enabled) && $prod_entry_mode != 'free') {
+            if ($combinations = GETPOST('combinations', 'array')) {
+                //Check if there is a product with the given combination
+                $prodcomb = new ProductCombination($db);
 
-	        if (GETPOST('idprodfournprice') == -1 || GETPOST('idprodfournprice') == '') $idprod=-2;	// Same behaviour than with combolist. When not select idprodfournprice is now -2 (to avoid conflict with next action that may return -1)
+                if ($res = $prodcomb->fetchByProductCombination2ValuePairs($idprod, $combinations)) {
+                    $idprod = $res->fk_product_child;
+                } else {
+                    setEventMessages($langs->trans('ErrorProductCombinationNotFound'), null, 'errors');
+                    $error ++;
+                }
+            }
+        }
 
-	    	if (GETPOST('idprodfournprice') > 0)
-	    	{
-	    		$idprod=$productsupplier->get_buyprice(GETPOST('idprodfournprice'), $qty);    // Just to see if a price exists for the quantity. Not used to found vat.
-	    	}
+        if ($prod_entry_mode != 'free' && empty($error))	// With combolist mode idprodfournprice is > 0 or -1. With autocomplete, idprodfournprice is > 0 or ''
+        {
+            $productsupplier=new ProductFournisseur($db);
 
-		    //Replaces $fk_unit with the product's
-	        if ($idprod > 0)
-	        {
-	            $result=$productsupplier->fetch($idprod);
+            $idprod=0;
+            if (GETPOST('idprodfournprice', 'alpha') == -1 || GETPOST('idprodfournprice', 'alpha') == '') $idprod=-99;	// Same behaviour than with combolist. When not select idprodfournprice is now -99 (to avoid conflict with next action that may return -1, -2, ...)
 
-	            $label = $productsupplier->label;
+            if (preg_match('/^idprod_([0-9]+)$/', GETPOST('idprodfournprice', 'alpha'), $reg))
+            {
+                $idprod=$reg[1];
+                $res=$productsupplier->fetch($idprod);	// Load product from its id
+                // Call to init some price properties of $productsupplier
+                // So if a supplier price already exists for another thirdparty (first one found), we use it as reference price
+                if (! empty($conf->global->SUPPLIER_TAKE_FIRST_PRICE_IF_NO_PRICE_FOR_CURRENT_SUPPLIER))
+                {
+                    $fksoctosearch = 0;
+                    $productsupplier->get_buyprice(0, -1, $idprod, 'none', $fksoctosearch);        // We force qty to -1 to be sure to find if a supplier price exist
+                    if ($productsupplier->fourn_socid != $socid)	// The price we found is for another supplier, so we clear supplier price
+                    {
+                        $productsupplier->ref_supplier = '';
+                    }
+                }
+                else
+                {
+                    $fksoctosearch = $object->thirdparty->id;
+                    $productsupplier->get_buyprice(0, -1, $idprod, 'none', $fksoctosearch);        // We force qty to -1 to be sure to find if a supplier price exist
+                }
+            }
+            elseif (GETPOST('idprodfournprice', 'alpha') > 0)
+            {
+                $qtytosearch=$qty; 	   // Just to see if a price exists for the quantity. Not used to found vat.
+                //$qtytosearch=-1;	       // We force qty to -1 to be sure to find if a supplier price exist
+                $idprod=$productsupplier->get_buyprice(GETPOST('idprodfournprice', 'alpha'), $qtytosearch);
+                $res=$productsupplier->fetch($idprod);
+            }
 
-	            $desc = $productsupplier->description;
-	            if (trim($product_desc) != trim($desc)) $desc = dol_concatdesc($desc, $product_desc);
+            if ($idprod > 0)
+            {
+                $label = $productsupplier->label;
 
-	            $tva_tx=get_default_tva($object->thirdparty, $mysoc, $productsupplier->id, $_POST['idprodfournprice']);
-	            $tva_npr = get_default_npr($object->thirdparty, $mysoc, $productsupplier->id, $_POST['idprodfournprice']);
-				if (empty($tva_tx)) $tva_npr=0;
-	            $localtax1_tx= get_localtax($tva_tx, 1, $mysoc, $object->thirdparty, $tva_npr);
-	            $localtax2_tx= get_localtax($tva_tx, 2, $mysoc, $object->thirdparty, $tva_npr);
+                // if we use supplier description of the products
+                if(!empty($productsupplier->desc_supplier) && !empty($conf->global->PRODUIT_FOURN_TEXTS)) {
+                    $desc = $productsupplier->desc_supplier;
+                } else $desc = $productsupplier->description;
 
-	            $type = $productsupplier->type;
-	            $price_base_type = 'HT';
+                if (trim($product_desc) != trim($desc)) $desc = dol_concatdesc($desc, $product_desc, '', !empty($conf->global->MAIN_CHANGE_ORDER_CONCAT_DESCRIPTION));
 
-	            // TODO Save the product supplier ref into database into field ref_supplier (must rename field ref into ref_supplier first)
-	            $result=$object->addline($desc, $productsupplier->fourn_pu, $tva_tx, $localtax1_tx, $localtax2_tx, $qty, $idprod, $remise_percent, $date_start, $date_end, 0, $tva_npr, $price_base_type, $type, -1, 0, $array_options, $productsupplier->fk_unit);
-	        }
-	    	if ($idprod == -2 || $idprod == 0)
-	        {
-	            // Product not selected
-	            $error++;
-	            $langs->load("errors");
-		        setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("ProductOrService")), null, 'errors');
-	        }
-	        if ($idprod == -1)
-	        {
-	            // Quantity too low
-	            $error++;
-	            $langs->load("errors");
-		        setEventMessages($langs->trans("ErrorQtyTooLowForThisSupplier"), null, 'errors');
-	        }
-	    }
-		else if (empty($error)) // $price_ht is already set
-		{
-			$tva_npr = (preg_match('/\*/', $tva_tx) ? 1 : 0);
-			$tva_tx = str_replace('*', '', $tva_tx);
-			$label = (GETPOST('product_label') ? GETPOST('product_label') : '');
-			$desc = $product_desc;
-			$type = GETPOST('type');
+                $type = $productsupplier->type;
+                $price_base_type = ($productsupplier->fourn_price_base_type?$productsupplier->fourn_price_base_type:'HT');
 
-			$fk_unit= GETPOST('units', 'alpha');
+                $ref_supplier = $productsupplier->ref_supplier;
 
-	    	$tva_tx = price2num($tva_tx);	// When vat is text input field
+                $tva_tx=get_default_tva($object->thirdparty, $mysoc, $productsupplier->id, GETPOST('idprodfournprice', 'alpha'));
+                $tva_npr = get_default_npr($object->thirdparty, $mysoc, $productsupplier->id, GETPOST('idprodfournprice', 'alpha'));
+                if (empty($tva_tx)) $tva_npr=0;
+                $localtax1_tx= get_localtax($tva_tx, 1, $mysoc, $object->thirdparty, $tva_npr);
+                $localtax2_tx= get_localtax($tva_tx, 2, $mysoc, $object->thirdparty, $tva_npr);
 
-	    	// Local Taxes
-	    	$localtax1_tx= get_localtax($tva_tx, 1,$mysoc,$object->thirdparty);
-	    	$localtax2_tx= get_localtax($tva_tx, 2,$mysoc,$object->thirdparty);
+                $pu = $productsupplier->fourn_pu;
+                if (empty($pu)) $pu = 0;	// If pu is '' or null, we force to have a numeric value
 
-			if ($price_ht !== '')
-			{
-				$pu_ht = price2num($price_ht, 'MU'); // $pu_ht must be rounded according to settings
-			}
-			else
-			{
-				$pu_ttc = price2num(GETPOST('price_ttc'), 'MU');
-				$pu_ht = price2num($pu_ttc / (1 + ($tva_tx / 100)), 'MU'); // $pu_ht must be rounded according to settings
-			}
-			$price_base_type = 'HT';
-			$pu_ht_devise = price2num($price_ht_devise, 'MU');
-			
-			$result=$object->addline($product_desc, $pu_ht, $tva_tx, $localtax1_tx, $localtax2_tx, $qty, 0, $remise_percent, $date_start, $date_end, 0, $tva_npr, $price_base_type, $type, -1, 0, $array_options, $fk_unit, 0, $pu_ht_devise);
-	    }
+                $result=$object->addline(
+                    $desc,
+                    $pu,
+                    $tva_tx,
+                    $localtax1_tx,
+                    $localtax2_tx,
+                    $qty,
+                    $idprod,
+                    $remise_percent,
+                    $date_start,
+                    $date_end,
+                    0,
+                    $tva_npr,
+                    $price_base_type,
+                    $type,
+                    -1,
+                    0,
+                    $array_options,
+                    $productsupplier->fk_unit,
+                    0,
+                    $productsupplier->fourn_multicurrency_unitprice,
+                    $ref_supplier
+                );
+            }
+            if ($idprod == -99 || $idprod == 0)
+            {
+                // Product not selected
+                $error++;
+                $langs->load("errors");
+                setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("ProductOrService")), null, 'errors');
+            }
+            if ($idprod == -1)
+            {
+                // Quantity too low
+                $error++;
+                $langs->load("errors");
+                setEventMessages($langs->trans("ErrorQtyTooLowForThisSupplier"), null, 'errors');
+            }
+        }
+        elseif (empty($error)) // $price_ht is already set
+        {
+            $tva_npr = (preg_match('/\*/', $tva_tx) ? 1 : 0);
+            $tva_tx = str_replace('*', '', $tva_tx);
+            $label = (GETPOST('product_label') ? GETPOST('product_label') : '');
+            $desc = $product_desc;
+            $type = GETPOST('type');
+            $ref_supplier = GETPOST('fourn_ref', 'alpha');
 
-	    //print "xx".$tva_tx; exit;
-	    if (! $error && $result > 0)
-	    {
-	    	$db->commit();
+            $fk_unit= GETPOST('units', 'alpha');
 
-	        // Define output language
-	    	if (empty($conf->global->MAIN_DISABLE_PDF_AUTOUPDATE))
-	    	{
-	    		$outputlangs = $langs;
-	    		$newlang = '';
-	    		if ($conf->global->MAIN_MULTILANGS && empty($newlang) && GETPOST('lang_id')) $newlang = GETPOST('lang_id','alpha');
-	    		if ($conf->global->MAIN_MULTILANGS && empty($newlang))	$newlang = $object->thirdparty->default_lang;
-	    		if (! empty($newlang)) {
-	    			$outputlangs = new Translate("", $conf);
-	    			$outputlangs->setDefaultLang($newlang);
-	    		}
-	    		$model=$object->modelpdf;
-	    		$ret = $object->fetch($id); // Reload to get new records
+            $tva_tx = price2num($tva_tx);	// When vat is text input field
 
-	    		$result=$object->generateDocument($model, $outputlangs, $hidedetails, $hidedesc, $hideref);
-	    		if ($result < 0) dol_print_error($db,$result);
-	    	}
+            // Local Taxes
+            $localtax1_tx= get_localtax($tva_tx, 1, $mysoc, $object->thirdparty);
+            $localtax2_tx= get_localtax($tva_tx, 2, $mysoc, $object->thirdparty);
 
-			unset($_POST ['prod_entry_mode']);
+            if ($price_ht !== '')
+            {
+                $pu_ht = price2num($price_ht, 'MU'); // $pu_ht must be rounded according to settings
+            }
+            else
+            {
+                $pu_ttc = price2num(GETPOST('price_ttc'), 'MU');
+                $pu_ht = price2num($pu_ttc / (1 + ($tva_tx / 100)), 'MU'); // $pu_ht must be rounded according to settings
+            }
+            $price_base_type = 'HT';
+            $pu_ht_devise = price2num($price_ht_devise, 'MU');
 
-	    	unset($_POST['qty']);
-	    	unset($_POST['type']);
-	    	unset($_POST['remise_percent']);
-	    	unset($_POST['pu']);
-	    	unset($_POST['price_ht']);
-			unset($_POST['multicurrency_price_ht']);
-	    	unset($_POST['price_ttc']);
-	    	unset($_POST['tva_tx']);
-	    	unset($_POST['label']);
-	    	unset($localtax1_tx);
-	    	unset($localtax2_tx);
-			unset($_POST['np_marginRate']);
-			unset($_POST['np_markRate']);
-	    	unset($_POST['dp_desc']);
-			unset($_POST['idprodfournprice']);
-		    unset($_POST['units']);
+            $result=$object->addline($product_desc, $pu_ht, $tva_tx, $localtax1_tx, $localtax2_tx, $qty, 0, $remise_percent, $date_start, $date_end, 0, $tva_npr, $price_base_type, $type, -1, 0, $array_options, $fk_unit, 0, $pu_ht_devise, $ref_supplier);
+        }
 
-	    	unset($_POST['date_starthour']);
-	    	unset($_POST['date_startmin']);
-	    	unset($_POST['date_startsec']);
-	    	unset($_POST['date_startday']);
-	    	unset($_POST['date_startmonth']);
-	    	unset($_POST['date_startyear']);
-	    	unset($_POST['date_endhour']);
-	    	unset($_POST['date_endmin']);
-	    	unset($_POST['date_endsec']);
-	    	unset($_POST['date_endday']);
-	    	unset($_POST['date_endmonth']);
-	    	unset($_POST['date_endyear']);
-	    }
-	    else
-		{
-	    	$db->rollback();
-		    setEventMessages($object->error, $object->errors, 'errors');
-	    }
+        //print "xx".$tva_tx; exit;
+        if (! $error && $result > 0)
+        {
+            $db->commit();
 
-	    $action = '';
-	}
+            // Define output language
+            if (empty($conf->global->MAIN_DISABLE_PDF_AUTOUPDATE))
+            {
+                $outputlangs = $langs;
+                $newlang = '';
+                if ($conf->global->MAIN_MULTILANGS && empty($newlang) && GETPOST('lang_id', 'aZ09')) $newlang = GETPOST('lang_id', 'aZ09');
+                if ($conf->global->MAIN_MULTILANGS && empty($newlang))	$newlang = $object->thirdparty->default_lang;
+                if (! empty($newlang)) {
+                    $outputlangs = new Translate("", $conf);
+                    $outputlangs->setDefaultLang($newlang);
+                }
+                $model=$object->modelpdf;
+                $ret = $object->fetch($id); // Reload to get new records
+
+                $result=$object->generateDocument($model, $outputlangs, $hidedetails, $hidedesc, $hideref);
+                if ($result < 0) dol_print_error($db, $result);
+            }
+
+            unset($_POST ['prod_entry_mode']);
+
+            unset($_POST['qty']);
+            unset($_POST['type']);
+            unset($_POST['remise_percent']);
+            unset($_POST['pu']);
+            unset($_POST['price_ht']);
+            unset($_POST['multicurrency_price_ht']);
+            unset($_POST['price_ttc']);
+            unset($_POST['fourn_ref']);
+            unset($_POST['tva_tx']);
+            unset($_POST['label']);
+            unset($localtax1_tx);
+            unset($localtax2_tx);
+            unset($_POST['np_marginRate']);
+            unset($_POST['np_markRate']);
+            unset($_POST['dp_desc']);
+            unset($_POST['idprodfournprice']);
+            unset($_POST['units']);
+
+            unset($_POST['date_starthour']);
+            unset($_POST['date_startmin']);
+            unset($_POST['date_startsec']);
+            unset($_POST['date_startday']);
+            unset($_POST['date_startmonth']);
+            unset($_POST['date_startyear']);
+            unset($_POST['date_endhour']);
+            unset($_POST['date_endmin']);
+            unset($_POST['date_endsec']);
+            unset($_POST['date_endday']);
+            unset($_POST['date_endmonth']);
+            unset($_POST['date_endyear']);
+        }
+        else
+        {
+            $db->rollback();
+            setEventMessages($object->error, $object->errors, 'errors');
+        }
+
+        $action = '';
+    }
 
 	elseif ($action == 'classin')
 	{

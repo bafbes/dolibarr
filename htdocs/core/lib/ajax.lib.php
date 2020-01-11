@@ -145,9 +145,9 @@ function ajax_autocompleter($selected, $htmlname, $url, $urloption='', $minLengt
     								if (options.error) {
     									$.jnotify(options.error, "error", true);		// Output with jnotify the error message
     								}
-    								if (options.warning) {
+/*    								if (options.warning) {
     									$.jnotify(options.warning, "warning", false);		// Output with jnotify the warning message
-    								}
+    								}*/
 							} else {
     								$("#" + options.option_disabled).removeAttr("disabled");
     							}
