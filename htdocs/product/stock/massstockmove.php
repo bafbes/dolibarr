@@ -84,18 +84,18 @@ if ($action == 'addline')
 	if (! ($id_sw > 0))
 	{
 		$error++;
-		setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("WarehouseSource")), null, 'errors');
+		setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("WarehouseSource".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''))), null, 'errors');
 	}
 	if (! ($id_tw > 0))
 	{
 		$error++;
-		setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("WarehouseTarget")), null, 'errors');
+		setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("WarehouseTarget".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''))), null, 'errors');
 	}
 	if ($id_sw > 0 && $id_tw == $id_sw)
 	{
 		$error++;
 		$langs->load("errors");
-		setEventMessages($langs->trans("ErrorWarehouseMustDiffers"), null, 'errors');
+		setEventMessages($langs->trans("ErrorWarehouseMustDiffers".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')), null, 'errors');
 	}
 	if (! $qty)
 	{
@@ -354,8 +354,8 @@ if ($conf->productbatch->enabled)
 {
 	print getTitleFieldOfList($langs->trans('Batch'),0,$_SERVER["PHP_SELF"],'',$param,'','class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
 }
-print getTitleFieldOfList($langs->trans('WarehouseSource'),0,$_SERVER["PHP_SELF"],'',$param,'','class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
-print getTitleFieldOfList($langs->trans('WarehouseTarget'),0,$_SERVER["PHP_SELF"],'',$param,'','class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
+print getTitleFieldOfList($langs->trans('WarehouseSource'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')),0,$_SERVER["PHP_SELF"],'',$param,'','class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
+print getTitleFieldOfList($langs->trans('WarehouseTarget'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')),0,$_SERVER["PHP_SELF"],'',$param,'','class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
 print getTitleFieldOfList($langs->trans('Qty'),0,$_SERVER["PHP_SELF"],'',$param,'','align="center" class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
 print getTitleFieldOfList('',0);
 print '</tr>';

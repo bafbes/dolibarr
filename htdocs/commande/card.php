@@ -1066,7 +1066,7 @@ if (empty($reshook))
 			if (! $idwarehouse || $idwarehouse == -1)
 			{
 				$error++;
-				setEventMessages($langs->trans('ErrorFieldRequired',$langs->transnoentitiesnoconv("Warehouse")), null, 'errors');
+				setEventMessages($langs->trans('ErrorFieldRequired',$langs->transnoentitiesnoconv("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''))), null, 'errors');
 				$action='';
 			}
 		}
@@ -1119,7 +1119,7 @@ if (empty($reshook))
 			if (! $idwarehouse || $idwarehouse == -1)
 			{
 				$error++;
-				setEventMessages($langs->trans('ErrorFieldRequired',$langs->transnoentitiesnoconv("Warehouse")), null, 'errors');
+				setEventMessages($langs->trans('ErrorFieldRequired',$langs->transnoentitiesnoconv("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''))), null, 'errors');
 				$action='';
 			}
 		}
@@ -1178,7 +1178,7 @@ if (empty($reshook))
 			if (! $idwarehouse || $idwarehouse == -1)
 			{
 				$error++;
-				setEventMessages($langs->trans('ErrorFieldRequired',$langs->transnoentitiesnoconv("Warehouse")), null, 'errors');
+				setEventMessages($langs->trans('ErrorFieldRequired',$langs->transnoentitiesnoconv("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''))), null, 'errors');
 				$action='';
 			}
 		}
@@ -1600,7 +1600,7 @@ if ($action == 'create' && $user->rights->commande->creer)
     if (! empty($conf->expedition->enabled) && ! empty($conf->global->WAREHOUSE_ASK_WAREHOUSE_DURING_ORDER)) {
         require_once DOL_DOCUMENT_ROOT.'/product/class/html.formproduct.class.php';
         $formproduct=new FormProduct($db);
-        print '<tr><td>' . $langs->trans('Warehouse') . '</td><td colspan="2">';
+        print '<tr><td>' . $langs->trans('Warehouse'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')) . '</td><td colspan="2">';
         print $formproduct->selectWarehouses($warehouse_id, 'warehouse_id', '', 1);
         print '</td></tr>';
     }
@@ -1845,7 +1845,7 @@ if ($action == 'create' && $user->rights->commande->creer)
 									// => 1),
 									// array('type' => 'checkbox', 'name' => 'update_prices', 'label' => $langs->trans("PuttingPricesUpToDate"),
 									// 'value' => 1),
-									array('type' => 'other','name' => 'idwarehouse','label' => $langs->trans("SelectWarehouseForStockDecrease"),'value' => $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1)));
+									array('type' => 'other','name' => 'idwarehouse','label' => $langs->trans("SelectWarehouseForStockDecrease".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')),'value' => $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1)));
 			}
 
 			$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"] . '?id=' . $object->id, $langs->trans('ValidateOrder'), $text, 'confirm_validate', $formquestion, 0, 1, 220);
@@ -1877,7 +1877,7 @@ if ($action == 'create' && $user->rights->commande->creer)
 									// => 1),
 									// array('type' => 'checkbox', 'name' => 'update_prices', 'label' => $langs->trans("PuttingPricesUpToDate"),
 									// 'value' => 1),
-									array('type' => 'other','name' => 'idwarehouse','label' => $langs->trans("SelectWarehouseForStockIncrease"),'value' => $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1)));
+									array('type' => 'other','name' => 'idwarehouse','label' => $langs->trans("SelectWarehouseForStockIncrease".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')),'value' => $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1)));
 			}
 
 			$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"] . '?id=' . $object->id, $langs->trans('UnvalidateOrder'), $text, 'confirm_modif', $formquestion, "yes", 1, 220);
@@ -1918,7 +1918,7 @@ if ($action == 'create' && $user->rights->commande->creer)
 									// => 1),
 									// array('type' => 'checkbox', 'name' => 'update_prices', 'label' => $langs->trans("PuttingPricesUpToDate"),
 									// 'value' => 1),
-									array('type' => 'other','name' => 'idwarehouse','label' => $langs->trans("SelectWarehouseForStockIncrease"),'value' => $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1)));
+									array('type' => 'other','name' => 'idwarehouse','label' => $langs->trans("SelectWarehouseForStockIncrease".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')),'value' => $formproduct->selectWarehouses(GETPOST('idwarehouse')?GETPOST('idwarehouse'):'ifone', 'idwarehouse', '', 1)));
 			}
 
 			$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"] . '?id=' . $object->id, $langs->trans('Cancel'), $text, 'confirm_cancel', $formquestion, 0, 1);
@@ -2138,7 +2138,7 @@ if ($action == 'create' && $user->rights->commande->creer)
             $formproduct=new FormProduct($db);
             print '<tr><td>';
             print '<table width="100%" class="nobordernopadding"><tr><td>';
-            print $langs->trans('Warehouse');
+            print $langs->trans('Warehouse'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''));
             print '</td>';
             if ($action != 'editwarehouse' && $user->rights->commande->creer)
                 print '<td align="right"><a href="'.$_SERVER["PHP_SELF"].'?action=editwarehouse&amp;id='.$object->id.'">'.img_edit($langs->trans('SetWarehouse'),1).'</a></td>';

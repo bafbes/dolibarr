@@ -391,7 +391,7 @@ if (empty($reshook))
 	    }
 	    else
 	    {
-	        setEventMessages($langs->trans("ErrorFieldRequired",$langs->transnoentitiesnoconv("QtyToShip").'/'.$langs->transnoentitiesnoconv("Warehouse")), null, 'errors');
+	        setEventMessages($langs->trans("ErrorFieldRequired",$langs->transnoentitiesnoconv("QtyToShip").'/'.$langs->transnoentitiesnoconv("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''))), null, 'errors');
 	        $error++;
 	    }
 
@@ -839,11 +839,11 @@ if ($action == 'create')
                 {
 					if (empty($conf->productbatch->enabled))
 					{
-                    	print '<td align="left">'.$langs->trans("Warehouse").' ('.$langs->trans("Stock").')</td>';
+                    	print '<td align="left">'.$langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).' ('.$langs->trans("Stock").')</td>';
 					}
 					else
 					{
-						print '<td align="left">'.$langs->trans("Warehouse").' / '.$langs->trans("Batch").' ('.$langs->trans("Stock").')</td>';
+						print '<td align="left">'.$langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).' / '.$langs->trans("Batch").' ('.$langs->trans("Stock").')</td>';
 					}
                 }
                 print "</tr>\n";
@@ -1716,7 +1716,7 @@ else if ($id || $ref)
 
 		if (! empty($conf->stock->enabled))
 		{
-			print '<td align="left">'.$langs->trans("WarehouseSource").'</td>';
+			print '<td align="left">'.$langs->trans("WarehouseSource".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td>';
 		}
 
 		if (! empty($conf->productbatch->enabled))

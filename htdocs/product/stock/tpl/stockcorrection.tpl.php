@@ -54,7 +54,7 @@
 		print '<tr>';
 		if ($object->element == 'product')
 		{
-			print '<td width="20%" class="fieldrequired" colspan="2">'.$langs->trans("Warehouse").'</td>';
+			print '<td width="20%" class="fieldrequired" colspan="2">'.$langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td>';
 			print '<td width="20%">';
 			print $formproduct->selectWarehouses((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'ifone')), 'id_entrepot', 'warehouseopen,warehouseinternal', 1, 0, 0, '', 0, 0, null, 'minwidth100');
 			print '</td>';

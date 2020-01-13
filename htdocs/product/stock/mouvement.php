@@ -89,7 +89,7 @@ $arrayfields=array(
     'm.batch'=>array('label'=>$langs->trans("BatchNumberShort"), 'checked'=>1, 'enabled'=>(! empty($conf->productbatch->enabled))),
     'pl.eatby'=>array('label'=>$langs->trans("EatByDate"), 'checked'=>0, 'enabled'=>(! empty($conf->productbatch->enabled))),
     'pl.sellby'=>array('label'=>$langs->trans("SellByDate"), 'checked'=>0, 'position'=>10, 'enabled'=>(! empty($conf->productbatch->enabled))),
-    'e.label'=>array('label'=>$langs->trans("Warehouse"), 'checked'=>1, 'enabled'=>(! $id > 0)),	// If we are on specific warehouse, we hide it
+    'e.label'=>array('label'=>$langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')), 'checked'=>1, 'enabled'=>(! $id > 0)),	// If we are on specific warehouse, we hide it
     'm.fk_user_author'=>array('label'=>$langs->trans("Author"), 'checked'=>0),
     'm.inventorycode'=>array('label'=>$langs->trans("InventoryCodeShort"), 'checked'=>1),
     'm.label'=>array('label'=>$langs->trans("LabelMovement"), 'checked'=>1),
@@ -213,7 +213,7 @@ if ($action == "transfert_stock" && ! $cancel)
     
     if (! (GETPOST("id_entrepot_destination",'int') > 0))
     {
-        setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("Warehouse")), null, 'errors');
+        setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''))), null, 'errors');
         $error++;
         $action='transfert';
     }
@@ -231,7 +231,7 @@ if ($action == "transfert_stock" && ! $cancel)
     }
     if ($id == GETPOST("id_entrepot_destination",'int'))
     {
-        setEventMessages($langs->trans("ErrorSrcAndTargetWarehouseMustDiffers"), null, 'errors');
+        setEventMessages($langs->trans("ErrorSrcAndTargetWarehouseMustDiffers".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')), null, 'errors');
         $error++;
         $action='transfert';
     }
@@ -493,7 +493,7 @@ if ($resql)
     $i = 0;
     $help_url='EN:Module_Stocks_En|FR:Module_Stock|ES:M&oacute;dulo_Stocks';
     $texte = $langs->trans("ListOfStockMovements");
-    if ($id) $texte.=' ('.$langs->trans("ForThisWarehouse").')';
+    if ($id) $texte.=' ('.$langs->trans("ForThisWarehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).')';
     llxHeader("",$texte,$help_url);
 
     /*
@@ -503,7 +503,7 @@ if ($resql)
     {
         $head = stock_prepare_head($object);
 
-        dol_fiche_head($head, 'movements', $langs->trans("Warehouse"), 0, 'stock');
+        dol_fiche_head($head, 'movements', $langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')), 0, 'stock');
 
         
         $linkback = '<a href="'.DOL_URL_ROOT.'/product/stock/list.php">'.$langs->trans("BackToList").'</a>';

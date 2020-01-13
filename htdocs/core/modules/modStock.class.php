@@ -129,9 +129,9 @@ class modStock extends DolibarrModules
 
 		$r++;
 		$this->export_code[$r]=$this->rights_class.'_'.$r;
-		$this->export_label[$r]="WarehousesAndProducts";	// Translation key (used only if key ExportDataset_xxx_z not found)
+		$this->export_label[$r]="WarehousesAndProducts".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'');	// Translation key (used only if key ExportDataset_xxx_z not found)
 		$this->export_permission[$r]=array(array("stock","lire"));
-		$this->export_fields_array[$r]=array('e.rowid'=>'IdWarehouse','e.label'=>'LocationSummary','e.description'=>'DescWareHouse','e.lieu'=>'LieuWareHouse','e.address'=>'Address','e.zip'=>'Zip','e.town'=>'Town','p.rowid'=>"ProductId",'p.ref'=>"Ref",'p.fk_product_type'=>"Type",'p.label'=>"Label",'p.description'=>"Description",'p.note'=>"Note",'p.price'=>"Price",'p.tva_tx'=>'VAT','p.tosell'=>"OnSell",'p.duration'=>"Duration",'p.datec'=>'DateCreation','p.tms'=>'DateModification','ps.reel'=>'Stock');
+		$this->export_fields_array[$r]=array('e.rowid'=>'IdWarehouse'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''),'e.label'=>'LocationSummary','e.description'=>'DescWareHouse'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''),'e.lieu'=>'LieuWareHouse'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''),'e.address'=>'Address','e.zip'=>'Zip','e.town'=>'Town','p.rowid'=>"ProductId",'p.ref'=>"Ref",'p.fk_product_type'=>"Type",'p.label'=>"Label",'p.description'=>"Description",'p.note'=>"Note",'p.price'=>"Price",'p.tva_tx'=>'VAT','p.tosell'=>"OnSell",'p.duration'=>"Duration",'p.datec'=>'DateCreation','p.tms'=>'DateModification','ps.reel'=>'Stock');
 		$this->export_TypeFields_array[$r]=array('e.rowid'=>'List:entrepot:label','e.label'=>'Text','e.lieu'=>'Text','e.address'=>'Text','e.zip'=>'Text','e.town'=>'Text','p.rowid'=>"List:product:label",'p.ref'=>"Text",'p.fk_product_type'=>"Text",'p.label'=>"Text",'p.description'=>"Text",'p.note'=>"Text",'p.price'=>"Numeric",'p.tva_tx'=>'Numeric','p.tosell'=>"Boolean",'p.duration'=>"Duree",'p.datec'=>'Date','p.tms'=>'Date','ps.reel'=>'Numeric');
 		$this->export_entities_array[$r]=array('e.rowid'=>'warehouse','e.label'=>'warehouse','e.description'=>'warehouse','e.lieu'=>'warehouse','e.address'=>'warehouse','e.zip'=>'warehouse','e.town'=>'warehouse','p.rowid'=>"product",'p.ref'=>"product",'p.fk_product_type'=>"product",'p.label'=>"product",'p.description'=>"product",'p.note'=>"product",'p.price'=>"product",'p.tva_tx'=>'product','p.tosell'=>"product",'p.duration'=>"product",'p.datec'=>'product','p.tms'=>'product','ps.reel'=>'stock');
 		$this->export_aggregate_array[$r]=array('ps.reel'=>'SUM');    // TODO Not used yet
@@ -149,9 +149,9 @@ class modStock extends DolibarrModules
 			$r++;
 
 			$this->export_code[$r]=$this->rights_class.'_'.$r;
-			$this->export_label[$r]="WarehousesAndProductsBatchDetail";	// Translation key (used only if key ExportDataset_xxx_z not found)
+			$this->export_label[$r]="WarehousesAndProductsBatchDetail".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'');	// Translation key (used only if key ExportDataset_xxx_z not found)
 			$this->export_permission[$r]=array(array("stock","lire"));
-			$this->export_fields_array[$r]=array('e.rowid'=>'IdWarehouse','e.label'=>'LocationSummary','e.description'=>'DescWareHouse','e.lieu'=>'LieuWareHouse','e.address'=>'Address','e.zip'=>'Zip','e.town'=>'Town','p.rowid'=>"ProductId",'p.ref'=>"Ref",'p.fk_product_type'=>"Type",'p.label'=>"Label",'p.description'=>"Description",'p.note'=>"Note",'p.price'=>"Price",'p.tva_tx'=>'VAT','p.tosell'=>"OnSell",'p.duration'=>"Duration",'p.datec'=>'DateCreation','p.tms'=>'DateModification','pb.rowid'=>'Id','pb.batch'=>'Batch','pb.eatby'=>'EatByDate','pb.sellby'=>'SellByDate','pb.qty'=>'Qty');
+			$this->export_fields_array[$r]=array('e.rowid'=>'IdWarehouse'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''),'e.label'=>'LocationSummary','e.description'=>'DescWareHouse'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''),'e.lieu'=>'LieuWareHouse'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''),'e.address'=>'Address','e.zip'=>'Zip','e.town'=>'Town','p.rowid'=>"ProductId",'p.ref'=>"Ref",'p.fk_product_type'=>"Type",'p.label'=>"Label",'p.description'=>"Description",'p.note'=>"Note",'p.price'=>"Price",'p.tva_tx'=>'VAT','p.tosell'=>"OnSell",'p.duration'=>"Duration",'p.datec'=>'DateCreation','p.tms'=>'DateModification','pb.rowid'=>'Id','pb.batch'=>'Batch','pb.eatby'=>'EatByDate','pb.sellby'=>'SellByDate','pb.qty'=>'Qty');
 			$this->export_TypeFields_array[$r]=array('e.rowid'=>'List:entrepot:label','e.label'=>'Text','e.lieu'=>'Text','e.address'=>'Text','e.zip'=>'Text','e.town'=>'Text','p.rowid'=>"List:product:label",'p.ref'=>"Text",'p.fk_product_type'=>"Text",'p.label'=>"Text",'p.description'=>"Text",'p.note'=>"Text",'p.price'=>"Numeric",'p.tva_tx'=>'Numeric','p.tosell'=>"Boolean",'p.duration'=>"Duree",'p.datec'=>'Date','p.tms'=>'Date','pb.batch'=>'Text','pb.eatby'=>'Date','pb.sellby'=>'Date','pb.qty'=>'Numeric');
 			$this->export_entities_array[$r]=array('e.rowid'=>'warehouse','e.label'=>'warehouse','e.description'=>'warehouse','e.lieu'=>'warehouse','e.address'=>'warehouse','e.zip'=>'warehouse','e.town'=>'warehouse','p.rowid'=>"product",'p.ref'=>"product",'p.fk_product_type'=>"product",'p.label'=>"product",'p.description'=>"product",'p.note'=>"product",'p.price'=>"product",'p.tva_tx'=>'product','p.tosell'=>"product",'p.duration'=>"product",'p.datec'=>'product','p.tms'=>'product','pb.rowid'=>'batch','pb.batch'=>'batch','pb.eatby'=>'batch','pb.sellby'=>'batch','pb.qty'=>'batch');
 			$this->export_aggregate_array[$r]=array('ps.reel'=>'SUM');    // TODO Not used yet
@@ -176,7 +176,7 @@ class modStock extends DolibarrModules
 		$this->import_tables_array[$r]=array('e'=>MAIN_DB_PREFIX.'entrepot');
 		$this->import_tables_creator_array[$r]=array('e'=>'fk_user_author');
 		$this->import_fields_array[$r]=array('e.label'=>"LocationSummary*",
-				'e.description'=>"DescWareHouse",'e.lieu'=>"LieuWareHouse",
+				'e.description'=>"DescWareHouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''),'e.lieu'=>"LieuWareHouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''),
 				'e.address'=>"Address",'e.zip'=>'Zip','e.fk_pays'=>'CountryCode',
 				'e.statut'=>'Status'
 		);

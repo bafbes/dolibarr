@@ -889,13 +889,13 @@ if ($id > 0 || ! empty($ref))
 				if (! empty($conf->stock->enabled))
 				{
 					//print '<td>';
-					print $langs->trans("WarehouseSource");
+					print $langs->trans("WarehouseSource".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''));
 					//print '</td>';
 					//print '<td>';
 					print $formproduct->selectWarehouses(! empty($object->warehouse_id)?$object->warehouse_id:-1, 'entrepot_id', '', 1, 0, 0, '', 0, 0, array(), 'minwidth200');
 					if (count($formproduct->cache_warehouses) <= 0)
 					{
-						print ' &nbsp; '.$langs->trans("WarehouseSourceNotDefined").' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?action=create">'.$langs->trans("AddOne").'</a>';
+						print ' &nbsp; '.$langs->trans("WarehouseSourceNotDefined".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?action=create">'.$langs->trans("AddOne").'</a>';
 					}
 					//print '</td>';
 				}

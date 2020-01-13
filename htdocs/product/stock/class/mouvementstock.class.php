@@ -304,8 +304,8 @@ class MouvementStock extends CommonObject
     		    if (empty($product->stock_warehouse[$entrepot_id]->real) || $product->stock_warehouse[$entrepot_id]->real < abs($qty))
     		    {
     		        $langs->load("stocks");
-    		        $this->error = $langs->trans('qtyToTranferIsNotEnough');
-    		        $this->errors[] = $langs->trans('qtyToTranferIsNotEnough');
+    		        $this->error = $langs->trans('qtyToTranferIsNotEnough'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''));
+    		        $this->errors[] = $langs->trans('qtyToTranferIsNotEnough'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''));
     		        $this->db->rollback();
     		        return -8;
     		    }

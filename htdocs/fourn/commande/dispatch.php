@@ -169,7 +169,7 @@ if ($action == 'dispatch' && $user->rights->fournisseur->commande->receptionner)
 			if (GETPOST($qty) > 0) {
 				if (! (GETPOST($ent, 'int') > 0)) {
 					dol_syslog('No dispatch for line ' . $key . ' as no warehouse choosed');
-					$text = $langs->transnoentities('Warehouse') . ', ' . $langs->transnoentities('Line') . ' ' . ($numline);
+					$text = $langs->transnoentities('Warehouse'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')) . ', ' . $langs->transnoentities('Line') . ' ' . ($numline);
 					setEventMessages($langs->trans('ErrorFieldRequired', $text), null, 'errors');
 					$error ++;
 				}
@@ -206,7 +206,7 @@ if ($action == 'dispatch' && $user->rights->fournisseur->commande->receptionner)
 			if (GETPOST($qty) > 0) {
 				if (! (GETPOST($ent, 'int') > 0)) {
 					dol_syslog('No dispatch for line ' . $key . ' as no warehouse choosed');
-					$text = $langs->transnoentities('Warehouse') . ', ' . $langs->transnoentities('Line') . ' ' . ($numline) . '-' . ($reg[1] + 1);
+					$text = $langs->transnoentities('Warehouse'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')) . ', ' . $langs->transnoentities('Line') . ' ' . ($numline) . '-' . ($reg[1] + 1);
 					setEventMessages($langs->trans('ErrorFieldRequired', $text), null, 'errors');
 					$error ++;
 				}
@@ -453,7 +453,7 @@ if ($id > 0 || ! empty($ref)) {
 				print '<td align="right">' . $langs->trans("QtyOrdered") . '</td>';
 				print '<td align="right">' . $langs->trans("QtyDispatchedShort") . '</td>';
 				print '<td align="right">' . $langs->trans("QtyToDispatchShort") . '</td>';
-				print '<td align="right">' . $langs->trans("Warehouse") . '</td>';
+				print '<td align="right">' . $langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')) . '</td>';
 				print "</tr>\n";
 
 				if (! empty($conf->productbatch->enabled)) {

@@ -457,7 +457,7 @@ if (! empty($conf->fournisseur->enabled) && !empty($conf->global->STOCK_CALCULAT
 $var=!$var;
 
 print "<tr ".$bc[$var].">";
-print '<td width="60%">'.$langs->trans("UserWarehouseAutoCreate").'</td>';
+print '<td width="60%">'.$langs->trans("UserWarehouseAutoCreate".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td>';
 print '<td width="160" align="right">';
 print "<form method=\"post\" action=\"stock.php\">";
 print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
@@ -471,7 +471,7 @@ print "</tr>\n";
 $var=!$var;
 
 print "<tr ".$bc[$var].">";
-print '<td width="60%">'.$langs->trans("AllowAddLimitStockByWarehouse").'</td>';
+print '<td width="60%">'.$langs->trans("AllowAddLimitStockByWarehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td>';
 
 print '<td width="160" align="right">';
 print "<form method=\"post\" action=\"stock.php\">";

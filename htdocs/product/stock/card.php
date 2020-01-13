@@ -102,7 +102,7 @@ if ($action == 'add' && $user->rights->stock->creer)
 	}
 	else 
 	{
-		setEventMessages($langs->trans("ErrorWarehouseRefRequired"), null, 'errors');
+		setEventMessages($langs->trans("ErrorWarehouseRefRequired".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')), null, 'errors');
 		$action="create";   // Force retour sur page creation
 	}
 }
@@ -174,12 +174,12 @@ $formproduct=new FormProduct($db);
 $formcompany=new FormCompany($db);
 
 $help_url='EN:Module_Stocks_En|FR:Module_Stock|ES:M&oacute;dulo_Stocks';
-llxHeader("",$langs->trans("WarehouseCard"),$help_url);
+llxHeader("",$langs->trans("WarehouseCard".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')),$help_url);
 
 
 if ($action == 'create')
 {
-	print load_fiche_titre($langs->trans("NewWarehouse"));
+	print load_fiche_titre($langs->trans("NewWarehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')));
 
 	print '<form action="'.$_SERVER["PHP_SELF"].'" method="post">'."\n";
 	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
@@ -273,14 +273,14 @@ else
 		{
 			$head = stock_prepare_head($object);
 
-			dol_fiche_head($head, 'card', $langs->trans("Warehouse"), 0, 'stock');
+			dol_fiche_head($head, 'card', $langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')), 0, 'stock');
 
 			$formconfirm = '';
 			
 			// Confirm delete third party
 			if ($action == 'delete')
 			{
-				$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"]."?id=".$object->id,$langs->trans("DeleteAWarehouse"),$langs->trans("ConfirmDeleteWarehouse",$object->libelle),"confirm_delete",'',0,2);
+				$formconfirm = $form->formconfirm($_SERVER["PHP_SELF"]."?id=".$object->id,$langs->trans("DeleteAWarehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')),$langs->trans("ConfirmDeleteWarehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''),$object->libelle),"confirm_delete",'',0,2);
 			}
 
 			if (! $formconfirm) {
@@ -312,7 +312,7 @@ else
 			$e = new Entrepot($db);
 			if(!empty($object->fk_parent) && $e->fetch($object->fk_parent) > 0) {
 
-				print '<tr><td>'.$langs->trans("ParentWarehouse").'</td><td>';
+				print '<tr><td>'.$langs->trans("ParentWarehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td><td>';
 				print $e->getNomUrl(3);
 				print '</td></tr>';
 				
@@ -565,7 +565,7 @@ else
 		 */
 		if (($action == 'edit' || $action == 're-edit') && 1)
 		{
-			$langs->trans("WarehouseEdit");
+			$langs->trans("WarehouseEdit".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''));
 
 			print '<form action="card.php" method="POST">';
 			print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
@@ -574,7 +574,7 @@ else
 
 			$head = stock_prepare_head($object);
 
-			dol_fiche_head($head, 'card', $langs->trans("Warehouse"), 0, 'stock');
+			dol_fiche_head($head, 'card', $langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')), 0, 'stock');
 
 			print '<table class="border" width="100%">';
 

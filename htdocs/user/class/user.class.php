@@ -1013,7 +1013,7 @@ class User extends CommonObject
 						$langs->load("stocks");
 						$entrepot = new Entrepot($this->db);
 						$entrepot->libelle = $langs->trans("PersonalStock",$this->getFullName($langs));
-						$entrepot->description = $langs->trans("ThisWarehouseIsPersonalStock",$this->getFullName($langs));
+						$entrepot->description = $langs->trans("ThisWarehouseIsPersonalStock".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''),$this->getFullName($langs));
 						$entrepot->statut = 1;
 						$entrepot->country_id = $mysoc->country_id;
 						$entrepot->create($user);

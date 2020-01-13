@@ -881,7 +881,7 @@ class Expedition extends CommonObject
 			if (! ($entrepot_id > 0) && empty($conf->global->STOCK_WAREHOUSE_NOT_REQUIRED_FOR_SHIPMENTS))
 			{
 			    $langs->load("errors");
-				$this->error=$langs->trans("ErrorWarehouseRequiredIntoShipmentLine");
+				$this->error=$langs->trans("ErrorWarehouseRequiredIntoShipmentLine".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''));
 				return -1;
 			}
 

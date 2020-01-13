@@ -191,7 +191,7 @@ if ($action == "correct_stock" && ! $cancel)
 {
 	if (! (GETPOST("id_entrepot") > 0))
 	{
-		setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("Warehouse")), null, 'errors');
+		setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''))), null, 'errors');
 		$error++;
 		$action='correction';
 	}
@@ -279,7 +279,7 @@ if ($action == "transfert_stock" && ! $cancel)
 {
 	if (! (GETPOST("id_entrepot",'int') > 0) || ! (GETPOST("id_entrepot_destination",'int') > 0))
 	{
-		setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("Warehouse")), null, 'errors');
+		setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''))), null, 'errors');
 		$error++;
 		$action='transfert';
 	}
@@ -291,7 +291,8 @@ if ($action == "transfert_stock" && ! $cancel)
 	}
 	if (GETPOST("id_entrepot",'int') == GETPOST("id_entrepot_destination",'int'))
 	{
-		setEventMessages($langs->trans("ErrorSrcAndTargetWarehouseMustDiffers"), null, 'errors');
+		setEventMessages($langs->trans("ErrorSrcAndTargetWarehouseMustDiffers".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')
+        ), null, 'errors');
 		$error++;
 		$action='transfert';
 	}
@@ -613,7 +614,7 @@ if ($id > 0 || $ref)
         $text_stock_options.= (! empty($conf->global->STOCK_CALCULATE_ON_BILL)?$langs->trans("DeStockOnBill").'<br>':'');
         $text_stock_options.= (! empty($conf->global->STOCK_CALCULATE_ON_SUPPLIER_BILL)?$langs->trans("ReStockOnBill").'<br>':'');
         $text_stock_options.= (! empty($conf->global->STOCK_CALCULATE_ON_SUPPLIER_VALIDATE_ORDER)?$langs->trans("ReStockOnValidateOrder").'<br>':'');
-        $text_stock_options.= (! empty($conf->global->STOCK_CALCULATE_ON_SUPPLIER_DISPATCH_ORDER)?$langs->trans("ReStockOnDispatchOrder").'<br>':'');
+        $text_stock_options.= (! empty($conf->global->STOCK_CALCULATE_ON_SUPPLIER_DISPATCH_ORDER)?$langs->trans("ReStockOnDispatchOrder".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'<br>':'');
         print '<tr><td>';
         print $form->textwithpicto($langs->trans("PhysicalStock"), $text_stock_options, 1);
         print '</td>';
@@ -769,7 +770,7 @@ if (empty($reshook))
 print '<div class="div-table-responsive">';
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre">';
-print '<td colspan="4">'.$langs->trans("Warehouse").'</td>';
+print '<td colspan="4">'.$langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td>';
 print '<td align="right">'.$langs->trans("NumberOfUnit").'</td>';
 print '<td align="right">'.$langs->trans("AverageUnitPricePMPShort").'</td>';
 print '<td align="right">'.$langs->trans("EstimatedStockValueShort").'</td>';
@@ -909,7 +910,7 @@ print '</div>';
 if(!empty($conf->global->STOCK_ALLOW_ADD_LIMIT_STOCK_BY_WAREHOUSE)) {
 	
 	print '<br><br>';
-	print_titre($langs->trans('AddNewProductStockWarehouse'));
+	print_titre($langs->trans('AddNewProductStockWarehouse'.(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')));
 	//print '<br />';
 	
 	print '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';

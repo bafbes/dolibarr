@@ -42,7 +42,8 @@ $result=restrictedArea($user,'stock');
 $form=new Form($db);
 
 $help_url='EN:Module_Stocks_En|FR:Module_Stock|ES:M&oacute;dulo_Stocks';
-llxHeader("",$langs->trans("WarehouseCard"),$help_url);
+llxHeader("",$langs->trans("WarehouseCard".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')
+),$help_url);
 
 if ($_GET["id"])
 {
@@ -58,7 +59,7 @@ if ($_GET["id"])
 
 	$head = stock_prepare_head($entrepot);
 
-	dol_fiche_head($head, 'value', $langs->trans("Warehouse"), 0, 'stock');
+	dol_fiche_head($head, 'value', $langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')), 0, 'stock');
 
 
 	print '<table class="border" width="100%">';

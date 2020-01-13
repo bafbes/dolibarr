@@ -214,7 +214,7 @@ function show_list_sending_receive($origin,$origin_id,$filter='')
 			print '<td align="center">'.$langs->trans("QtyPreparedOrShipped").'</td>';
 			if (! empty($conf->stock->enabled))
 			{
-                print '<td>'.$langs->trans("Warehouse").'</td>';
+                print '<td>'.$langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td>';
 			}
 			/*TODO Add link to expeditiondet_batch
 			if (! empty($conf->productbatch->enabled))

@@ -45,7 +45,7 @@ $object->info($_GET["id"]);
 
 $head = stock_prepare_head($object);
 
-dol_fiche_head($head, 'info', $langs->trans("Warehouse"), 0, 'stock');
+dol_fiche_head($head, 'info', $langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')), 0, 'stock');
 
 
 $linkback = '<a href="'.DOL_URL_ROOT.'/product/stock/list.php">'.$langs->trans("BackToList").'</a>';

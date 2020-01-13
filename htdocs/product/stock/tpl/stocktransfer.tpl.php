@@ -61,7 +61,7 @@
 		print '<tr>';
 		if ($object->element == 'product')
 		{
-		    print '<td width="15%" class="fieldrequired">'.$langs->trans("WarehouseSource").'</td>';
+		    print '<td width="15%" class="fieldrequired">'.$langs->trans("WarehouseSource".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td>';
 		    print '<td width="15%">';
 		    print $formproduct->selectWarehouses((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'ifone')), 'id_entrepot', 'warehouseopen,warehouseinternal', 1);
 		    print '</td>';
@@ -74,7 +74,7 @@
 		    print '</td>';
 		}
 		
-		print '<td width="15%" class="fieldrequired">'.$langs->trans("WarehouseTarget").'</td><td width="15%">';
+		print '<td width="15%" class="fieldrequired">'.$langs->trans("WarehouseTarget".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td><td width="15%">';
 		print $formproduct->selectWarehouses(GETPOST('id_entrepot_destination'), 'id_entrepot_destination', 'warehouseopen,warehouseinternal', 1);
 		print '</td>';
 		print '<td width="15%" class="fieldrequired">'.$langs->trans("NumberOfUnit").'</td><td width="15%"><input type="text" class="flat" name="nbpiece" size="10" value="'.dol_escape_htmltag(GETPOST("nbpiece")).'"></td>';
@@ -111,7 +111,7 @@
 		}
 
 		// Label
-		$valformovementlabel=(GETPOST("label")?GETPOST("label"):$langs->trans("MovementTransferStock", $productref));
+		$valformovementlabel=(GETPOST("label")?GETPOST("label"):$langs->trans("MovementTransferStock".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':''), $productref));
 		print '<tr>';
 		print '<td width="15%">'.$langs->trans("MovementLabel").'</td>';
 		print '<td colspan="3">';

@@ -114,7 +114,7 @@ if (! empty($conf->stock->enabled) && empty($conf->global->CASHDESK_NO_DECREASE_
 {
 	$langs->load("stocks");
 	print "<tr>";
-	print '<td class="label1">'.$langs->trans("Warehouse").'</td>';
+	print '<td class="label1">'.$langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td>';
 	print '<td>';
 	$disabled=0;
 	if ($conf->global->CASHDESK_ID_WAREHOUSE > 0) $disabled=1;	// If a particular stock is defined, we disable choice

@@ -40,7 +40,7 @@ $result=restrictedArea($user,'stock');
 $help_url='EN:Module_Stocks_En|FR:Module_Stock|ES:M&oacute;dulo_Stocks';
 llxHeader("",$langs->trans("Stocks"),$help_url);
 
-print load_fiche_titre($langs->trans("StocksArea"));
+print load_fiche_titre($langs->trans("StocksArea".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')));
 
 
 //print '<table border="0" width="100%" class="notopnoleftnoright">';
@@ -76,7 +76,7 @@ if ($result)
     $i = 0;
 
     print '<table class="noborder" width="100%">';
-    print '<tr class="liste_titre"><td colspan="2">'.$langs->trans("Warehouses").'</td></tr>';
+    print '<tr class="liste_titre"><td colspan="2">'.$langs->trans("Warehouses".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td></tr>';
 
     if ($num)
     {
@@ -161,7 +161,7 @@ if ($resql)
 			print '<td>'.dol_print_date($db->jdate($objp->sellby),'day').'</td>';
 		}
 		print '<td><a href="card.php?id='.$objp->entrepot_id.'">';
-		print img_object($langs->trans("ShowWarehouse"),"stock").' '.$objp->stock;
+		print img_object($langs->trans("ShowWarehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')),"stock").' '.$objp->stock;
 		print "</a></td>\n";
 		print '<td align="right">';
 		if ($objp->qty > 0) print '+';
