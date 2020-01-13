@@ -1186,38 +1186,35 @@ else
             // Label
             print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->label).'"></td></tr>';
 
-            // Status To sell
-            print '<tr><td class="fieldrequired">'.$langs->trans("Status").' ('.$langs->trans("Sell").')</td><td colspan="3">';
-            print '<select class="flat" name="statut">';
-            if ($object->status)
-            {
-                print '<option value="1" selected>'.$langs->trans("OnSell").'</option>';
-                print '<option value="0">'.$langs->trans("NotOnSell").'</option>';
-            }
-            else
-            {
-                print '<option value="1">'.$langs->trans("OnSell").'</option>';
-                print '<option value="0" selected>'.$langs->trans("NotOnSell").'</option>';
-            }
-            print '</select>';
-            print '</td></tr>';
+            if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+                // Status To sell
+                print '<tr><td class="fieldrequired">' . $langs->trans("Status") . ' (' . $langs->trans("Sell") . ')</td><td colspan="3">';
+                print '<select class="flat" name="statut">';
+                if ($object->status) {
+                    print '<option value="1" selected>' . $langs->trans("OnSell") . '</option>';
+                    print '<option value="0">' . $langs->trans("NotOnSell") . '</option>';
+                }
+                else {
+                    print '<option value="1">' . $langs->trans("OnSell") . '</option>';
+                    print '<option value="0" selected>' . $langs->trans("NotOnSell") . '</option>';
+                }
+                print '</select>';
+                print '</td></tr>';
 
-            // Status To Buy
-            print '<tr><td class="fieldrequired">'.$langs->trans("Status").' ('.$langs->trans("Buy").')</td><td colspan="3">';
-            print '<select class="flat" name="statut_buy">';
-            if ($object->status_buy)
-            {
-                print '<option value="1" selected>'.$langs->trans("ProductStatusOnBuy").'</option>';
-                print '<option value="0">'.$langs->trans("ProductStatusNotOnBuy").'</option>';
+                // Status To Buy
+                print '<tr><td class="fieldrequired">' . $langs->trans("Status") . ' (' . $langs->trans("Buy") . ')</td><td colspan="3">';
+                print '<select class="flat" name="statut_buy">';
+                if ($object->status_buy) {
+                    print '<option value="1" selected>' . $langs->trans("ProductStatusOnBuy") . '</option>';
+                    print '<option value="0">' . $langs->trans("ProductStatusNotOnBuy") . '</option>';
+                }
+                else {
+                    print '<option value="1">' . $langs->trans("ProductStatusOnBuy") . '</option>';
+                    print '<option value="0" selected>' . $langs->trans("ProductStatusNotOnBuy") . '</option>';
+                }
+                print '</select>';
+                print '</td></tr>';
             }
-            else
-            {
-                print '<option value="1">'.$langs->trans("ProductStatusOnBuy").'</option>';
-                print '<option value="0" selected>'.$langs->trans("ProductStatusNotOnBuy").'</option>';
-            }
-            print '</select>';
-            print '</td></tr>';
-
 			// Batch number managment
 			if ($conf->productbatch->enabled) {
 				print '<tr><td>'.$langs->trans("ManageLotSerial").'</td><td colspan="3">';
@@ -1252,181 +1249,171 @@ else
 		        print '</td></tr>';
 	        }
 
-            // Description (used in invoice, propal...)
-            print '<tr><td class="tdtop">'.$langs->trans("Description").'</td><td colspan="3">';
+            if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+                // Description (used in invoice, propal...)
+                print '<tr><td class="tdtop">' . $langs->trans("Description") . '</td><td colspan="3">';
 
-            // We use dolibarr_details as type of DolEditor here, because we must not accept images as description is included into PDF and not accepted by TCPDF.
-            $doleditor = new DolEditor('desc', $object->description, '', 160, 'dolibarr_details', '', false, true, $conf->global->FCKEDITOR_ENABLE_PRODUCTDESC, ROWS_4, '90%');
-            $doleditor->Create();
-
-            print "</td></tr>";
-            print "\n";
-
-            // Public Url
-            print '<tr><td>'.$langs->trans("PublicUrl").'</td><td colspan="3">';
-			print '<input type="text" name="url" class="quatrevingtpercent" value="'.$object->url.'">';
-            print '</td></tr>';
-
-            // Stock
-            /*
-            if ($object->isProduct() && ! empty($conf->stock->enabled))
-            {
-                print "<tr>".'<td>'.$langs->trans("StockLimit").'</td><td>';
-                print '<input name="seuil_stock_alerte" size="4" value="'.$object->seuil_stock_alerte.'">';
-                print '</td>';
-
-                print '<td>'.$langs->trans("DesiredStock").'</td><td>';
-                print '<input name="desiredstock" size="4" value="'.$object->desiredstock.'">';
-                print '</td></tr>';
-            }
-            else
-            {
-                print '<input name="seuil_stock_alerte" type="hidden" value="'.$object->seuil_stock_alerte.'">';
-                print '<input name="desiredstock" type="hidden" value="'.$object->desiredstock.'">';
-            }*/
-
-            // Nature
-            if($object->type!= Product::TYPE_SERVICE)
-            {
-                print '<tr><td>'.$langs->trans("Nature").'</td><td colspan="3">';
-                $statutarray=array('-1'=>'&nbsp;', '1' => $langs->trans("Finished"), '0' => $langs->trans("RowMaterial"));
-                print $form->selectarray('finished',$statutarray,$object->finished);
-                print '</td></tr>';
-            }
-
-            if ($object->isService())
-            {
-                // Duration
-                print '<tr><td>'.$langs->trans("Duration").'</td><td colspan="3"><input name="duration_value" size="3" maxlength="5" value="'.$object->duration_value.'">';
-                print '&nbsp; ';
-                print '<input name="duration_unit" type="radio" value="h"'.($object->duration_unit=='h'?' checked':'').'>'.$langs->trans("Hour");
-                print '&nbsp; ';
-                print '<input name="duration_unit" type="radio" value="d"'.($object->duration_unit=='d'?' checked':'').'>'.$langs->trans("Day");
-                print '&nbsp; ';
-                print '<input name="duration_unit" type="radio" value="w"'.($object->duration_unit=='w'?' checked':'').'>'.$langs->trans("Week");
-                print '&nbsp; ';
-                print '<input name="duration_unit" type="radio" value="m"'.($object->duration_unit=='m'?' checked':'').'>'.$langs->trans("Month");
-                print '&nbsp; ';
-                print '<input name="duration_unit" type="radio" value="y"'.($object->duration_unit=='y'?' checked':'').'>'.$langs->trans("Year");
-
-                print '</td></tr>';
-            }
-            else
-			{
-                // Weight
-                print '<tr><td>'.$langs->trans("Weight").'</td><td colspan="3">';
-                print '<input name="weight" size="5" value="'.$object->weight.'"> ';
-                print $formproduct->select_measuring_units("weight_units", "weight", $object->weight_units);
-                print '</td></tr>';
-                if (empty($conf->global->PRODUCT_DISABLE_LENGTH))
-                {
-                    // Length
-                    print '<tr><td>'.$langs->trans("Length").'</td><td colspan="3">';
-                    print '<input name="size" size="5" value="'.$object->length.'"> ';
-                    print $formproduct->select_measuring_units("size_units", "size", $object->length_units);
-                    print '</td></tr>';
-                }
-                if (empty($conf->global->PRODUCT_DISABLE_SURFACE))
-                {
-                    // Surface
-                    print '<tr><td>'.$langs->trans("Surface").'</td><td colspan="3">';
-                    print '<input name="surface" size="5" value="'.$object->surface.'"> ';
-                    print $formproduct->select_measuring_units("surface_units", "surface", $object->surface_units);
-                    print '</td></tr>';
-                }
-                // Volume
-                print '<tr><td>'.$langs->trans("Volume").'</td><td colspan="3">';
-                print '<input name="volume" size="5" value="'.$object->volume.'"> ';
-                print $formproduct->select_measuring_units("volume_units", "volume", $object->volume_units);
-                print '</td></tr>';
-            }
-        	// Units
-	        if($conf->global->PRODUCT_USE_UNITS)
-	        {
-		        print '<tr><td>'.$langs->trans('DefaultUnitToShow').'</td>';
-		        print '<td colspan="3">';
-		        print $form->selectUnits($object->fk_unit, 'units');
-		        print '</td></tr>';
-	        }
-
-	        // Custom code
-    	    if (! $object->isService() && empty($conf->global->PRODUCT_DISABLE_CUSTOM_INFO))
-        	{
-	            print '<tr><td>'.$langs->trans("CustomCode").'</td><td><input name="customcode" class="maxwidth100onsmartphone" value="'.$object->customcode.'"></td>';
-	            // Origin country
-	            print '<td>'.$langs->trans("CountryOrigin").'</td><td>';
-	            print $form->select_country($object->country_id, 'country_id', '', 0, 'minwidth100 maxwidthonsmartphone');
-	            if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"),1);
-	            print '</td></tr>';
-        	}
-
-            // Other attributes
-            $parameters=array('colspan' => ' colspan="2"');
-            $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
-            if (empty($reshook) && ! empty($extrafields->attribute_label))
-            {
-            	print $object->showOptionals($extrafields,'edit');
-            }
-
-			// Tags-Categories
-            if ($conf->categorie->enabled) 
-			{
-				print '<tr><td class="tdtop">'.$langs->trans("Categories").'</td><td colspan="3">';
-				$cate_arbo = $form->select_all_categories(Categorie::TYPE_PRODUCT, '', 'parent', 64, 0, 1);
-				$c = new Categorie($db);
-				$cats = $c->containing($object->id,Categorie::TYPE_PRODUCT);
-				foreach($cats as $cat) {
-					$arrayselected[] = $cat->id;
-				}
-				print $form->multiselectarray('categories', $cate_arbo, $arrayselected, '', 0, '', 0, '100%');
-				print "</td></tr>";
-			}
-
-            // Note private
-			if (! empty($conf->global->MAIN_DISABLE_NOTES_TAB))
-			{
-                print '<tr><td class="tdtop">'.$langs->trans("NoteNotVisibleOnBill").'</td><td colspan="3">';
-        
-                $doleditor = new DolEditor('note_private', $object->note_private, '', 140, 'dolibarr_notes', '', false, true, $conf->global->FCKEDITOR_ENABLE_PRODUCTDESC, ROWS_4, '90%');
+                // We use dolibarr_details as type of DolEditor here, because we must not accept images as description is included into PDF and not accepted by TCPDF.
+                $doleditor = new DolEditor('desc', $object->description, '', 160, 'dolibarr_details', '', false, true, $conf->global->FCKEDITOR_ENABLE_PRODUCTDESC, ROWS_4, '90%');
                 $doleditor->Create();
-    
+
                 print "</td></tr>";
-			}
-			
+                print "\n";
+
+                // Public Url
+                print '<tr><td>' . $langs->trans("PublicUrl") . '</td><td colspan="3">';
+                print '<input type="text" name="url" class="quatrevingtpercent" value="' . $object->url . '">';
+                print '</td></tr>';
+
+                // Stock
+                /*
+                if ($object->isProduct() && ! empty($conf->stock->enabled))
+                {
+                    print "<tr>".'<td>'.$langs->trans("StockLimit").'</td><td>';
+                    print '<input name="seuil_stock_alerte" size="4" value="'.$object->seuil_stock_alerte.'">';
+                    print '</td>';
+
+                    print '<td>'.$langs->trans("DesiredStock").'</td><td>';
+                    print '<input name="desiredstock" size="4" value="'.$object->desiredstock.'">';
+                    print '</td></tr>';
+                }
+                else
+                {
+                    print '<input name="seuil_stock_alerte" type="hidden" value="'.$object->seuil_stock_alerte.'">';
+                    print '<input name="desiredstock" type="hidden" value="'.$object->desiredstock.'">';
+                }*/
+
+                // Nature
+                if ($object->type != Product::TYPE_SERVICE) {
+                    print '<tr><td>' . $langs->trans("Nature") . '</td><td colspan="3">';
+                    $statutarray = array('-1' => '&nbsp;', '1' => $langs->trans("Finished"), '0' => $langs->trans("RowMaterial"));
+                    print $form->selectarray('finished', $statutarray, $object->finished);
+                    print '</td></tr>';
+                }
+
+                if ($object->isService()) {
+                    // Duration
+                    print '<tr><td>' . $langs->trans("Duration") . '</td><td colspan="3"><input name="duration_value" size="3" maxlength="5" value="' . $object->duration_value . '">';
+                    print '&nbsp; ';
+                    print '<input name="duration_unit" type="radio" value="h"' . ($object->duration_unit == 'h' ? ' checked' : '') . '>' . $langs->trans("Hour");
+                    print '&nbsp; ';
+                    print '<input name="duration_unit" type="radio" value="d"' . ($object->duration_unit == 'd' ? ' checked' : '') . '>' . $langs->trans("Day");
+                    print '&nbsp; ';
+                    print '<input name="duration_unit" type="radio" value="w"' . ($object->duration_unit == 'w' ? ' checked' : '') . '>' . $langs->trans("Week");
+                    print '&nbsp; ';
+                    print '<input name="duration_unit" type="radio" value="m"' . ($object->duration_unit == 'm' ? ' checked' : '') . '>' . $langs->trans("Month");
+                    print '&nbsp; ';
+                    print '<input name="duration_unit" type="radio" value="y"' . ($object->duration_unit == 'y' ? ' checked' : '') . '>' . $langs->trans("Year");
+
+                    print '</td></tr>';
+                }
+                else {
+                    // Weight
+                    print '<tr><td>' . $langs->trans("Weight") . '</td><td colspan="3">';
+                    print '<input name="weight" size="5" value="' . $object->weight . '"> ';
+                    print $formproduct->select_measuring_units("weight_units", "weight", $object->weight_units);
+                    print '</td></tr>';
+                    if (empty($conf->global->PRODUCT_DISABLE_LENGTH)) {
+                        // Length
+                        print '<tr><td>' . $langs->trans("Length") . '</td><td colspan="3">';
+                        print '<input name="size" size="5" value="' . $object->length . '"> ';
+                        print $formproduct->select_measuring_units("size_units", "size", $object->length_units);
+                        print '</td></tr>';
+                    }
+                    if (empty($conf->global->PRODUCT_DISABLE_SURFACE)) {
+                        // Surface
+                        print '<tr><td>' . $langs->trans("Surface") . '</td><td colspan="3">';
+                        print '<input name="surface" size="5" value="' . $object->surface . '"> ';
+                        print $formproduct->select_measuring_units("surface_units", "surface", $object->surface_units);
+                        print '</td></tr>';
+                    }
+                    // Volume
+                    print '<tr><td>' . $langs->trans("Volume") . '</td><td colspan="3">';
+                    print '<input name="volume" size="5" value="' . $object->volume . '"> ';
+                    print $formproduct->select_measuring_units("volume_units", "volume", $object->volume_units);
+                    print '</td></tr>';
+                }
+                // Units
+                if ($conf->global->PRODUCT_USE_UNITS) {
+                    print '<tr><td>' . $langs->trans('DefaultUnitToShow') . '</td>';
+                    print '<td colspan="3">';
+                    print $form->selectUnits($object->fk_unit, 'units');
+                    print '</td></tr>';
+                }
+
+                // Custom code
+                if (!$object->isService() && empty($conf->global->PRODUCT_DISABLE_CUSTOM_INFO)) {
+                    print '<tr><td>' . $langs->trans("CustomCode") . '</td><td><input name="customcode" class="maxwidth100onsmartphone" value="' . $object->customcode . '"></td>';
+                    // Origin country
+                    print '<td>' . $langs->trans("CountryOrigin") . '</td><td>';
+                    print $form->select_country($object->country_id, 'country_id', '', 0, 'minwidth100 maxwidthonsmartphone');
+                    if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+                    print '</td></tr>';
+                }
+
+                // Other attributes
+                $parameters = array('colspan' => ' colspan="2"');
+                $reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action);    // Note that $action and $object may have been modified by hook
+                if (empty($reshook) && !empty($extrafields->attribute_label)) {
+                    print $object->showOptionals($extrafields, 'edit');
+                }
+
+                // Tags-Categories
+                if ($conf->categorie->enabled) {
+                    print '<tr><td class="tdtop">' . $langs->trans("Categories") . '</td><td colspan="3">';
+                    $cate_arbo = $form->select_all_categories(Categorie::TYPE_PRODUCT, '', 'parent', 64, 0, 1);
+                    $c = new Categorie($db);
+                    $cats = $c->containing($object->id, Categorie::TYPE_PRODUCT);
+                    foreach ($cats as $cat) {
+                        $arrayselected[] = $cat->id;
+                    }
+                    print $form->multiselectarray('categories', $cate_arbo, $arrayselected, '', 0, '', 0, '100%');
+                    print "</td></tr>";
+                }
+
+                // Note private
+                if (!empty($conf->global->MAIN_DISABLE_NOTES_TAB)) {
+                    print '<tr><td class="tdtop">' . $langs->trans("NoteNotVisibleOnBill") . '</td><td colspan="3">';
+
+                    $doleditor = new DolEditor('note_private', $object->note_private, '', 140, 'dolibarr_notes', '', false, true, $conf->global->FCKEDITOR_ENABLE_PRODUCTDESC, ROWS_4, '90%');
+                    $doleditor->Create();
+
+                    print "</td></tr>";
+                }
+            }
             print '</table>';
 
             print '<br>';
 
             print '<table class="border" width="100%">';
+            if (empty($conf->global->MAIN_PRODUCT_HIDE_ACCOUNTANCY_INFO)) {
+                if (!empty($conf->accounting->enabled)) {
+                    // Accountancy_code_sell
+                    print '<tr><td class="titlefield">' . $langs->trans("ProductAccountancySellCode") . '</td>';
+                    print '<td>';
+                    print $formaccountancy->select_account($object->accountancy_code_sell, 'accountancy_code_sell', 1, '', 1, 1);
+                    print '</td></tr>';
 
-			if (! empty($conf->accounting->enabled))
-			{
-                // Accountancy_code_sell
-                print '<tr><td class="titlefield">'.$langs->trans("ProductAccountancySellCode").'</td>';
-                print '<td>';
-				print $formaccountancy->select_account($object->accountancy_code_sell, 'accountancy_code_sell', 1, '', 1, 1);
-                print '</td></tr>';
+                    // Accountancy_code_buy
+                    print '<tr><td>' . $langs->trans("ProductAccountancyBuyCode") . '</td>';
+                    print '<td>';
+                    print $formaccountancy->select_account($object->accountancy_code_buy, 'accountancy_code_buy', 1, '', 1, 1);
+                    print '</td></tr>';
+                }
+                else // For external software
+                {
+                    // Accountancy_code_sell
+                    print '<tr><td class="titlefield">' . $langs->trans("ProductAccountancySellCode") . '</td>';
+                    print '<td><input name="accountancy_code_sell" class="maxwidth200" value="' . $object->accountancy_code_sell . '">';
+                    print '</td></tr>';
 
-                // Accountancy_code_buy
-                print '<tr><td>'.$langs->trans("ProductAccountancyBuyCode").'</td>';
-                print '<td>';
-				print $formaccountancy->select_account($object->accountancy_code_buy, 'accountancy_code_buy', 1, '', 1, 1);
-                print '</td></tr>';
-			}			
-			else // For external software 
-			{
-                // Accountancy_code_sell
-                print '<tr><td class="titlefield">'.$langs->trans("ProductAccountancySellCode").'</td>';
-                print '<td><input name="accountancy_code_sell" class="maxwidth200" value="'.$object->accountancy_code_sell.'">';
-                print '</td></tr>';
-
-                // Accountancy_code_buy
-                print '<tr><td>'.$langs->trans("ProductAccountancyBuyCode").'</td>';
-                print '<td><input name="accountancy_code_buy" class="maxwidth200" value="'.$object->accountancy_code_buy.'">';
-                print '</td></tr>';
+                    // Accountancy_code_buy
+                    print '<tr><td>' . $langs->trans("ProductAccountancyBuyCode") . '</td>';
+                    print '<td><input name="accountancy_code_buy" class="maxwidth200" value="' . $object->accountancy_code_buy . '">';
+                    print '</td></tr>';
+                }
+                print '</table>';
             }
-			print '</table>';
-
             dol_fiche_end();
 
             print '<div class="center">';
@@ -1523,28 +1510,31 @@ else
                 }
                 print '</td></tr>'."\n";
             }
+            if(empty($conf->global->MAIN_PRODUCT_HIDE_ACCOUNTANCY_INFO)) {
+                // Accountancy sell code
+                print '<tr><td class="nowrap">';
+                print $langs->trans("ProductAccountancySellCode");
+                print '</td><td colspan="2">';
+                if (!empty($conf->accounting->enabled)) {
+                    print length_accountg($object->accountancy_code_sell);
+                }
+                else {
+                    print $object->accountancy_code_sell;
+                }
+                print '</td></tr>';
 
-            // Accountancy sell code
-			print '<tr><td class="nowrap">';
-            print $langs->trans("ProductAccountancySellCode");
-            print '</td><td colspan="2">';
-			if (! empty($conf->accounting->enabled)) {
-				print length_accountg($object->accountancy_code_sell);
-            } else {
-				print $object->accountancy_code_sell;
-			}
-			print '</td></tr>';
-
-            // Accountancy buy code
-			print '<tr><td class="nowrap">';
-            print $langs->trans("ProductAccountancyBuyCode");
-            print '</td><td colspan="2">';
-			if (! empty($conf->accounting->enabled)) {
-				print length_accountg($object->accountancy_code_buy);
-            } else {
-				print $object->accountancy_code_buy;
-			}
-            print '</td></tr>';
+                // Accountancy buy code
+                print '<tr><td class="nowrap">';
+                print $langs->trans("ProductAccountancyBuyCode");
+                print '</td><td colspan="2">';
+                if (!empty($conf->accounting->enabled)) {
+                    print length_accountg($object->accountancy_code_buy);
+                }
+                else {
+                    print $object->accountancy_code_buy;
+                }
+                print '</td></tr>';
+            }
 
             // Status (to sell)
             /*
@@ -1565,147 +1555,130 @@ else
             }
             print '</td></tr>';
             */
-            
-            // Batch number management (to batch)
-            if (! empty($conf->productbatch->enabled)) {
-                print '<tr><td>'.$langs->trans("ManageLotSerial").'</td><td colspan="2">';
-                if (! empty($conf->use_javascript_ajax) && $user->rights->produit->creer && ! empty($conf->global->MAIN_DIRECT_STATUS_UPDATE)) {
-                    print ajax_object_onoff($object, 'status_batch', 'tobatch', 'ProductStatusOnBatch', 'ProductStatusNotOnBatch');
-                } else {
-                    print $object->getLibStatut(0,2);
-                }
-                print '</td></tr>';
-            }
-
-            // Description
-            print '<tr><td class="tdtop">'.$langs->trans("Description").'</td><td colspan="2">'.(dol_textishtml($object->description)?$object->description:dol_nl2br($object->description,1,true)).'</td></tr>';
-
-            // Public URL
-            print '<tr><td>'.$langs->trans("PublicUrl").'</td><td colspan="2">';
-			print dol_print_url($object->url);
-            print '</td></tr>';
-
-            print '</table>';
-            print '</div>';
-            print '<div class="fichehalfright"><div class="ficheaddleft">';
-       
-            print '<div class="underbanner clearboth"></div>';
-            print '<table class="border tableforfield" width="100%">';
-            
-            // Nature
-            if($object->type!= Product::TYPE_SERVICE)
-            {
-                print '<tr><td class="titlefield">'.$langs->trans("Nature").'</td><td colspan="2">';
-                print $object->getLibFinished();
-                print '</td></tr>';
-            }
-
-            if ($object->isService())
-            {
-                // Duration
-                print '<tr><td class="titlefield">'.$langs->trans("Duration").'</td><td colspan="2">'.$object->duration_value.'&nbsp;';
-                if ($object->duration_value > 1)
-                {
-                    $dur=array("h"=>$langs->trans("Hours"),"d"=>$langs->trans("Days"),"w"=>$langs->trans("Weeks"),"m"=>$langs->trans("Months"),"y"=>$langs->trans("Years"));
-                }
-                else if ($object->duration_value > 0)
-                {
-                    $dur=array("h"=>$langs->trans("Hour"),"d"=>$langs->trans("Day"),"w"=>$langs->trans("Week"),"m"=>$langs->trans("Month"),"y"=>$langs->trans("Year"));
-                }
-                print (! empty($object->duration_unit) && isset($dur[$object->duration_unit]) ? $langs->trans($dur[$object->duration_unit]) : '')."&nbsp;";
-
-                print '</td></tr>';
-            }
-            else
-            {
-                // Weight
-                print '<tr><td class="titlefield">'.$langs->trans("Weight").'</td><td colspan="2">';
-                if ($object->weight != '')
-                {
-                    print $object->weight." ".measuring_units_string($object->weight_units,"weight");
-                }
-                else
-                {
-                    print '&nbsp;';
-                }
-                print "</td></tr>\n";
-                if (empty($conf->global->PRODUCT_DISABLE_LENGTH))
-                {
-                    // Length
-                    print '<tr><td>'.$langs->trans("Length").'</td><td colspan="2">';
-                    if ($object->length != '')
-                    {
-                        print $object->length." ".measuring_units_string($object->length_units,"size");
+            if (empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+                // Batch number management (to batch)
+                if (!empty($conf->productbatch->enabled)) {
+                    print '<tr><td>' . $langs->trans("ManageLotSerial") . '</td><td colspan="2">';
+                    if (!empty($conf->use_javascript_ajax) && $user->rights->produit->creer && !empty($conf->global->MAIN_DIRECT_STATUS_UPDATE)) {
+                        print ajax_object_onoff($object, 'status_batch', 'tobatch', 'ProductStatusOnBatch', 'ProductStatusNotOnBatch');
                     }
-                    else
-                    {
+                    else {
+                        print $object->getLibStatut(0, 2);
+                    }
+                    print '</td></tr>';
+                }
+
+                // Description
+                print '<tr><td class="tdtop">' . $langs->trans("Description") . '</td><td colspan="2">' . (dol_textishtml($object->description) ? $object->description : dol_nl2br($object->description, 1, true)) . '</td></tr>';
+
+                // Public URL
+                print '<tr><td>' . $langs->trans("PublicUrl") . '</td><td colspan="2">';
+                print dol_print_url($object->url);
+                print '</td></tr>';
+
+                print '</table>';
+                print '</div>';
+                print '<div class="fichehalfright"><div class="ficheaddleft">';
+
+                print '<div class="underbanner clearboth"></div>';
+                print '<table class="border tableforfield" width="100%">';
+
+                // Nature
+                if ($object->type != Product::TYPE_SERVICE) {
+                    print '<tr><td class="titlefield">' . $langs->trans("Nature") . '</td><td colspan="2">';
+                    print $object->getLibFinished();
+                    print '</td></tr>';
+                }
+
+                if ($object->isService()) {
+                    // Duration
+                    print '<tr><td class="titlefield">' . $langs->trans("Duration") . '</td><td colspan="2">' . $object->duration_value . '&nbsp;';
+                    if ($object->duration_value > 1) {
+                        $dur = array("h" => $langs->trans("Hours"), "d" => $langs->trans("Days"), "w" => $langs->trans("Weeks"), "m" => $langs->trans("Months"), "y" => $langs->trans("Years"));
+                    }
+                    else if ($object->duration_value > 0) {
+                        $dur = array("h" => $langs->trans("Hour"), "d" => $langs->trans("Day"), "w" => $langs->trans("Week"), "m" => $langs->trans("Month"), "y" => $langs->trans("Year"));
+                    }
+                    print (!empty($object->duration_unit) && isset($dur[$object->duration_unit]) ? $langs->trans($dur[$object->duration_unit]) : '') . "&nbsp;";
+
+                    print '</td></tr>';
+                }
+                else {
+                    // Weight
+                    print '<tr><td class="titlefield">' . $langs->trans("Weight") . '</td><td colspan="2">';
+                    if ($object->weight != '') {
+                        print $object->weight . " " . measuring_units_string($object->weight_units, "weight");
+                    }
+                    else {
+                        print '&nbsp;';
+                    }
+                    print "</td></tr>\n";
+                    if (empty($conf->global->PRODUCT_DISABLE_LENGTH)) {
+                        // Length
+                        print '<tr><td>' . $langs->trans("Length") . '</td><td colspan="2">';
+                        if ($object->length != '') {
+                            print $object->length . " " . measuring_units_string($object->length_units, "size");
+                        }
+                        else {
+                            print '&nbsp;';
+                        }
+                        print "</td></tr>\n";
+                    }
+                    if (empty($conf->global->PRODUCT_DISABLE_SURFACE)) {
+                        // Surface
+                        print '<tr><td>' . $langs->trans("Surface") . '</td><td colspan="2">';
+                        if ($object->surface != '') {
+                            print $object->surface . " " . measuring_units_string($object->surface_units, "surface");
+                        }
+                        else {
+                            print '&nbsp;';
+                        }
+                        print "</td></tr>\n";
+                    }
+                    // Volume
+                    print '<tr><td>' . $langs->trans("Volume") . '</td><td colspan="2">';
+                    if ($object->volume != '') {
+                        print $object->volume . " " . measuring_units_string($object->volume_units, "volume");
+                    }
+                    else {
                         print '&nbsp;';
                     }
                     print "</td></tr>\n";
                 }
-                if (empty($conf->global->PRODUCT_DISABLE_SURFACE))
-                {
-                    // Surface
-                    print '<tr><td>'.$langs->trans("Surface").'</td><td colspan="2">';
-                    if ($object->surface != '')
-                    {
-                        print $object->surface." ".measuring_units_string($object->surface_units,"surface");
+
+                // Unit
+                if (!empty($conf->global->PRODUCT_USE_UNITS)) {
+                    $unit = $object->getLabelOfUnit();
+
+                    print '<tr><td>' . $langs->trans('DefaultUnitToShow') . '</td><td>';
+                    if ($unit !== '') {
+                        print $langs->trans($unit);
                     }
-                    else
-                    {
-                        print '&nbsp;';
-                    }
-                    print "</td></tr>\n";
+                    print '</td></tr>';
                 }
-                // Volume
-                print '<tr><td>'.$langs->trans("Volume").'</td><td colspan="2">';
-                if ($object->volume != '')
-                {
-                    print $object->volume." ".measuring_units_string($object->volume_units,"volume");
+
+                // Custom code
+                if (empty($conf->global->PRODUCT_DISABLE_CUSTOM_INFO)) {
+                    print '<tr><td>' . $langs->trans("CustomCode") . '</td><td colspan="2">' . $object->customcode . '</td>';
+
+                    // Origin country code
+                    print '<tr><td>' . $langs->trans("CountryOrigin") . '</td><td colspan="2">' . getCountry($object->country_id, 0, $db) . '</td>';
                 }
-                else
-                {
-                    print '&nbsp;';
+
+                // Other attributes
+                $parameters = array('colspan' => ' colspan="' . (2 + (($showphoto || $showbarcode) ? 1 : 0)) . '"');
+                $reshook = $hookmanager->executeHooks('formObjectOptions', $parameters, $object, $action);    // Note that $action and $object may have been modified by hook
+                if (empty($reshook) && !empty($extrafields->attribute_label)) {
+                    print $object->showOptionals($extrafields);
                 }
-                print "</td></tr>\n";
+
+                // Categories
+                if ($conf->categorie->enabled) {
+                    print '<tr><td valign="middle">' . $langs->trans("Categories") . '</td><td colspan="3">';
+                    print $form->showCategories($object->id, 'product', 1);
+                    print "</td></tr>";
+                }
             }
-
-			// Unit
-			if (! empty($conf->global->PRODUCT_USE_UNITS))
-			{
-				$unit = $object->getLabelOfUnit();
-
-				print '<tr><td>'.$langs->trans('DefaultUnitToShow').'</td><td>';
-				if ($unit !== '') {
-					print $langs->trans($unit);
-				}
-				print '</td></tr>';
-			}
-
-        	// Custom code
-        	if (empty($conf->global->PRODUCT_DISABLE_CUSTOM_INFO))
-        	{
-	            print '<tr><td>'.$langs->trans("CustomCode").'</td><td colspan="2">'.$object->customcode.'</td>';
-
-            	// Origin country code
-            	print '<tr><td>'.$langs->trans("CountryOrigin").'</td><td colspan="2">'.getCountry($object->country_id,0,$db).'</td>';
-        	}
-
-            // Other attributes
-            $parameters=array('colspan' => ' colspan="'.(2+(($showphoto||$showbarcode)?1:0)).'"');
-            $reshook=$hookmanager->executeHooks('formObjectOptions',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
-            if (empty($reshook) && ! empty($extrafields->attribute_label))
-            {
-            	print $object->showOptionals($extrafields);
-            }
-
-			// Categories
-			if($conf->categorie->enabled) {
-				print '<tr><td valign="middle">'.$langs->trans("Categories").'</td><td colspan="3">';
-				print $form->showCategories($object->id,'product',1);
-				print "</td></tr>";
-			}
-
             // Note private
 			if (! empty($conf->global->MAIN_DISABLE_NOTES_TAB))
 			{
@@ -1958,7 +1931,7 @@ if (! empty($conf->global->PRODUCT_ADD_FORM_ADD_TO) && $object->id && ($action =
 /*
  * Documents generes
  */
-if ($action == '' || $action == 'view')
+if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS) && ($action == '' || $action == 'view'))
 {
     print '<div class="fichecenter"><div class="fichehalfleft">';
     print '<a name="builddoc"></a>'; // ancre
