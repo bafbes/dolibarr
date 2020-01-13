@@ -80,12 +80,13 @@
 		print '<td width="20%" class="fieldrequired">'.$langs->trans("NumberOfUnit").'</td><td width="20%"><input class="flat" name="nbpiece" id="nbpiece" size="10" value="'.GETPOST("nbpiece").'"></td>';
 		print '</tr>';
 
-		// Purchase price
-		print '<tr>';
-		print '<td width="20%" colspan="2">'.$langs->trans("UnitPurchaseValue").'</td>';
-		print '<td colspan="4"><input class="flat" name="unitprice" id="unitprice" size="10" value="'.GETPOST("unitprice").'"></td>';
-		print '</tr>';
-
+        if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+            // Purchase price
+            print '<tr>';
+            print '<td width="20%" colspan="2">' . $langs->trans("UnitPurchaseValue") . '</td>';
+            print '<td colspan="4"><input class="flat" name="unitprice" id="unitprice" size="10" value="' . GETPOST("unitprice") . '"></td>';
+            print '</tr>';
+        }
 		// Serial / Eat-by date
 		if (! empty($conf->productbatch->enabled) && 
 		    (($object->element == 'product' && $object->hasbatch())
@@ -109,16 +110,17 @@
 			print '</tr>';
 		}
 
-		// Label of mouvement of id of inventory
-		$valformovementlabel=((GETPOST("label") && (GETPOST('label') != $langs->trans("MovementCorrectStock",''))) ? GETPOST("label") : $langs->trans("MovementCorrectStock", $productref));
-		print '<tr>';
-		print '<td width="20%" colspan="2">'.$langs->trans("MovementLabel").'</td>';
-		print '<td colspan="2">';
-		print '<input type="text" name="label" size="60" value="'.$valformovementlabel.'">';
-		print '</td>';
-		print '<td width="20%">'.$langs->trans("InventoryCode").'</td><td width="20%"><input class="flat maxwidth100onsmartphone" name="inventorycode" id="inventorycode" value="'.GETPOST("inventorycode").'"></td>';
-		print '</tr>';
-
+        if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+            // Label of mouvement of id of inventory
+            $valformovementlabel = ((GETPOST("label") && (GETPOST('label') != $langs->trans("MovementCorrectStock", ''))) ? GETPOST("label") : $langs->trans("MovementCorrectStock", $productref));
+            print '<tr>';
+            print '<td width="20%" colspan="2">' . $langs->trans("MovementLabel") . '</td>';
+            print '<td colspan="2">';
+            print '<input type="text" name="label" size="60" value="' . $valformovementlabel . '">';
+            print '</td>';
+            print '<td width="20%">' . $langs->trans("InventoryCode") . '</td><td width="20%"><input class="flat maxwidth100onsmartphone" name="inventorycode" id="inventorycode" value="' . GETPOST("inventorycode") . '"></td>';
+            print '</tr>';
+        }
 		print '</table>';
 
 		print '<div class="center">';
