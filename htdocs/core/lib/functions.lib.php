@@ -5960,3 +5960,94 @@ function dol_mimetype($file,$default='application/octet-stream',$mode=0)
     return $mime;
 }
 
+/**
+ *	Generic function that return javascript to add to a page to transform a common input field into an autocomplete field by calling an Ajax page (ex: /societe/ajaxcompanies.php).
+ *  The HTML field must be an input text with id=search_$htmlname.
+ *  This use the jQuery "autocomplete" function.
+ *
+ *  @param	string	$selected           Preselected value
+ *  @param string   $idselected         Value to take in case the field has sent empty - used for not sending empty entrepot ref in line editing
+ *	@param	string	$htmlname           HTML name of input field
+ *	@param	string	$url                Url for request: /path/page.php. Must return a json array ('key'=>id, 'value'=>String shown into input field once selected, 'label'=>String shown into combo list)
+ *  @param	string	$urloption			More parameters on URL request
+ *  @param	int		$minLength			Minimum number of chars to trigger that Ajax search
+ *  @param	int		$autoselect			Automatic selection if just one value
+ *  @param	array	$ajaxoptions		Multiple options array
+ *                                          Ex: array('update'=>array('field1','field2'...)) will reset field1 and field2 once select done
+ *                                          Ex: array('disabled'=>
+ *                                          Ex: array('show'=>
+ *                                          Ex: array('update_textarea'=>
+ *	@return string              		Script
+ */
+function entrepot_ajax_autocompleter($selected, $idselected, $htmlname, $url, $urloption = '', $minLength = 2, $autoselect = 1, $ajaxoptions = array(),$suivant='description')
+{
+    if(empty($minLength)) $minLength = 1;
+
+    // Input search_htmlname is original field
+    // Input htmlname is a second input field used when using ajax autocomplete.
+
+    $script = '<input type="hidden" name="' . $htmlname . '" id="' . $htmlname . '" value="' . $idselected . '" />';
+    //Copie du premier pour résoudre le pb du vidage de valeur.
+    $script .= '<input type="hidden" id="' . $htmlname . 'tempid" value="' . $idselected . '" />';
+    $script .= '<input type="text" class="minwidth100" name="search_' . $htmlname . '" id="search_' . $htmlname . '" value="' . $selected . '"/>';
+    $script .= '<!-- Javascript code for autocomplete of field ' . $htmlname . ' -->' . "\n";
+    $script .= '<script type="text/javascript">' . "\n";
+    $script .= '$(document).ready(function() {
+					var autoselect = ' . $autoselect . ';
+					var options = ' . json_encode($ajaxoptions) . ';
+					$("input#search_' . $htmlname . '").keydown(function() {
+						$("#' . $htmlname . '").val("");
+					});
+					// Check options for secondary actions when keyup
+   				$("input#search_' . $htmlname . '").autocomplete({
+                        autoFocus: true,
+    					source: function( request, response ) {
+    						$.get("' . $url . ($urloption ? '?' . $urloption : '') . '", { ' . $htmlname . ': request.term }, function(data){
+								if (data != null)
+								{
+									response($.map( data, function(item) {
+										if (autoselect == 1 && data.length == 1) {
+											$("#search_' . $htmlname . '").val(item.value);
+											$("#' . $htmlname . '").val(item.rowid).trigger("change");
+											$("#'.$suivant.'").focus();	
+										}
+										var label = item.label.toString();
+										return { 
+										    id: item.rowid, 
+										    label: item.label.toString(), 
+										    value: item.value,                 
+										    contentref: item.contentref,                
+										    idcontentref: item.idcontentref,                
+										    contentqty: item.contentqty,               
+										    type:item.type
+										}
+									}));
+								}
+								else console.error("Error: Ajax url has returned an empty page. Should be an empty json array.");
+							}, "json");
+						},
+						dataType: "json",
+    					minLength: ' . $minLength . ',
+    					select: function( event, ui ) {		
+    						$("#' . $htmlname . '").val(ui.item.id);';
+
+
+    if(empty($idselected)) $script .= '
+              $("#addline").click();';
+    else $script .= '
+              if(!$("#' . $htmlname . '").val()) $("#' . $htmlname . '").val(' . $idselected . ');
+                                $("#savelinebutton").click();
+                        }
+    					,delay: 500
+					}).data("ui-autocomplete")._renderItem = function( ul, item ) {
+						return $("<li>")
+						.data( "ui-autocomplete-item", item ) // jQuery UI > 1.10.0
+						.append( \'<a><span class="tag">\'  item.label  "</span></a>" )
+						.appendTo(ul);
+					};
+
+  				});';
+    $script .= '</script>';
+
+    return $script;
+}
