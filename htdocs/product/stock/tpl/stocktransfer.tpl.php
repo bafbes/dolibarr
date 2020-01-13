@@ -88,7 +88,7 @@
             print entrepot_ajax_autocompleter(GETPOST("id_entrepot_destination"), 1, $htmlname, dol_buildpath('/equipement/ajax/entrepots.php', 1), $urloption, 2, 1, array(), 'nbpiece');
         }
 		print '</td>';
-		print '<td width="15%" class="fieldrequired">'.$langs->trans("NumberOfUnit").'</td><td width="15%"><input type="text" class="flat" name="nbpiece" size="10" value="'.dol_escape_htmltag(GETPOST("nbpiece")).'"></td>';
+		print '<td width="15%" class="fieldrequired">'.$langs->trans("NumberOfUnit").'</td><td width="15%"><input type="text" class="flat" id="nbpiece" name="nbpiece" size="10" value="'.dol_escape_htmltag(GETPOST("nbpiece")).'"></td>';
 		print '</tr>';
 
 		// Serial / Eat-by date
@@ -140,5 +140,13 @@
 		print '</div>';
 
 		print '</form>';
+        if(empty($conf->global->MAIN_ENTREPOT_USE_MULTISELECT)) {
+            print '
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#search_id_entrepot").focus()
+            });
+        </script>';
+        }
 ?>
 <!-- END PHP STOCKCORRECTION.TPL.PHP -->
