@@ -68,7 +68,6 @@
                 $htmlname = 'id_entrepot';
                 $urloption = "htmlname=$htmlname&XDEBUG_SESSION_START=PHPSTORM";
                 print entrepot_ajax_autocompleter((GETPOST("dwid") ? GETPOST("dwid", 'int') : (GETPOST('id_entrepot') ? GETPOST('id_entrepot', 'int') : '')), 1, $htmlname, dol_buildpath('/equipement/ajax/entrepots.php', 1), $urloption, 2, 1, array(), 'search_id_entrepot_destination');
-                print '</td>';
             }
 		    print '</td>';
 		}
