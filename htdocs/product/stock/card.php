@@ -335,21 +335,21 @@ else
             print empty($valtoshow)?'0':$valtoshow;
 			print "</td></tr>";
 
-			print '</table>';
+            if(!$conf->global->MAIN_ENTREPOT_HIDE_DETAILS) {
+                print '</table>';
+                print '</div>';
+                print '<div class="fichehalfright">';
+                print '<div class="ficheaddleft">';
+                print '<div class="underbanner clearboth"></div>';
 
-			print '</div>';
-			print '<div class="fichehalfright">';
-			print '<div class="ficheaddleft">';
-			print '<div class="underbanner clearboth"></div>';
+                print '<table class="border centpercent">';
 
-			print '<table class="border centpercent">';
-
-			// Value
-			print '<tr><td class="titlefield">'.$langs->trans("EstimatedStockValueShort").'</td><td>';
-			print price((empty($calcproducts['value'])?'0':price2num($calcproducts['value'],'MT')), 0, $langs, 0, -1, -1, $conf->currency);
-			print "</td></tr>";
-
-			// Last movement
+                // Value
+                print '<tr><td class="titlefield">' . $langs->trans("EstimatedStockValueShort") . '</td><td>';
+                print price((empty($calcproducts['value']) ? '0' : price2num($calcproducts['value'], 'MT')), 0, $langs, 0, -1, -1, $conf->currency);
+                print "</td></tr>";
+            }
+            // Last movement
 			$sql = "SELECT max(m.datem) as datem";
 			$sql .= " FROM ".MAIN_DB_PREFIX."stock_mouvement as m";
 			$sql .= " WHERE m.fk_entrepot = '".$object->id."'";
@@ -376,11 +376,12 @@ else
 			print "</td></tr>";
 
 			print "</table>";
+            if(!$conf->global->MAIN_ENTREPOT_HIDE_DETAILS) {
 
-			print '</div>';
-			print '</div>';
-			print '</div>';
-
+                print '</div>';
+                print '</div>';
+                print '</div>';
+            }
 			print '<div class="clearboth"></div>';
 
 			dol_fiche_end();
@@ -427,13 +428,15 @@ else
 			print_liste_field_titre($langs->trans("Product"),"", "p.ref","&amp;id=".$id,"","",$sortfield,$sortorder);
 			print_liste_field_titre($langs->trans("Label"),"", "p.label","&amp;id=".$id,"","",$sortfield,$sortorder);
             print_liste_field_titre($langs->trans("Units"),"", "ps.reel","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
-            print_liste_field_titre($langs->trans("AverageUnitPricePMPShort"),"", "p.pmp","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
-			print_liste_field_titre($langs->trans("EstimatedStockValueShort"),"", "","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
-            if (empty($conf->global->PRODUIT_MULTIPRICES)) print_liste_field_titre($langs->trans("SellPriceMin"),"", "p.price","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
-            if (empty($conf->global->PRODUIT_MULTIPRICES)) print_liste_field_titre($langs->trans("EstimatedStockValueSellShort"),"", "","&amp;id=".$id,"",'align="right"',$sortfield,$sortorder);
-			if ($user->rights->stock->mouvement->creer) print_liste_field_titre('');
-			if ($user->rights->stock->creer)            print_liste_field_titre('');
-			print "</tr>\n";
+            if(!$conf->global->MAIN_ENTREPOT_HIDE_DETAILS) {
+                print_liste_field_titre($langs->trans("AverageUnitPricePMPShort"), "", "p.pmp", "&amp;id=" . $id, "", 'align="right"', $sortfield, $sortorder);
+                print_liste_field_titre($langs->trans("EstimatedStockValueShort"), "", "", "&amp;id=" . $id, "", 'align="right"', $sortfield, $sortorder);
+                if (empty($conf->global->PRODUIT_MULTIPRICES)) print_liste_field_titre($langs->trans("SellPriceMin"), "", "p.price", "&amp;id=" . $id, "", 'align="right"', $sortfield, $sortorder);
+                if (empty($conf->global->PRODUIT_MULTIPRICES)) print_liste_field_titre($langs->trans("EstimatedStockValueSellShort"), "", "", "&amp;id=" . $id, "", 'align="right"', $sortfield, $sortorder);
+                if ($user->rights->stock->mouvement->creer) print_liste_field_titre('');
+                if ($user->rights->stock->creer) print_liste_field_titre('');
+            }
+            print "</tr>\n";
 
 			$totalunit=0;
 			$totalvalue=$totalvaluesell=0;
@@ -495,61 +498,60 @@ else
 					print '</td>';
 					$totalunit+=$objp->value;
 
-                    // Price buy PMP
-					print '<td align="right">'.price(price2num($objp->ppmp,'MU')).'</td>';
+                    if(!$conf->global->MAIN_ENTREPOT_HIDE_DETAILS) {
+                        // Price buy PMP
+                        print '<td align="right">' . price(price2num($objp->ppmp, 'MU')) . '</td>';
 
-                    // Total PMP
-					print '<td align="right">'.price(price2num($objp->ppmp*$objp->value,'MT')).'</td>';
-					$totalvalue+=price2num($objp->ppmp*$objp->value,'MT');
+                        // Total PMP
+                        print '<td align="right">' . price(price2num($objp->ppmp * $objp->value, 'MT')) . '</td>';
+                        $totalvalue += price2num($objp->ppmp * $objp->value, 'MT');
 
-                    // Price sell min
-                    if (empty($conf->global->PRODUIT_MULTIPRICES))
-                    {
-                        $pricemin=$objp->price;
-                        print '<td align="right">';
-                        print price(price2num($pricemin,'MU'),1);
-                        print '</td>';
-                        // Total sell min
-                        print '<td align="right">';
-                        print price(price2num($pricemin*$objp->value,'MT'),1);
-                        print '</td>';
+                        // Price sell min
+                        if (empty($conf->global->PRODUIT_MULTIPRICES)) {
+                            $pricemin = $objp->price;
+                            print '<td align="right">';
+                            print price(price2num($pricemin, 'MU'), 1);
+                            print '</td>';
+                            // Total sell min
+                            print '<td align="right">';
+                            print price(price2num($pricemin * $objp->value, 'MT'), 1);
+                            print '</td>';
+                        }
+                        $totalvaluesell += price2num($pricemin * $objp->value, 'MT');
+                        if ($user->rights->stock->mouvement->creer) {
+                            print '<td align="center"><a href="' . DOL_URL_ROOT . '/product/stock/product.php?dwid=' . $object->id . '&id=' . $objp->rowid . '&action=transfert&backtopage=' . urlencode($_SERVER["PHP_SELF"] . '?id=' . $id) . '">';
+                            print img_picto($langs->trans("StockMovement"), 'uparrow.png', 'class="hideonsmartphone"') . ' ' . $langs->trans("StockMovement");
+                            print "</a></td>";
+                        }
+
+                        if ($user->rights->stock->creer) {
+                            print '<td align="center"><a href="' . DOL_URL_ROOT . '/product/stock/product.php?dwid=' . $object->id . '&id=' . $objp->rowid . '&action=correction&backtopage=' . urlencode($_SERVER["PHP_SELF"] . '?id=' . $id) . '">';
+                            print $langs->trans("StockCorrection");
+                            print "</a></td>";
+                        }
                     }
-                    $totalvaluesell+=price2num($pricemin*$objp->value,'MT');
-
-                    if ($user->rights->stock->mouvement->creer)
-					{
-						print '<td align="center"><a href="'.DOL_URL_ROOT.'/product/stock/product.php?dwid='.$object->id.'&id='.$objp->rowid.'&action=transfert&backtopage='.urlencode($_SERVER["PHP_SELF"].'?id='.$id).'">';
-						print img_picto($langs->trans("StockMovement"),'uparrow.png','class="hideonsmartphone"').' '.$langs->trans("StockMovement");
-						print "</a></td>";
-					}
-
-					if ($user->rights->stock->creer)
-					{
-						print '<td align="center"><a href="'.DOL_URL_ROOT.'/product/stock/product.php?dwid='.$object->id.'&id='.$objp->rowid.'&action=correction&backtopage='.urlencode($_SERVER["PHP_SELF"].'?id='.$id).'">';
-						print $langs->trans("StockCorrection");
-						print "</a></td>";
-					}
-
 					print "</tr>";
 					$i++;
 				}
 				$db->free($resql);
-
-				print '<tr class="liste_total"><td class="liste_total" colspan="2">'.$langs->trans("Total").'</td>';
+                print '<tr class="liste_total"><td class="liste_total" colspan="2"';
+                if(!$conf->global->MAIN_ENTREPOT_HIDE_DETAILS) print ' align="center"';
+				print '>'.$langs->trans("Total").'</td>';
 				print '<td class="liste_total" align="right">';
 				$valtoshow=price2num($totalunit, 'MS');
 				print empty($valtoshow)?'0':$valtoshow;
 				print '</td>';
 				print '<td class="liste_total">&nbsp;</td>';
-                print '<td class="liste_total" align="right">'.price(price2num($totalvalue,'MT')).'</td>';
-                if (empty($conf->global->PRODUIT_MULTIPRICES))
-                {
+                if(!$conf->global->MAIN_ENTREPOT_HIDE_DETAILS) {
+                    print '<td class="liste_total" align="right">' . price(price2num($totalvalue, 'MT')) . '</td>';
+                    if (empty($conf->global->PRODUIT_MULTIPRICES)) {
+                        print '<td class="liste_total">&nbsp;</td>';
+                        print '<td class="liste_total" align="right">' . price(price2num($totalvaluesell, 'MT')) . '</td>';
+                    }
                     print '<td class="liste_total">&nbsp;</td>';
-                    print '<td class="liste_total" align="right">'.price(price2num($totalvaluesell,'MT')).'</td>';
+                    print '<td class="liste_total">&nbsp;</td>';
                 }
-                print '<td class="liste_total">&nbsp;</td>';
-				print '<td class="liste_total">&nbsp;</td>';
-				print '</tr>';
+                print '</tr>';
 
 			}
 			else
