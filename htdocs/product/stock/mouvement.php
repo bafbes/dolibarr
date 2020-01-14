@@ -505,20 +505,20 @@ if ($resql)
 
         dol_fiche_head($head, 'movements', $langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')), 0, 'stock');
 
-        
+
         $linkback = '<a href="'.DOL_URL_ROOT.'/product/stock/list.php">'.$langs->trans("BackToList").'</a>';
-        
+
         $morehtmlref='<div class="refidno">';
         $morehtmlref.=$langs->trans("LocationSummary").' : '.$object->lieu;
         $morehtmlref.='</div>';
-        
+
         dol_banner_tab($object, 'id', $linkback, 1, 'rowid', 'libelle', $morehtmlref);
-        
-         
+
+
         print '<div class="fichecenter">';
         print '<div class="fichehalfleft">';
         print '<div class="underbanner clearboth"></div>';
-         
+
         print '<table class="border" width="100%">';
 
         // Description
@@ -539,19 +539,20 @@ if ($resql)
         print "</td></tr>";
 
         print '</table>';
-        	
+
         print '</div>';
         print '<div class="fichehalfright">';
         print '<div class="ficheaddleft">';
         print '<div class="underbanner clearboth"></div>';
-        	
-        print '<table class="border centpercent">';
-        
-        // Value
-        print '<tr><td class="titlefield">'.$langs->trans("EstimatedStockValueShort").'</td><td>';
-        print price((empty($calcproducts['qty'])?'0':price2num($calcproducts['qty'],'MT')), 0, $langs, 0, -1, -1, $conf->currency);
-        print "</td></tr>";
 
+        print '<table class="border centpercent">';
+
+        if(empty($conf->global->MAIN_ENTREPOT_HIDE_VALORISATIONACHAT)) {
+            // Value
+            print '<tr><td class="titlefield">' . $langs->trans("EstimatedStockValueShort") . '</td><td>';
+            print price((empty($calcproducts['qty']) ? '0' : price2num($calcproducts['qty'], 'MT')), 0, $langs, 0, -1, -1, $conf->currency);
+            print "</td></tr>";
+        }
         // Last movement
         $sql = "SELECT MAX(m.datem) as datem";
         $sql .= " FROM ".MAIN_DB_PREFIX."stock_mouvement as m";
