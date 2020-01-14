@@ -129,7 +129,7 @@ if (! empty($dolibarr_strict_mode))
 }
 else
 {
-	error_reporting(E_ALL & ~(E_STRICT|E_NOTICE|E_DEPRECATED));
+	error_reporting(E_ALL & ~(E_STRICT|E_NOTICE|E_WARNING|E_DEPRECATED));
 }
 
 // Disable php display errors
