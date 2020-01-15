@@ -55,6 +55,8 @@ if (! empty($conf->projet->enabled)) {
 	require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
 }
 require_once DOL_DOCUMENT_ROOT . '/core/class/doleditor.class.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/discount.class.php';
+require_once DOL_DOCUMENT_ROOT . '/societe/class/societe.class.php';
 
 $langs->load('bills');
 $langs->load('companies');
@@ -1910,6 +1912,45 @@ $now = dol_now();
 $title = $langs->trans('InvoiceCustomer') . " - " . $langs->trans('Card');
 $helpurl = "EN:Customers_Invoices|FR:Factures_Clients|ES:Facturas_a_clientes";
 llxHeader('', $title, $helpurl);
+if($action == 'bluetooth_print') {
+    if($object->id > 0){
+//        $barcodes = ['EAN8' => 105, 'EAN13' => 103, 'UPC' => 101, 'ISBN' => 111, 'C39' => 107, 'C128' => 111, 'DATAMATRIX' => 204, 'QRCODE' => 203];//tableau des valeurs des type de code barre sur Android
+        $barcodes = array('EAN8' => 111, 'EAN13' => 111, 'UPC' => 111, 'ISBN' => 111, 'C39' => 107, 'C128' => 111, 'DATAMATRIX' => 111, 'QRCODE' => 203);//tableau des valeurs des type de code barre fonctionnels
+        $barcodecode='111';//C128 par défaut
+//Texte ticket
+        $id_vendeur = $object->user_author;
+        $id_client = $object->socid;
+        $client = new Societe($db);
+        $client->fetch($id_client);
+
+        $contenu_ticket = '';
+        $contenu_ticket .= _en_tete_ticket($id_vendeur, $object);
+        $total_qte = 0;
+
+        foreach ($object->lines as $ligne) {
+            $contenu_ticket .= _ligne_ticket($ligne, 0);
+            (!is_null($ligne->fk_product)) ? $total_qte += $ligne->qty : $total_qte = $total_qte;
+        }
+
+        $contenu_ticket .= _end_ticket($object, $total_qte, $montant, 0);
+
+
+        $contenu_ticket = strtr(utf8_decode($contenu_ticket),
+            utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ"),
+            "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn"
+        );
+        $contenu_ticket .= ";-------------";
+//        dol_nl2br($contenu_ticket);
+        print "
+    <script>
+        $(document).ready(function () {
+            javascript:lee.print_product_equipement_warehouse_ticket_em220('$object->label',$barcodecode,'$contenu_ticket');
+        });
+    </script>";
+
+        $action = '';
+    }
+}
 
 
 // Mode creation
@@ -3883,6 +3924,13 @@ else if ($id > 0 || ! empty($ref))
 	print "</form>\n";
 
 	dol_fiche_end();
+    if (!empty($conf->global->MAIN_ETIQUETAGE_BLUETOOTH)) {
+        print '<div style="float:left;"><br/>';
+        print '<a href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&amp;action=bluetooth_print&amp;champimpression=' . $champimpression . '">';
+        print  img_picto($langs->trans("Print"), 'printer.png');
+        print $langs->trans("&nbsp;Impression bluetooth");
+        print '</div>';
+    }
 
 
 	// Actions buttons
@@ -4282,3 +4330,145 @@ else if ($id > 0 || ! empty($ref))
 
 llxFooter();
 $db->close();
+
+function _en_tete_ticket($id_vendeur,$facture){
+
+	global $conf;
+
+	$chaine = $conf->global->MAIN_INFO_SOCIETE_NOM."\n";
+
+	if(!empty($conf->global->MAIN_INFO_SOCIETE_ADDRESS))$chaine .= $conf->global->MAIN_INFO_SOCIETE_ADDRESS."\n";
+	if(!empty($conf->global->MAIN_INFO_SOCIETE_ZIP))$chaine .= $conf->global->MAIN_INFO_SOCIETE_ZIP." ";
+	if(!empty($conf->global->MAIN_INFO_SOCIETE_TOWN))$chaine .= $conf->global->MAIN_INFO_SOCIETE_TOWN."\n";
+	if(!empty($conf->global->MAIN_INFO_SIRET))$chaine .= 'Siret : '.$conf->global->MAIN_INFO_SIRET."\n";
+	if(!empty($conf->global->MAIN_INFO_APE))$chaine .= 'APE : '.$conf->global->MAIN_INFO_APE."\n";
+	if(!empty($conf->global->MAIN_INFO_TVAINTRA))$chaine .= 'TVA : '.$conf->global->MAIN_INFO_TVAINTRA."\n";
+
+	$chaine .="\n";
+
+	if(!empty($conf->global->MAIN_INFO_SOCIETE_TEL))$chaine .= 'Tel : '.$conf->global->MAIN_INFO_SOCIETE_TEL."\n";
+	if(!empty($conf->global->MAIN_INFO_SOCIETE_FAX))$chaine .= 'Fax : '.$conf->global->MAIN_INFO_SOCIETE_FAX."\n";
+
+	$chaine .="\n".'Vend: '.$id_vendeur.' - Tick: '.$facture->facnumber."\n"."\n";
+
+	return $chaine;
+}
+
+function _ligne_ticket($ligne,$sansprix){
+	global $conf;
+
+	$maligne = '';
+
+	$prix = number_format($ligne->total_ttc,2,',',' ');
+	$taille_prix = strlen($prix);
+
+	$description = (!empty($ligne->label)) ? $ligne->label : $ligne->desc;
+	$taille_description = strlen($description);
+	$max_description = $conf->global->CAISSE_TICKET_MAXLENGTH-$taille_prix-3;
+
+	$description = str_pad(substr($description, 0, $max_description), $max_description,' ', STR_PAD_RIGHT);
+
+	$qte = $ligne->qty;
+	$taille_qty = strlen($qte);
+
+	$remise = $ligne->remise_percent;
+	$taille_remise = strlen($remise);
+		if($sansprix == 1){
+		$prix = " ";
+		$ligne->remise_percent = 0;
+	}
+
+	$maligne .= $description.'   '.$prix."\n"
+				  .'     x '.$qte;
+	($ligne->remise_percent > 0) ? $maligne .= '   rem '.$remise.' %': '' ;
+	$maligne .= "\n";
+
+	return $maligne;
+}
+function _end_ticket($facture,$total_qte,$montant,$sansprix){
+
+	if($sansprix != 1){
+		$chaine = _totaux_ticket($facture);
+		$chaine .="\n"
+				  .'Quantité d\'articles : '.$total_qte."\n"
+				  ."\n";
+		$chaine .= _reglements($facture,$montant);
+	}
+	else {
+		$chaine = "\n"
+				.'Quantité d\'articles : '.$total_qte."\n"
+				."\n";
+	}
+	$chaine .= date('d/m/Y H:i:s')."\n"
+			."Merci !\n*\n*\n";
+	return $chaine;
+}
+
+function _reglements($facture,$montant){
+	global $db, $conf;
+	$machaine = "";
+
+	$sql = 'SELECT c.code as label, SUM(pf.amount) as montant
+     		FROM '.MAIN_DB_PREFIX.'c_paiement as c, '.MAIN_DB_PREFIX.'paiement_facture as pf, '.MAIN_DB_PREFIX.'paiement as p
+     		LEFT JOIN '.MAIN_DB_PREFIX.'bank as b ON p.fk_bank = b.rowid
+     		LEFT JOIN '.MAIN_DB_PREFIX.'bank_account as ba ON b.fk_account = ba.rowid
+    		WHERE pf.fk_facture = '.$facture->id.' AND p.fk_paiement = c.id AND pf.fk_paiement = p.rowid AND p.entity='.$conf->entity.'
+    		GROUP BY c.libelle';
+
+	$result =$db->query($sql);
+    if ($result) {
+        $num = $db->num_rows($result);
+        $i = 0;
+        while ($i < $num) {
+            $obj = $db->fetch_object($result);
+
+            if ($obj->label == "LIQ")
+                $machaine .= 'ESP';
+            else
+                $machaine .= $obj->label;
+
+            $machaine .= ' : ' . number_format($obj->montant, 2, ',', ' ') . "\n";
+            $i++;
+        }
+    }
+	$discount = new DiscountAbsolute($db);
+
+	if($discount->getSumCreditNotesUsed($facture) != -1 && $discount->getSumCreditNotesUsed($facture) != 0)
+		$machaine .= 'BA Avoir : '.number_format(abs($discount->getSumCreditNotesUsed($facture)),2,',',' ')."\n";
+	if($discount->getSumDepositsUsed($facture) != -1 && $discount->getSumDepositsUsed($facture) != 0)
+		$machaine .= 'BA Cadeau : '.number_format(abs($discount->getSumDepositsUsed($facture)),2,',',' ')."\n";
+
+	if($montant < 0)
+		$machaine .= 'Rendu : '.number_format(abs($montant),2,',',' ')."\n";
+
+	return $machaine."\n";
+}
+function _totaux_ticket($facture){
+    global $conf;
+
+    $Ttva = array();
+    foreach($facture->lines as $line){
+        $Ttva[$line->tva_tx]['total_ht'] += $line->total_ht;
+        $Ttva[$line->tva_tx]['total_tva'] += $line->total_tva;
+        $Ttva[$line->tva_tx]['total_ttc'] += ($line->total_tva + $line->total_ht);
+    }
+
+    $chaine = "\n";
+
+    foreach($Ttva as $tvatx => $tvaline){
+        $ligne = 'Soumis TVA '.number_format($tvatx,2,',','').'%';
+        $ligne = $ligne.str_pad(number_format($tvaline['total_ht'],2,',',' '),9," ",STR_PAD_LEFT);
+        $chaine .= str_pad($ligne,$conf->global->CAISSE_TICKET_MAXLENGTH," ",STR_PAD_LEFT)."\n";
+        $ligne = 'Total TVA '.number_format($tvatx,2,',','').'%';
+        $ligne = $ligne.str_pad(number_format($tvaline['total_tva'],2,',',' '),9," ",STR_PAD_LEFT);
+        $chaine .= str_pad($ligne,$conf->global->CAISSE_TICKET_MAXLENGTH," ",STR_PAD_LEFT)."\n";
+        $ligne = 'Total TTC '.number_format($tvatx,2,',','').'%';
+        $ligne = $ligne.str_pad(number_format($tvaline['total_ttc'],2,',',' '),9," ",STR_PAD_LEFT);
+        $chaine .= str_pad($ligne,$conf->global->CAISSE_TICKET_MAXLENGTH," ",STR_PAD_LEFT)."\n";
+    }
+    $chaine .= "\n";
+    $total_ttc = '*** Total TTC : '.str_pad(number_format($facture->total_ttc,2,',',' '),9," ",STR_PAD_LEFT);
+
+    $chaine .= str_pad($total_ttc,$conf->global->CAISSE_TICKET_MAXLENGTH," ",STR_PAD_LEFT)."\n";
+    return $chaine;
+}
