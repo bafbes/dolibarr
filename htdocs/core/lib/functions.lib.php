@@ -1051,7 +1051,7 @@ function dol_banner_tab($object, $paramid, $morehtml='', $shownav=1, $fieldid='r
 	} 
 	elseif ($object->element == 'product')
 	{
-        if (! empty($conf->global->MAIN_PRODUCT_HIDE_BUYSELL_STATUS)) {
+        if (empty($conf->global->MAIN_PRODUCT_HIDE_BUYSELL_STATUS)) {
             //$morehtmlstatus.=$langs->trans("Status").' ('.$langs->trans("Sell").') ';
             if (!empty($conf->use_javascript_ajax) && $user->rights->produit->creer && !empty($conf->global->MAIN_DIRECT_STATUS_UPDATE)) {
                 $morehtmlstatus .= ajax_object_onoff($object, 'status', 'tosell', 'ProductStatusOnSell', 'ProductStatusNotOnSell');
