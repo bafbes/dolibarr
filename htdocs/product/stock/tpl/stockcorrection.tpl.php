@@ -80,7 +80,7 @@
 		print '<td width="20%" class="fieldrequired">'.$langs->trans("NumberOfUnit").'</td><td width="20%"><input class="flat" name="nbpiece" id="nbpiece" size="10" value="'.GETPOST("nbpiece").'"></td>';
 		print '</tr>';
 
-        if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+        if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
             // Purchase price
             print '<tr>';
             print '<td width="20%" colspan="2">' . $langs->trans("UnitPurchaseValue") . '</td>';
@@ -110,7 +110,7 @@
 			print '</tr>';
 		}
 
-        if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+        if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
             // Label of mouvement of id of inventory
             $valformovementlabel = ((GETPOST("label") && (GETPOST('label') != $langs->trans("MovementCorrectStock", ''))) ? GETPOST("label") : $langs->trans("MovementCorrectStock", $productref));
             print '<tr>';

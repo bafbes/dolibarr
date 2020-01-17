@@ -909,7 +909,7 @@ else
         // Label
         print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag(GETPOST('label')).'"></td></tr>';
 
-        if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+        if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
             // On sell
             print '<tr><td class="fieldrequired">' . $langs->trans("Status") . ' (' . $langs->trans("Sell") . ')</td><td colspan="3">';
             $statutarray = array('1' => $langs->trans("OnSell"), '0' => $langs->trans("NotOnSell"));
@@ -963,7 +963,7 @@ else
 
             print "</td></tr>";
 
-            if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+            if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
             // Public URL
             print '<tr><td>' . $langs->trans("PublicUrl") . '</td><td colspan="3">';
             print '<input type="text" name="url" class="quatrevingtpercent" value="' . GETPOST('url') . '">';
@@ -1080,7 +1080,7 @@ else
 
         print '<br>';
 
-        if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+        if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
             if (!empty($conf->global->PRODUIT_MULTIPRICES)) {
                 // We do no show price array on create when multiprices enabled.
                 // We must set them on prices tab.
@@ -1186,7 +1186,7 @@ else
             // Label
             print '<tr><td class="fieldrequired">'.$langs->trans("Label").'</td><td colspan="3"><input name="label" class="minwidth300 maxwidth400onsmartphone" maxlength="255" value="'.dol_escape_htmltag($object->label).'"></td></tr>';
 
-            if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+            if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
                 // Status To sell
                 print '<tr><td class="fieldrequired">' . $langs->trans("Status") . ' (' . $langs->trans("Sell") . ')</td><td colspan="3">';
                 print '<select class="flat" name="statut">';
@@ -1258,7 +1258,7 @@ else
 
                 print "</td></tr>";
                 print "\n";
-                if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+                if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
                 // Public Url
                 print '<tr><td>' . $langs->trans("PublicUrl") . '</td><td colspan="3">';
                 print '<input type="text" name="url" class="quatrevingtpercent" value="' . $object->url . '">';
@@ -1571,7 +1571,7 @@ else
                 // Description
                 print '<tr><td class="tdtop">' . $langs->trans("Description") . '</td><td colspan="2">' . (dol_textishtml($object->description) ? $object->description : dol_nl2br($object->description, 1, true)) . '</td></tr>';
 
-                    if (empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+                    if (empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
                 // Public URL
                 print '<tr><td>' . $langs->trans("PublicUrl") . '</td><td colspan="2">';
                 print dol_print_url($object->url);
@@ -1932,7 +1932,7 @@ if (! empty($conf->global->PRODUCT_ADD_FORM_ADD_TO) && $object->id && ($action =
 /*
  * Documents generes
  */
-if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS) && ($action == '' || $action == 'view'))
+if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS) && ($action == '' || $action == 'view'))
 {
     print '<div class="fichecenter"><div class="fichehalfleft">';
     print '<a name="builddoc"></a>'; // ancre

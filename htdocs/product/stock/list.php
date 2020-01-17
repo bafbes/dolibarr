@@ -153,7 +153,7 @@ if ($result)
 	print_liste_field_titre($langs->trans("Ref"),$_SERVER["PHP_SELF"], "e.label","",$param,"",$sortfield,$sortorder);
 	print_liste_field_titre($langs->trans("LocationSummary"),$_SERVER["PHP_SELF"], "e.lieu","",$param,"",$sortfield,$sortorder);
 	print_liste_field_titre($langs->trans("PhysicalStock"), $_SERVER["PHP_SELF"], "stockqty",'',$param,'align="right"',$sortfield,$sortorder);
-    if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+    if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
         print_liste_field_titre($langs->trans("EstimatedStockValue"), $_SERVER["PHP_SELF"], "estimatedvalue", '', $param, 'align="right"', $sortfield, $sortorder);
         print_liste_field_titre($langs->trans("EstimatedStockValueSell"), $_SERVER["PHP_SELF"], "", '', $param, 'align="right"', $sortfield, $sortorder);
         print_liste_field_titre($langs->trans("Status"), $_SERVER["PHP_SELF"], "e.statut", '', $param, 'align="right"', $sortfield, $sortorder);
@@ -172,7 +172,7 @@ if ($result)
 	print '<input class="flat" type="text" name="search_label" size="10" value="'.dol_escape_htmltag($search_label).'">';
 	print '</td>';
 
-    if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+    if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
 
         print '<td class="liste_titre" colspan="3">';
         print '</td>';
@@ -207,7 +207,7 @@ if ($result)
             print '<td>'.$objp->lieu.'</td>';
             // Stock qty
             print '<td align="right">'.price2num($objp->stockqty,5).'</td>';
-            if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+            if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
                 // PMP value
                 print '<td align="right">';
                 if (price2num($objp->estimatedvalue, 'MT')) print price(price2num($objp->estimatedvalue, 'MT'), 1);
@@ -237,7 +237,7 @@ if ($result)
     		print '<tr class="liste_total">';
             print '<td colspan="2" align="right">'.$langs->trans("Total").'</td>';
 			print '<td align="right">'.price2num($totalStock,5).'</td>';
-            if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+            if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
                 print '<td align="right">' . price(price2num($total, 'MT'), 1, $langs, 0, 0, -1, $conf->currency) . '</td>';
                 print '<td align="right">';
                 if (empty($conf->global->PRODUIT_MULTIPRICES)) print price(price2num($totalsell, 'MT'), 1, $langs, 0, 0, -1, $conf->currency);

@@ -45,55 +45,51 @@ function product_prepare_head($object)
 	$head[$h][2] = 'card';
 	$h++;
 
-	if (empty($conf->global->MAIN_PRODUCT_HIDETABS) && ! empty($object->status))
-	{
-    	$head[$h][0] = DOL_URL_ROOT."/product/price.php?id=".$object->id;
-    	$head[$h][1] = $langs->trans("SellingPrices");
-    	$head[$h][2] = 'price';
-    	$h++;
-	}
-	
-	if (! empty($object->status_buy) || (! empty($conf->margin->enabled) && ! empty($object->status)))   // If margin is on and product on sell, we may need the cost price even if product os not on purchase
-	{
-    	if ((! empty($conf->fournisseur->enabled) && $user->rights->fournisseur->lire)
-    	|| (! empty($conf->margin->enabled) && $user->rights->margin->liretous)
-    	)
-    	{
-    		$head[$h][0] = DOL_URL_ROOT."/product/fournisseurs.php?id=".$object->id;
-    		$head[$h][1] = $langs->trans("BuyingPrices");
-    		$head[$h][2] = 'suppliers';
-    		$h++;
-    	}
-	}
+	if (empty($conf->global->MAIN_PRODUCT_HIDETABS) && ! empty($object->status)) {
+        $head[$h][0] = DOL_URL_ROOT . "/product/price.php?id=" . $object->id;
+        $head[$h][1] = $langs->trans("SellingPrices");
+        $head[$h][2] = 'price';
+        $h++;
 
-	// Multilangs
-	if (! empty($conf->global->MAIN_MULTILANGS))
-	{
-		$head[$h][0] = DOL_URL_ROOT."/product/traduction.php?id=".$object->id;
-		$head[$h][1] = $langs->trans("Translation");
-		$head[$h][2] = 'translation';
-		$h++;
-	}
 
-	// Sub products
-	if (! empty($conf->global->PRODUIT_SOUSPRODUITS))
-	{
-		$head[$h][0] = DOL_URL_ROOT."/product/composition/card.php?id=".$object->id;
-		$head[$h][1] = $langs->trans('AssociatedProducts');
-		$head[$h][2] = 'subproduct';
-		$h++;
-	}
+        if (!empty($object->status_buy) || (!empty($conf->margin->enabled) && !empty($object->status)))   // If margin is on and product on sell, we may need the cost price even if product os not on purchase
+        {
+            if ((!empty($conf->fournisseur->enabled) && $user->rights->fournisseur->lire)
+                || (!empty($conf->margin->enabled) && $user->rights->margin->liretous)
+            ) {
+                $head[$h][0] = DOL_URL_ROOT . "/product/fournisseurs.php?id=" . $object->id;
+                $head[$h][1] = $langs->trans("BuyingPrices");
+                $head[$h][2] = 'suppliers';
+                $h++;
+            }
+        }
 
-	$head[$h][0] = DOL_URL_ROOT."/product/stats/card.php?id=".$object->id;
-	$head[$h][1] = $langs->trans('Statistics');
-	$head[$h][2] = 'stats';
-	$h++;
+        // Multilangs
+        if (!empty($conf->global->MAIN_MULTILANGS)) {
+            $head[$h][0] = DOL_URL_ROOT . "/product/traduction.php?id=" . $object->id;
+            $head[$h][1] = $langs->trans("Translation");
+            $head[$h][2] = 'translation';
+            $h++;
+        }
 
-	$head[$h][0] = DOL_URL_ROOT."/product/stats/facture.php?showmessage=1&id=".$object->id;
-	$head[$h][1] = $langs->trans('Referers');
-	$head[$h][2] = 'referers';
-	$h++;
+        // Sub products
+        if (!empty($conf->global->PRODUIT_SOUSPRODUITS)) {
+            $head[$h][0] = DOL_URL_ROOT . "/product/composition/card.php?id=" . $object->id;
+            $head[$h][1] = $langs->trans('AssociatedProducts');
+            $head[$h][2] = 'subproduct';
+            $h++;
+        }
 
+        $head[$h][0] = DOL_URL_ROOT . "/product/stats/card.php?id=" . $object->id;
+        $head[$h][1] = $langs->trans('Statistics');
+        $head[$h][2] = 'stats';
+        $h++;
+
+        $head[$h][0] = DOL_URL_ROOT . "/product/stats/facture.php?showmessage=1&id=" . $object->id;
+        $head[$h][1] = $langs->trans('Referers');
+        $head[$h][2] = 'referers';
+        $h++;
+    }
     if ($object->isProduct() || ($object->isService() && ! empty($conf->global->STOCK_SUPPORTS_SERVICES)))    // If physical product we can stock (or service with option)
     {
         if (! empty($conf->stock->enabled) && $user->rights->stock->lire)
@@ -112,44 +108,44 @@ function product_prepare_head($object)
     complete_head_from_modules($conf,$langs,$object,$head,$h,'product');
 
     // Notes
-    if (empty($conf->global->MAIN_DISABLE_NOTES_TAB))
-    {
-        $nbNote = 0;
-        if(!empty($object->note_private)) $nbNote++;
-        if(!empty($object->note_public)) $nbNote++;
-        $head[$h][0] = DOL_URL_ROOT.'/product/note.php?id='.$object->id;
-        $head[$h][1] = $langs->trans('Notes');
-        if ($nbNote > 0) $head[$h][1].= ' <span class="badge">'.$nbNote.'</span>';
-        $head[$h][2] = 'note';
+    if (empty($conf->global->MAIN_PRODUCT_HIDETABS)) {
+        if (empty($conf->global->MAIN_DISABLE_NOTES_TAB)) {
+            $nbNote = 0;
+            if (!empty($object->note_private)) $nbNote++;
+            if (!empty($object->note_public)) $nbNote++;
+            $head[$h][0] = DOL_URL_ROOT . '/product/note.php?id=' . $object->id;
+            $head[$h][1] = $langs->trans('Notes');
+            if ($nbNote > 0) $head[$h][1] .= ' <span class="badge">' . $nbNote . '</span>';
+            $head[$h][2] = 'note';
+            $h++;
+        }
+
+        // Attachments
+        require_once DOL_DOCUMENT_ROOT . '/core/lib/files.lib.php';
+        require_once DOL_DOCUMENT_ROOT . '/core/class/link.class.php';
+        if (!empty($conf->product->enabled) && ($object->type == Product::TYPE_PRODUCT)) $upload_dir = $conf->product->multidir_output[$object->entity] . '/' . dol_sanitizeFileName($object->ref);
+        if (!empty($conf->service->enabled) && ($object->type == Product::TYPE_SERVICE)) $upload_dir = $conf->service->multidir_output[$object->entity] . '/' . dol_sanitizeFileName($object->ref);
+        $nbFiles = count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview\.png)$'));
+        if (!empty($conf->global->PRODUCT_USE_OLD_PATH_FOR_PHOTO)) {
+            if (!empty($conf->product->enabled) && ($object->type == Product::TYPE_PRODUCT)) $upload_dir = $conf->produit->multidir_output[$object->entity] . '/' . get_exdir($object->id, 2, 0, 0, $object, 'product') . $object->id . '/photos';
+            if (!empty($conf->service->enabled) && ($object->type == Product::TYPE_SERVICE)) $upload_dir = $conf->service->multidir_output[$object->entity] . '/' . get_exdir($object->id, 2, 0, 0, $object, 'product') . $object->id . '/photos';
+            $nbFiles += count(dol_dir_list($upload_dir, 'files', 0, '', '(\.meta|_preview\.png)$'));
+        }
+        $nbLinks = Link::count($db, $object->element, $object->id);
+        $head[$h][0] = DOL_URL_ROOT . '/product/document.php?id=' . $object->id;
+        $head[$h][1] = $langs->trans('Documents');
+        if (($nbFiles + $nbLinks) > 0) $head[$h][1] .= ' <span class="badge">' . ($nbFiles + $nbLinks) . '</span>';
+        $head[$h][2] = 'documents';
+        $h++;
+
+        complete_head_from_modules($conf, $langs, $object, $head, $h, 'product', 'remove');
+
+        // Log
+        $head[$h][0] = DOL_URL_ROOT . '/product/info.php?id=' . $object->id;
+        $head[$h][1] = $langs->trans("Info");
+        $head[$h][2] = 'info';
         $h++;
     }
-
-    // Attachments
-	require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-    require_once DOL_DOCUMENT_ROOT.'/core/class/link.class.php';
-    if (! empty($conf->product->enabled) && ($object->type==Product::TYPE_PRODUCT)) $upload_dir = $conf->product->multidir_output[$object->entity].'/'.dol_sanitizeFileName($object->ref);
-    if (! empty($conf->service->enabled) && ($object->type==Product::TYPE_SERVICE)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.dol_sanitizeFileName($object->ref);
-    $nbFiles = count(dol_dir_list($upload_dir,'files',0,'','(\.meta|_preview\.png)$'));
-    if (! empty($conf->global->PRODUCT_USE_OLD_PATH_FOR_PHOTO)) {
-        if (! empty($conf->product->enabled) && ($object->type==Product::TYPE_PRODUCT)) $upload_dir = $conf->produit->multidir_output[$object->entity].'/'.get_exdir($object->id,2,0,0,$object,'product').$object->id.'/photos';
-        if (! empty($conf->service->enabled) && ($object->type==Product::TYPE_SERVICE)) $upload_dir = $conf->service->multidir_output[$object->entity].'/'.get_exdir($object->id,2,0,0,$object,'product').$object->id.'/photos';
-        $nbFiles += count(dol_dir_list($upload_dir,'files',0,'','(\.meta|_preview\.png)$'));
-    }
-    $nbLinks=Link::count($db, $object->element, $object->id);
-	$head[$h][0] = DOL_URL_ROOT.'/product/document.php?id='.$object->id;
-	$head[$h][1] = $langs->trans('Documents');
-	if (($nbFiles+$nbLinks) > 0) $head[$h][1].= ' <span class="badge">'.($nbFiles+$nbLinks).'</span>';
-	$head[$h][2] = 'documents';
-	$h++;
-
-    complete_head_from_modules($conf,$langs,$object,$head,$h,'product', 'remove');
-
-    // Log
-    $head[$h][0] = DOL_URL_ROOT.'/product/info.php?id='.$object->id;
-    $head[$h][1] = $langs->trans("Info");
-    $head[$h][2] = 'info';
-    $h++;
-
 	return $head;
 }
 

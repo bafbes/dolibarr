@@ -542,7 +542,7 @@ if ($id > 0 || $ref)
 			print '</td></tr>';
 		}
 
-        if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+        if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
             // PMP
             print '<tr><td class="titlefield">' . $langs->trans("AverageUnitPricePMP") . '</td>';
             print '<td>';
@@ -624,7 +624,7 @@ if ($id > 0 || $ref)
 		print '</td>';
 		print '</tr>';
 
-        if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+        if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
             $stocktheo = price2num($object->stock_theorique, 'MS');
 
             // Calculating a theorical value
@@ -774,7 +774,7 @@ print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre">';
 print '<td colspan="4">'.$langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td>';
 print '<td align="right">'.$langs->trans("NumberOfUnit").'</td>';
-if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
     print '<td align="right">' . $langs->trans("AverageUnitPricePMPShort") . '</td>';
     print '<td align="right">' . $langs->trans("EstimatedStockValueShort") . '</td>';
     print '<td align="right">' . $langs->trans("SellPriceMin") . '</td>';
@@ -822,7 +822,7 @@ if ($resql)
 		print '<td colspan="4">'.$entrepotstatic->getNomUrl(1).'</td>';
 		print '<td align="right">'.$stock_real.($stock_real < 0 ?' '.img_warning():'').'</td>';
 		$total += $obj->reel;
-        if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+        if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
             // PMP
             print '<td align="right">' . (price2num($object->pmp) ? price2num($object->pmp, 'MU') : '') . '</td>';
             // Value purchase
@@ -890,7 +890,7 @@ else dol_print_error($db);
 
 print '<tr class="liste_total"><td align="right" class="liste_total" colspan="4">'.$langs->trans("Total").':</td>';
 print '<td class="liste_total" align="right">'.price2num($total, 'MS').'</td>';
-if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
+if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
     print '<td class="liste_total" align="right">';
     print ($totalwithpmp ? price(price2num($totalvalue / $totalwithpmp, 'MU')) : '&nbsp;');    // This value may have rounding errors
     print '</td>';
