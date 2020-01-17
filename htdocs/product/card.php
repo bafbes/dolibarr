@@ -955,7 +955,6 @@ else
 	        print '</td></tr>';
         }
 
-        if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
             // Description (used in invoice, propal...)
             print '<tr><td class="tdtop">' . $langs->trans("Description") . '</td><td colspan="3">';
 
@@ -964,6 +963,7 @@ else
 
             print "</td></tr>";
 
+            if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
             // Public URL
             print '<tr><td>' . $langs->trans("PublicUrl") . '</td><td colspan="3">';
             print '<input type="text" name="url" class="quatrevingtpercent" value="' . GETPOST('url') . '">';
@@ -1249,7 +1249,6 @@ else
 		        print '</td></tr>';
 	        }
 
-            if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
                 // Description (used in invoice, propal...)
                 print '<tr><td class="tdtop">' . $langs->trans("Description") . '</td><td colspan="3">';
 
@@ -1259,7 +1258,7 @@ else
 
                 print "</td></tr>";
                 print "\n";
-
+                if(empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
                 // Public Url
                 print '<tr><td>' . $langs->trans("PublicUrl") . '</td><td colspan="3">';
                 print '<input type="text" name="url" class="quatrevingtpercent" value="' . $object->url . '">';
@@ -1555,7 +1554,6 @@ else
             }
             print '</td></tr>';
             */
-            if (empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
                 // Batch number management (to batch)
                 if (!empty($conf->productbatch->enabled)) {
                     print '<tr><td>' . $langs->trans("ManageLotSerial") . '</td><td colspan="2">';
@@ -1571,6 +1569,7 @@ else
                 // Description
                 print '<tr><td class="tdtop">' . $langs->trans("Description") . '</td><td colspan="2">' . (dol_textishtml($object->description) ? $object->description : dol_nl2br($object->description, 1, true)) . '</td></tr>';
 
+                    if (empty($conf->global->MAIN_HIDE_PRODUCT_DETAILS)) {
                 // Public URL
                 print '<tr><td>' . $langs->trans("PublicUrl") . '</td><td colspan="2">';
                 print dol_print_url($object->url);
