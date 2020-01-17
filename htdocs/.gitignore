@@ -1,6 +1,8 @@
 /allscreens*
 /ancot*
 /bootstrap*
+/cabinetmed*
+/conf/conf.php
 /dolimed*
 /ecommerce*
 /extensions*
@@ -12,14 +14,8 @@
 /nltechno*
 /ovh*
 /pos
+/subtotal/
 /teclib*
 /test.php
 /ultimatepdf*
-/lead
-/dolimed*
-/allscreens*
-/ecommerce/
-/cabinetmed*
 /webmail*
-/conf/conf.php
-/subtotal/
