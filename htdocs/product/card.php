@@ -1577,12 +1577,6 @@ else
                 print dol_print_url($object->url);
                 print '</td></tr>';
 
-                print '</table>';
-                print '</div>';
-                print '<div class="fichehalfright"><div class="ficheaddleft">';
-
-                print '<div class="underbanner clearboth"></div>';
-                print '<table class="border tableforfield" width="100%">';
 
                 // Nature
                 if ($object->type != Product::TYPE_SERVICE) {
