@@ -1154,7 +1154,7 @@ else
      * Product card
      */
 
-    else if ($object->id > 0)
+    elseif ($object->id > 0)
     {
         // Fiche en mode edition
         if ($action == 'edit' &&  ((($object->type == Product::TYPE_PRODUCT && $user->rights->produit->creer) ||  ($object->type == Product::TYPE_SERVICE && $user->rights->service->creer))))
@@ -1441,7 +1441,9 @@ else
             
             
             print '<div class="fichecenter">';
-            print '<div class="fichehalfleft">';
+            print '<div';
+            if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAIL_TABS))print ' class="fichehalfleft"';
+            print'>';
             
             print '<div class="underbanner clearboth"></div>';
             print '<table class="border tableforfield" width="100%">';
@@ -1696,7 +1698,7 @@ else
         }
 
     }
-    else if ($action != 'create')
+    elseif ($action != 'create')
     {
         exit;
     }
