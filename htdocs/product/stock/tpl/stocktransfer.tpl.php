@@ -63,11 +63,11 @@
 		{
 		    print '<td width="15%" class="fieldrequired">'.$langs->trans("WarehouseSource".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td>';
 		    print '<td width="15%">';
-		    if(empty($conf->global->MAIN_ENTREPOT_USE_MULTISELECT))print $formproduct->selectWarehouses((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'ifone')), 'id_entrepot', 'warehouseopen,warehouseinternal', 1);
+		    if(empty($conf->global->EQUIPEMENT_USEAUTOSELECT4WAREHOUSES))print $formproduct->selectWarehouses((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'ifone')), 'id_entrepot', 'warehouseopen,warehouseinternal', 1);
             else {
                 $htmlname = 'id_entrepot';
                 $urloption = "htmlname=$htmlname&XDEBUG_SESSION_START=PHPSTORM";
-                print entrepot_ajax_autocompleter((GETPOST("dwid") ? GETPOST("dwid", 'int') : (GETPOST('id_entrepot') ? GETPOST('id_entrepot', 'int') : '')), 1, $htmlname, dol_buildpath('/equipement/ajax/entrepots.php', 1), $urloption, 2, 1, array(), 'search_id_entrepot_destination');
+                print entrepot_ajax_autocompleter((GETPOST("dwid") ? GETPOST("dwid", 'int') : (GETPOST('id_entrepot') ? GETPOST('id_entrepot', 'int') : '')), 1, DOL_URL_ROOT.'/product/stock/ajax/entrepots.php', $urloption, 2, 1, array(), 'search_id_entrepot_destination');
             }
 		    print '</td>';
 		}
@@ -80,7 +80,7 @@
 		}
 		
 		print '<td width="15%" class="fieldrequired">'.$langs->trans("WarehouseTarget".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td><td width="15%">';
-		if(empty($conf->global->MAIN_ENTREPOT_USE_MULTISELECT))print $formproduct->selectWarehouses(GETPOST('id_entrepot_destination'), 'id_entrepot_destination', 'warehouseopen,warehouseinternal', 1);
+		if(empty($conf->global->EQUIPEMENT_USEAUTOSELECT4WAREHOUSES))print $formproduct->selectWarehouses(GETPOST('id_entrepot_destination'), 'id_entrepot_destination', 'warehouseopen,warehouseinternal', 1);
 		else {
             $htmlname = 'id_entrepot_destination';
             $urloption = "htmlname=$htmlname&XDEBUG_SESSION_START=PHPSTORM";
@@ -139,7 +139,7 @@
 		print '</div>';
 
 		print '</form>';
-        if(empty($conf->global->MAIN_ENTREPOT_USE_MULTISELECT)) {
+        if(empty($conf->global->EQUIPEMENT_USEAUTOSELECT4WAREHOUSES)) {
             print '
         <script type="text/javascript">
             $(document).ready(function() {

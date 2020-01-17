@@ -56,11 +56,11 @@
 		{
 			print '<td width="20%" class="fieldrequired" colspan="2">'.$langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td>';
 			print '<td width="20%">';
-			if(empty($conf->global->MAIN_ENTREPOT_USE_MULTISELECT))print $formproduct->selectWarehouses((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'ifone')), 'id_entrepot', 'warehouseopen,warehouseinternal', 1, 0, 0, '', 0, 0, null, 'minwidth100');
+            $htmlname = 'id_entrepot';
+			if(empty($conf->global->MAIN_USEAUTOSELECT4WAREHOUSES))print $formproduct->selectWarehouses((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'ifone')), $htmlname, 'warehouseopen,warehouseinternal', 1, 0, 0, '', 0, 0, null, 'minwidth100');
             else {
-                $htmlname = 'id_entrepot';
                 $urloption = "htmlname=$htmlname&XDEBUG_SESSION_START=PHPSTORM";
-                print entrepot_ajax_autocompleter((GETPOST("dwid") ? GETPOST("dwid", 'int') : (GETPOST('id_entrepot') ? GETPOST('id_entrepot', 'int') : '')), 1, $htmlname, dol_buildpath('/equipement/ajax/entrepots.php', 1), $urloption, 2, 1, array(), 'nbpiece');
+                print entrepot_ajax_autocompleter((GETPOST("dwid") ? GETPOST("dwid", 'int') : (GETPOST('id_entrepot') ? GETPOST('id_entrepot', 'int') : '')), 1, $htmlname,DOL_URL_ROOT.'/product/stock/ajax/entrepots.php', $urloption, 2, 1, array(), 'nbpiece');
                 print '</td>';
             }
 			print '</td>';
