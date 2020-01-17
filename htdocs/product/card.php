@@ -1442,7 +1442,7 @@ else
             
             print '<div class="fichecenter">';
             print '<div';
-            if(empty($conf->global->MAIN_PRODUCT_HIDE_DETAIL_TABS))print ' class="fichehalfleft"';
+            if(empty($conf->global->MAIN_PRODUCT_HIDETABS))print ' class="fichehalfleft"';
             print'>';
             
             print '<div class="underbanner clearboth"></div>';

@@ -45,7 +45,7 @@ function product_prepare_head($object)
 	$head[$h][2] = 'card';
 	$h++;
 
-	if (empty($conf->global->MAIN_PRODUCT_HIDE_DETAIL_TABS) && ! empty($object->status))
+	if (empty($conf->global->MAIN_PRODUCT_HIDETABS) && ! empty($object->status))
 	{
     	$head[$h][0] = DOL_URL_ROOT."/product/price.php?id=".$object->id;
     	$head[$h][1] = $langs->trans("SellingPrices");
