@@ -6042,7 +6042,7 @@ function entrepot_ajax_autocompleter($selected, $idselected, $htmlname, $url, $u
 					}).data("ui-autocomplete")._renderItem = function( ul, item ) {
 						return $("<li>")
 						.data( "ui-autocomplete-item", item ) // jQuery UI > 1.10.0
-						.append( \'<a><span class="tag">\'  item.label  "</span></a>" )
+						.append( \'<a><span class="tag">\'+  item.label+  "</span></a>" )
 						.appendTo(ul);
 					};
 
