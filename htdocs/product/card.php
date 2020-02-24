@@ -1387,6 +1387,7 @@ else {
             if (empty($conf->global->MAIN_PRODUCT_HIDETABS)) print ' class="fichehalfleft"';
             print'>';
 
+            print '<div "><br></div>';
             print '<div class="underbanner clearboth"></div>';
             print '<table class="border tableforfield" width="100%">';
 
