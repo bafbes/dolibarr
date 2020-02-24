@@ -1377,6 +1377,16 @@ if (empty($reshook))
 			setEventMessages($langs->trans('ErrorQtyForCustomerInvoiceCantBeNegative'), null, 'errors');
 			$error ++;
 		}
+        if (!empty($conf->global->PRODUCT_ONELINEBYREFEENCE)){
+            $error=0;
+            foreach($object->lines as $line){
+                $refs[]=$line->ref;
+            }
+            if(in_array(GETPOST('search_idprod'),$refs)){
+                setEventMessages("Référence déjà saisie", null, 'errors');
+                $error++;
+            }
+        }
 		if (! $error && ($qty >= 0) && (! empty($product_desc) || ! empty($idprod))) {
 			$ret = $object->fetch($id);
 			if ($ret < 0) {
