@@ -2461,7 +2461,7 @@ if ($action == 'create')
 	}
 
 	$datefacture = dol_mktime(12, 0, 0, $_POST['remonth'], $_POST['reday'], $_POST['reyear']);
-	
+	if(empty($datefacture))$datefacture=time();
 	// Date invoice
 	print '<tr><td class="fieldrequired">' . $langs->trans('DateInvoice') . '</td><td colspan="2">';
 	print $form->select_date($datefacture?$datefacture:$dateinvoice, '', '', '', '', "add", 1, 1, 1);
