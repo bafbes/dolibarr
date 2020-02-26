@@ -1943,25 +1943,19 @@ if($action == 'bluetooth_print') {
         }
 
         $contenu_ticket .= _end_ticket($object, $total_qte, $montant, 0);
-
-
-        $contenu_ticket = strtr(utf8_decode($contenu_ticket),
-            utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ"),
-            "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn"
-        );
-        $contenu_ticket .= ";-------------";
+$contenu_ticket=str_replace("\n",";;",$contenu_ticket);
+        $contenu_ticket .= "-------------";
 //        dol_nl2br($contenu_ticket);
         print "
     <script>
         $(document).ready(function () {
-            javascript:lee.print_product_equipement_warehouse_ticket_em220('$object->label',$barcodecode,'$contenu_ticket');
+            javascript:lee.print_ticket('$object->ref',$barcodecode,'$contenu_ticket');
         });
     </script>";
 
         $action = '';
     }
 }
-
 
 // Mode creation
 
