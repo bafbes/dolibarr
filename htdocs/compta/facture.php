@@ -1927,29 +1927,44 @@ if($action == 'bluetooth_print') {
 //        $barcodes = ['EAN8' => 105, 'EAN13' => 103, 'UPC' => 101, 'ISBN' => 111, 'C39' => 107, 'C128' => 111, 'DATAMATRIX' => 204, 'QRCODE' => 203];//tableau des valeurs des type de code barre sur Android
         $barcodes = array('EAN8' => 111, 'EAN13' => 111, 'UPC' => 111, 'ISBN' => 111, 'C39' => 107, 'C128' => 111, 'DATAMATRIX' => 111, 'QRCODE' => 203);//tableau des valeurs des type de code barre fonctionnels
         $barcodecode='111';//C128 par défaut
-//Texte ticket
-        $id_vendeur = $object->user_author;
-        $id_client = $object->socid;
         $client = new Societe($db);
-        $client->fetch($id_client);
+        $client->fetch($object->socid);
+        $usr=new User($db);
+        $usr->fetch($object->user_author);
+        $total=$total_qte = 0;
+//Texte ticket
+        $text = "Vendeur : ".$usr->lastname.';;';
+        $text.= "Client : ".$client->nom.';;;;';
 
-        $contenu_ticket = '';
-        $contenu_ticket .= _en_tete_ticket($id_vendeur, $object);
-        $total_qte = 0;
-
+//        $text .= _en_tete_ticket($id_vendeur, $object);
+        $len1=27;
+        $len2=32;
         foreach ($object->lines as $ligne) {
-            $contenu_ticket .= _ligne_ticket($ligne, 0);
-            (!is_null($ligne->fk_product)) ? $total_qte += $ligne->qty : $total_qte = $total_qte;
-        }
+//            $amount=$ligne->qty*$ligne->pa_ht;
+            $label="$ligne->qty X $ligne->libelle";
+            $labell=strlen($ligne->libelle);
 
-        $contenu_ticket .= _end_ticket($object, $total_qte, $montant, 0);
-$contenu_ticket=str_replace("\n",";;",$contenu_ticket);
-        $contenu_ticket .= "-------------";
-//        dol_nl2br($contenu_ticket);
+            $amount=price($ligne->multicurrency_total_ht);
+            $amountl=strlen($amount);
+
+            (!is_null($ligne->fk_product)) ? $total_qte += $ligne->qty : $total_qte = $total_qte;
+            $total +=$ligne->multicurrency_total_ht;
+
+            $line= substr($label,0,$len1).str_repeat(' ',$len1-$labell).";;";
+            $line.=str_repeat(' ',$len2-$amountl).substr($amount,0,$len2).";;";
+            $text.=$line;
+        }
+        $total=price($total);
+        $amount="Total : $total";
+        $amountl=strlen($amount);
+        $line=str_repeat(' ',$len2-$amountl).substr($amount,0,$len2).";;";
+
+        $text.=";;$line";
+        $text .= "-------------";
         print "
     <script>
         $(document).ready(function () {
-            javascript:lee.print_ticket('$object->ref',$barcodecode,'$contenu_ticket');
+            javascript:lee.print_ticket('$object->ref','0','$text');
         });
     </script>";
 
