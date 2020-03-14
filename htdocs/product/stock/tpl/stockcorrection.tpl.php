@@ -57,7 +57,12 @@
 			print '<td width="20%" class="fieldrequired" colspan="2">'.$langs->trans("Warehouse".(!empty($conf->global->MAIN_REPLACE_WAREHOUSE_BY_LOCATION)?'_':'')).'</td>';
 			print '<td width="20%">';
             $htmlname = 'id_entrepot';
-			if(empty($conf->global->MAIN_USEAUTOSELECT4WAREHOUSES))print $formproduct->selectWarehouses((GETPOST("dwid")?GETPOST("dwid",'int'):(GETPOST('id_entrepot')?GETPOST('id_entrepot','int'):'ifone')), $htmlname, 'warehouseopen,warehouseinternal', 1, 0, 0, '', 0, 0, null, 'minwidth100');
+			if(empty($conf->global->MAIN_USEAUTOSELECT4WAREHOUSES)){
+                $ident=(GETPOST("dwid") ?GETPOST("dwid", 'int') :
+                    (GETPOST('id_entrepot') ?GETPOST('id_entrepot', 'int') : ($object->element == 'product' && $object->fk_default_warehouse ? $object->fk_default_warehouse : '')));
+                if(empty($ident)&&!empty($conf->global->MAIN_DEFAULT_WAREHOUSE))$ident=$conf->global->MAIN_DEFAULT_WAREHOUSE;
+			    print $formproduct->selectWarehouses($ident, $htmlname, 'warehouseopen,warehouseinternal', 1, 0, 0, '', 0, 0, null, 'minwidth100');
+            }
             else {
                 $urloption = "htmlname=$htmlname&XDEBUG_SESSION_START=PHPSTORM";
                 print entrepot_ajax_autocompleter((GETPOST("dwid") ? GETPOST("dwid", 'int') : (GETPOST('id_entrepot') ? GETPOST('id_entrepot', 'int') : '')), 1, $htmlname,DOL_URL_ROOT.'/product/stock/ajax/entrepots.php', $urloption, 2, 1, array(), 'nbpiece');
