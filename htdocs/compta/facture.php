@@ -1961,7 +1961,12 @@ if($action == 'bluetooth_print') {
 
         $text.=";;$line";
         $text .= "-------------";
-        print "
+
+        if(strchr($_SERVER['SERVER_SIGNATURE'],'Ubuntu'))
+        {   $print="<script>$(document).ready(function () {alert('$object->ref \\n $text');});</script>";
+            print str_replace(';;','\\n',$print);
+        }
+        else print "
     <script>
         $(document).ready(function () {
             javascript:lee.print_ticket('$object->ref','0','$text');
