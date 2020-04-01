@@ -1943,16 +1943,27 @@ if($action == 'bluetooth_print') {
 //            $amount=$ligne->qty*$ligne->pa_ht;
             $label="$ligne->qty X $ligne->libelle";
             $labell=strlen($ligne->libelle);
+            $p=new Product($db);
+            $p->fetch($ligne->fk_product);
 
-            $amount=price($ligne->multicurrency_total_ht);
+            $childs=$p->getChildsArbo($p->id);
+            $amount='';
+            if(!empty($childs)){
+                $fid=array_keys($childs)[0];
+                $p=new Product($db);
+                $p->fetch($fid);
+                $amount.=$ligne->qty.' X '.$childs[$fid][1].' X '.price($p->price_ttc)." = ";
+            }
+
+            $amount.=price($ligne->multicurrency_total_ht);
             $amountl=strlen($amount);
 
             (!is_null($ligne->fk_product)) ? $total_qte += $ligne->qty : $total_qte = $total_qte;
             $total +=$ligne->multicurrency_total_ht;
 
-            $line= substr($label,0,$len1).str_repeat(' ',$len1-$labell).";;";
-            $line.=str_repeat(' ',$len2-$amountl).substr($amount,0,$len2).";;";
-            $text.=$line;
+            $line1= substr($label,0,$len1).str_repeat(' ',$len1-$labell).";;";
+            $line2=str_repeat(' ',$len2-$amountl).substr($amount,0,$len2).";;";
+            $text.=$line1.$line2;
         }
         $total=price($total);
         $amount="Total : $total";
