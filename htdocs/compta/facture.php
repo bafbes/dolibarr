@@ -1973,7 +1973,7 @@ if($action == 'bluetooth_print') {
         $text.=";;$line";
         $text .= "-------------";
 
-        if(strchr($_SERVER['SERVER_SIGNATURE'],'Ubuntu'))
+        if(strchr($_SERVER['HTTP_USER_AGENT'],'Ubuntu'))
         {   $print="<script>$(document).ready(function () {alert('$object->ref \\n $text');});</script>";
             print str_replace(';;','\\n',$print);
         }
