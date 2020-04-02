@@ -1972,6 +1972,14 @@ if($action == 'bluetooth_print') {
 
         $text.=";;$line";
         $text .= "-------------";
+        if(!empty($conf->global->MAIN_BLUETOOTH_PRINTASCIIONLY)){
+            $text=strtr(utf8_decode($text),
+           utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ"),
+            "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn");
+            $object->ref=strtr(utf8_decode($object->ref),
+           utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ"),
+            "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn");
+        }
 
         if(strchr($_SERVER['HTTP_USER_AGENT'],'Ubuntu'))
         {   $print="<script>$(document).ready(function () {alert('$object->ref \\n $text');});</script>";
