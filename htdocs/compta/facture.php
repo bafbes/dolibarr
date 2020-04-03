@@ -1924,9 +1924,14 @@ $helpurl = "EN:Customers_Invoices|FR:Factures_Clients|ES:Facturas_a_clientes";
 llxHeader('', $title, $helpurl);
 if($action == 'bluetooth_print') {
     if($object->id > 0){
-//        $barcodes = ['EAN8' => 105, 'EAN13' => 103, 'UPC' => 101, 'ISBN' => 111, 'C39' => 107, 'C128' => 111, 'DATAMATRIX' => 204, 'QRCODE' => 203];//tableau des valeurs des type de code barre sur Android
-        $barcodes = array('EAN8' => 111, 'EAN13' => 111, 'UPC' => 111, 'ISBN' => 111, 'C39' => 107, 'C128' => 111, 'DATAMATRIX' => 111, 'QRCODE' => 203);//tableau des valeurs des type de code barre fonctionnels
-        $barcodecode='111';//C128 par défaut
+        //$barcodes = ['EAN8' => 105, 'EAN13' => 103, 'UPC' => 101, 'ISBN' => 111, 'C39' => 107, 'C128' => 111, 'DATAMATRIX' => 204, 'QRCODE' => 203];//tableau des valeurs des type de code barre sur Android
+        /*tableau des valeurs des type de code barre sur ESC/POS.
+         Les valeurs <=8 sont imprimées par getPrintBarCode
+         Les valeurs >8 n'existent pas dans getPrintBarCode: QRcode est imprimé par getZXingQRCode,DATAMATRIX et ISBN sont convertis en C128
+        */
+        $barcodes = ['UPC' => 0,'EAN13' => 2,'EAN8' => 3,'C39' => 4,'C128' => 8,'DATAMATRIX' => 8, 'ISBN' => 8,'QRCODE' => 9 ];
+
+        $barcodecode='8';//C128 par défaut
         $client = new Societe($db);
         $client->fetch($object->socid);
         $usr=new User($db);
@@ -1988,7 +1993,7 @@ if($action == 'bluetooth_print') {
         else print "
     <script>
         $(document).ready(function () {
-            javascript:lee.print_ticket('$object->ref','0','$text');
+            javascript:lee.print_ticket('$object->ref',8,'$text');
         });
     </script>";
 
