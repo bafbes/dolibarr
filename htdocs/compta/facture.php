@@ -1950,16 +1950,19 @@ if($action == 'bluetooth_print') {
             $labell=strlen($ligne->libelle);
             $p=new Product($db);
             $p->fetch($ligne->fk_product);
-
+            if (! empty($conf->global->PRODUIT_MULTIPRICES)) $price=$p->multiprices[1];
+            else $price=$p->price_ttc;
             $childs=$p->getChildsArbo($p->id);
             $amount='';
             if(!empty($childs)){
                 $fid=array_keys($childs)[0];
                 $p=new Product($db);
                 $p->fetch($fid);
-                $amount.=$ligne->qty.' X '.$childs[$fid][1].' X '.price($p->price_ttc)." = ";
+                if (! empty($conf->global->PRODUIT_MULTIPRICES)) $price=$p->multiprices[1];
+                else $price=$p->price_ttc;
+                $amount.=$ligne->qty.' X '.$childs[$fid][1].' X '.price($price)." = ";
             }
-            else $amount.=$ligne->qty.' X '.price($p->price_ttc)." = ";
+            else $amount.=$ligne->qty.' X '.price($price)." = ";
             $amount.=price($ligne->multicurrency_total_ht);
             $amountl=strlen($amount);
 
