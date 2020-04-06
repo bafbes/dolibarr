@@ -112,6 +112,7 @@ function ajax_autocompleter($selected, $htmlname, $url, $urloption='', $minLengt
 										if (autoselect == 1 && data.length == 1) {
 											$("#search_'.$htmlname.'").val(item.value);
 											$("#'.$htmlname.'").val(item.key).trigger("change");
+											$("#qty").val(item.qty)
                                             $("#qty").focus();
                                             $("#qty").select();
 										}
@@ -128,7 +129,7 @@ function ajax_autocompleter($selected, $htmlname, $url, $urloption='', $minLengt
 												textarea[key] = item[value];
 											});
 										}
-										return { label: label, value: item.value, id: item.key, update: update, textarea: textarea, disabled: item.disabled }
+										return { label: label, value: item.value, id: item.key, update: update, textarea: textarea, disabled: item.disabled, qty:item.qty }
 									}));
 								}
 								else console.error("Error: Ajax url '.$url.($urloption?'?'.$urloption:'').' has returned an empty page. Should be an empty json array.");
@@ -139,6 +140,7 @@ function ajax_autocompleter($selected, $htmlname, $url, $urloption='', $minLengt
     					select: function( event, ui ) {		// Function ran once new value has been selected into javascript combo
     						console.log("Call change on input '.$htmlname.' because of select definition of autocomplete select call on input#search_'.$htmlname.'");
     					    console.log("Selected id = "+ui.item.id+" - If this value is null, it means you select a record with key that is null so selection is not effective");
+							$("#qty").val(ui.item.qty)
     						$("#'.$htmlname.'").val(ui.item.id).trigger("change");	// Select new value
     						// Disable an element
     						if (options.option_disabled) {
