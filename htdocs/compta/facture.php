@@ -1959,7 +1959,7 @@ if($action == 'bluetooth_print') {
                 $p->fetch($fid);
                 $amount.=$ligne->qty.' X '.$childs[$fid][1].' X '.price($p->price_ttc)." = ";
             }
-
+            else $amount.=$ligne->qty.' X ';
             $amount.=price($ligne->multicurrency_total_ht);
             $amountl=strlen($amount);
 
@@ -1976,7 +1976,7 @@ if($action == 'bluetooth_print') {
         $line=str_repeat(' ',$len2-$amountl).substr($amount,0,$len2).";;";
 
         $text.=";;$line";
-        $text .= "-------------";
+        $text .= "-;;;;;;";
         if(!empty($conf->global->MAIN_BLUETOOTH_PRINTASCIIONLY)){
             $text=strtr(utf8_decode($text),
            utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ"),
