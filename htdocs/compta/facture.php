@@ -1959,7 +1959,7 @@ if($action == 'bluetooth_print') {
                 $p->fetch($fid);
                 $amount.=$ligne->qty.' X '.$childs[$fid][1].' X '.price($p->price_ttc)." = ";
             }
-            else $amount.=$ligne->qty.' X ';
+            else $amount.=$ligne->qty.' X '.price($p->price_ttc)." = ";
             $amount.=price($ligne->multicurrency_total_ht);
             $amountl=strlen($amount);
 
@@ -1976,7 +1976,7 @@ if($action == 'bluetooth_print') {
         $line=str_repeat(' ',$len2-$amountl).substr($amount,0,$len2).";;";
 
         $text.=";;$line";
-        $text .= "-;;;;;;";
+        $text .= "-;;;;;;;;;;;;";
         if(!empty($conf->global->MAIN_BLUETOOTH_PRINTASCIIONLY)){
             $text=strtr(utf8_decode($text),
            utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ"),
@@ -1985,15 +1985,29 @@ if($action == 'bluetooth_print') {
            utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ"),
             "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn");
         }
+        ?>
+        <script>
+            var header ='';
+            var commands = [
+                13, 13,          //Nouvelles lignes
+                28, 46,          //fin charset chinois
+                27, 82, 1,        //Charset Français
+                27, 51, 10        //Interligne de 10
+            ];
+            commands.forEach(function (value) {
+                header += String.fromCharCode(value);
+            });
+        </script>
+        <?php
 
         if(strchr($_SERVER['HTTP_USER_AGENT'],'Ubuntu'))
-        {   $print="<script>$(document).ready(function () {alert('$object->ref \\n $text');});</script>";
+        {   $print="<script>$(document).ready(function () {alert('$object->ref \\n'+header+'$text');});</script>";
             print str_replace(';;','\\n',$print);
         }
         else print "
     <script>
         $(document).ready(function () {
-            javascript:lee.print_ticket('$object->ref',8,'$text');
+            javascript:lee.print_ticket('$object->ref',8,header+'$text');
         });
     </script>";
 
