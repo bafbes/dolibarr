@@ -378,9 +378,9 @@ else
 			print "</table>";
             if(!$conf->global->MAIN_ENTREPOT_HIDE_DETAILS) {
 
-                print '</div>';
-                print '</div>';
-                print '</div>';
+			print '</div>';
+			print '</div>';
+			print '</div>';
             }
 			print '<div class="clearboth"></div>';
 

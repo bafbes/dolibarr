@@ -1049,7 +1049,7 @@ function dol_banner_tab($object, $paramid, $morehtml='', $shownav=1, $fieldid='r
 	if ($object->element == 'societe' && ! empty($conf->use_javascript_ajax) && $user->rights->societe->creer && ! empty($conf->global->MAIN_DIRECT_STATUS_UPDATE)) {
 		$morehtmlstatus.=ajax_object_onoff($object, 'status', 'status', 'InActivity', 'ActivityCeased');
 	} 
-	elseif ($object->element == 'product')
+	elseif ($object->element == 'product' && empty($conf->patrimoine->enabled))
 	{
         if (empty($conf->global->MAIN_PRODUCT_HIDE_BUYSELL_STATUS)) {
             //$morehtmlstatus.=$langs->trans("Status").' ('.$langs->trans("Sell").') ';

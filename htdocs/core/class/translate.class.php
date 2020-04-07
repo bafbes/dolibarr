@@ -612,6 +612,8 @@ class Translate
 			// Restore HTML tags
             $str=str_replace(array('__lt__','__gt__','__quot__'),array('<','>','"',),$str);
 
+            if (!empty($conf->patrimoine->enabled)) $str=str_replace(array('Entrepôt','entrepôt'),array('Emplacement','emplacement'),$str);
+
 			return $str;
 		}
 		else								// Translation is not available

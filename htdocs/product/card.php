@@ -909,7 +909,8 @@ else {
         $doleditor = new DolEditor('desc', GETPOST('desc'), '', 160, 'dolibarr_details', '', false, true, $conf->global->FCKEDITOR_ENABLE_PRODUCTDESC, ROWS_4, '90%');
         $doleditor->Create();
 
-        print "</td></tr>";
+            $doleditor = new DolEditor('desc', GETPOST('desc'), '', 160, 'dolibarr_details', '', false, true, $conf->global->FCKEDITOR_ENABLE_PRODUCTDESC, ROWS_4, '90%');
+            $doleditor->Create();
 
         if (empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
             // Public URL
@@ -1169,6 +1170,7 @@ else {
                 print '</td></tr>';
             }
 
+            }
             // Barcode
             $showbarcode = empty($conf->barcode->enabled) ? 0 : 1;
             if (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && empty($user->rights->barcode->lire_advance)) $showbarcode = 0;
@@ -1195,9 +1197,8 @@ else {
             // Description (used in invoice, propal...)
             print '<tr><td class="tdtop">' . $langs->trans("Description") . '</td><td colspan="3">';
 
-            // We use dolibarr_details as type of DolEditor here, because we must not accept images as description is included into PDF and not accepted by TCPDF.
-            $doleditor = new DolEditor('desc', $object->description, '', 160, 'dolibarr_details', '', false, true, $conf->global->FCKEDITOR_ENABLE_PRODUCTDESC, ROWS_4, '90%');
-            $doleditor->Create();
+                print "</td></tr>";
+                print "\n";
 
             print "</td></tr>";
             print "\n";
@@ -1502,7 +1503,6 @@ else {
                     print $object->getLibStatut(0, 2);
                 }
                 print '</td></tr>';
-            }
 
             // Description
             print '<tr><td class="tdtop">' . $langs->trans("Description") . '</td><td colspan="2">' . (dol_textishtml($object->description) ? $object->description : dol_nl2br($object->description, 1, true)) . '</td></tr>';
@@ -1830,7 +1830,6 @@ if (!empty($conf->global->PRODUCT_ADD_FORM_ADD_TO) && $object->id && ($action ==
     }
 }
 
-
 /*
  * Documents generes
  */
@@ -1851,7 +1850,10 @@ if (empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS) && ($action == '' || $action
 
     print '</div><div class="fichehalfright"><div class="ficheaddleft">';
 
-    print '</div></div></div>';
+        print '</div><div class="fichehalfright"><div class="ficheaddleft">';
+
+        print '</div></div></div>';
+    }
 }
 
 
