@@ -224,6 +224,17 @@ if (empty($reshook)) {
             else
                 $object->price_min = GETPOST('price_min');
 
+            // MultiPrix
+            if (!empty($conf->global->PRODUIT_MULTIPRICES)) {
+                if (isset($object->price_ttc)) {
+                    $object->multiprices[1] = $object->price_ttc;
+                    $object->multiprices_base_type[1] = $object->price_base_type;
+                }
+                else {
+                    $object->multiprices[1] = "";
+                }
+            }
+
             $object->tva_tx = str_replace('*', '', GETPOST('tva_tx'));
             $object->tva_npr = preg_match('/\*/', GETPOST('tva_tx')) ? 1 : 0;
 
@@ -290,18 +301,6 @@ if (empty($reshook)) {
                 $object->accountancy_code_buy = $accountancy_code_buy;
             }
 
-            // MultiPrix
-            if (!empty($conf->global->PRODUIT_MULTIPRICES)) {
-                for ($i = 2; $i <= $conf->global->PRODUIT_MULTIPRICES_LIMIT; $i++) {
-                    if (isset($_POST["price_" . $i])) {
-                        $object->multiprices["$i"] = price2num($_POST["price_" . $i], 'MU');
-                        $object->multiprices_base_type["$i"] = $_POST["multiprices_base_type_" . $i];
-                    }
-                    else {
-                        $object->multiprices["$i"] = "";
-                    }
-                }
-            }
 
             // Fill array 'array_options' with data from add form
             $ret = $extrafields->setOptionalsFromPost($extralabels, $object);
@@ -909,9 +908,6 @@ else {
         $doleditor = new DolEditor('desc', GETPOST('desc'), '', 160, 'dolibarr_details', '', false, true, $conf->global->FCKEDITOR_ENABLE_PRODUCTDESC, ROWS_4, '90%');
         $doleditor->Create();
 
-        $doleditor = new DolEditor('desc', GETPOST('desc'), '', 160, 'dolibarr_details', '', false, true, $conf->global->FCKEDITOR_ENABLE_PRODUCTDESC, ROWS_4, '90%');
-        $doleditor->Create();
-
         if (empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
             // Public URL
             print '<tr><td>' . $langs->trans("PublicUrl") . '</td><td colspan="3">';
@@ -1030,33 +1026,27 @@ else {
         print '<br>';
 
         if (empty($conf->global->MAIN_PRODUCT_HIDE_DETAILS)) {
-            if (!empty($conf->global->PRODUIT_MULTIPRICES)) {
-                // We do no show price array on create when multiprices enabled.
-                // We must set them on prices tab.
-            }
-            else {
-                print '<table class="border" width="100%">';
+            print '<table class="border" width="100%">';
 
-                // Price
-                print '<tr><td class="titlefieldcreate">' . $langs->trans("SellingPrice") . '</td>';
-                print '<td><input name="price" class="maxwidth50" value="' . $object->price . '">';
-                print $form->selectPriceBaseType($object->price_base_type, "price_base_type");
-                print '</td></tr>';
+            // Price
+            print '<tr><td class="titlefieldcreate">' . $langs->trans("SellingPrice") . '</td>';
+            print '<td><input name="price" class="maxwidth50" value="' . $object->price . '">';
+            print $form->selectPriceBaseType($object->price_base_type, "price_base_type");
+            print '</td></tr>';
 
-                // Min price
-                print '<tr><td>' . $langs->trans("MinPrice") . '</td>';
-                print '<td><input name="price_min" class="maxwidth50" value="' . $object->price_min . '">';
-                print '</td></tr>';
+            // Min price
+            print '<tr><td>' . $langs->trans("MinPrice") . '</td>';
+            print '<td><input name="price_min" class="maxwidth50" value="' . $object->price_min . '">';
+            print '</td></tr>';
 
-                // VAT
-                print '<tr><td>' . $langs->trans("VATRate") . '</td><td>';
-                print $form->load_tva("tva_tx", -1, $mysoc, '');
-                print '</td></tr>';
+            // VAT
+            print '<tr><td>' . $langs->trans("VATRate") . '</td><td>';
+            print $form->load_tva("tva_tx", -1, $mysoc, '');
+            print '</td></tr>';
 
-                print '</table>';
+            print '</table>';
 
-                print '<br>';
-            }
+            print '<br>';
 
             // Accountancy codes
             print '<table class="border" width="100%">';
