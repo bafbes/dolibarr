@@ -1377,7 +1377,7 @@ else {
 
             print '<div class="fichecenter">';
             print '<div';
-            if (empty($conf->global->MAIN_MOBILE_VIEW)) print ' class="fichehalfleft"';
+            if (empty($conf->global->MAIN_PRODUCT_CARD_ONE_COLUMN)) print ' class="fichehalfleft"';
             print'>';
 
             print '<div "><br></div>';
@@ -1506,7 +1506,7 @@ else {
                 print dol_print_url($object->url);
                 print '</td></tr>';
 
-                if (empty($conf->global->MAIN_MOBILE_VIEW)) {
+                if (empty($conf->global->MAIN_PRODUCT_CARD_ONE_COLUMN)) {
                     print '</table>';
                     print '</div>';
                     print '<div class="fichehalfright"><div class="ficheaddleft">';
