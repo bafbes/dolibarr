@@ -1977,10 +1977,9 @@ if($action == 'bluetooth_print') {
         $amount="Total : $total";
         $amountl=strlen($amount);
         $line=str_repeat(' ',$len2-$amountl).substr($amount,0,$len2).";;";
-
         $text.=";;$line";
-        $text.=str_replace("'","\'",$text);
         $text .= "-;;;;;;;;;;;;";
+        $text=str_replace("'","\'",$text);
         if(!empty($conf->global->MAIN_BLUETOOTH_PRINTASCIIONLY)){
             $text=strtr(utf8_decode($text),
            utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ"),
