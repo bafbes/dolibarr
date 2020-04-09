@@ -1942,12 +1942,13 @@ if($action == 'bluetooth_print') {
         $text.= "Client : ".$client->nom.';;;;';
 
 //        $text .= _en_tete_ticket($id_vendeur, $object);
-        $len1=27;
+        $len1=31;
         $len2=32;
+        $i=1;
         foreach ($object->lines as $ligne) {
 //            $amount=$ligne->qty*$ligne->pa_ht;
-            $label="$ligne->qty X $ligne->libelle";
-            $labell=strlen($ligne->libelle);
+            $label="$i:$ligne->qty X $ligne->libelle";
+            $labell=strlen($label);
             $p=new Product($db);
             $p->fetch($ligne->fk_product);
             if (! empty($conf->global->PRODUIT_MULTIPRICES)) $price=$p->multiprices[1];
@@ -1972,13 +1973,15 @@ if($action == 'bluetooth_print') {
             $line1= substr($label,0,$len1).str_repeat(' ',$len1-$labell).";;";
             $line2=str_repeat(' ',$len2-$amountl).substr($amount,0,$len2).";;";
             $text.=$line1.$line2;
+            $i++;
         }
         $total=price($total);
         $amount="Total : $total";
         $amountl=strlen($amount);
         $line=str_repeat(' ',$len2-$amountl).substr($amount,0,$len2).";;";
         $text.=";;$line";
-        $text .= "-;;;;;;;;;;;;";
+        $text.=";;;;*** Avec nos remerciements ***;;";
+        $text .= "-;;;;;;;;;;;;;;;;";
         $text=str_replace("'","\'",$text);
         if(!empty($conf->global->MAIN_BLUETOOTH_PRINTASCIIONLY)){
             $text=strtr(utf8_decode($text),
