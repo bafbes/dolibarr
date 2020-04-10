@@ -1947,7 +1947,7 @@ if($action == 'bluetooth_print') {
         $i=1;
         foreach ($object->lines as $ligne) {
 //            $amount=$ligne->qty*$ligne->pa_ht;
-            $label="$i:$ligne->qty X $ligne->libelle";
+            $label="$i:$ligne->libelle";
             $labell=strlen($label);
             $p=new Product($db);
             $p->fetch($ligne->fk_product);
