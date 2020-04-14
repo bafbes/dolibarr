@@ -1945,13 +1945,16 @@ if($action == 'bluetooth_print') {
         $len1=31;
         $len2=32;
         $i=1;
+ 	    $soc = new Societe($db);
+        $price_level=1;
+        if( $res = $soc->fetch($object->socid))$price_level= $soc->price_level;
         foreach ($object->lines as $ligne) {
 //            $amount=$ligne->qty*$ligne->pa_ht;
             $label="$i:$ligne->libelle";
             $labell=strlen($label);
             $p=new Product($db);
             $p->fetch($ligne->fk_product);
-            if (! empty($conf->global->PRODUIT_MULTIPRICES)) $price=$p->multiprices[1];
+            if (! empty($conf->global->PRODUIT_MULTIPRICES)) $price=$p->multiprices[$price_level];
             else $price=$p->price_ttc;
             $childs=$p->getChildsArbo($p->id);
             $amount='';
@@ -1959,7 +1962,7 @@ if($action == 'bluetooth_print') {
                 $fid=array_keys($childs)[0];
                 $p=new Product($db);
                 $p->fetch($fid);
-                if (! empty($conf->global->PRODUIT_MULTIPRICES)) $price=$p->multiprices[1];
+                if (! empty($conf->global->PRODUIT_MULTIPRICES)) $price=$p->multiprices[$price_level];
                 else $price=$p->price_ttc;
                 $amount.=$ligne->qty.' X '.$childs[$fid][1].' X '.price($price)." = ";
             }
