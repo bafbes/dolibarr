@@ -73,9 +73,17 @@ $conffiletoshow = "htdocs/conf/conf.php";
 //* Disabled. This is a serious security hole
 if (! empty($_GET['conf']))
 {
-	$confname=basename($_GET['conf']);
-    setcookie('dolconf', $confname, 0, '/');
-    $conffile = 'conf/'.$confname.'.php';
+    if (!defined('NOSESSION'))
+    {
+        session_start();
+    }
+    if(session_status() === PHP_SESSION_ACTIVE){
+        $confname=basename($_GET['conf']);
+        setcookie('dolconf', $confname, 0, '/');
+        $conffile = 'conf/'.$confname.'.php';
+        header("Location: user/logout.php");
+        exit;
+    }
 } else {
 	$confname=basename(empty($_COOKIE['dolconf']) ? 'conf' : $_COOKIE['dolconf']);
 	$conffile = 'conf/'.$confname.'.php';
