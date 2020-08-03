@@ -1093,6 +1093,7 @@ if ($action == 'create')
     	    while ($i < $numAsked)
     	    {
     	    	print 'jQuery("#qtyl'.$i.'").val(jQuery("#qtyasked'.$i.'").val() - jQuery("#qtydelivered'.$i.'").val());'."\n";
+                if (!empty($conf->productbatch->enabled)) print 'jQuery("#qtyl'.$i.'_'.$i.'").val(jQuery("#qtyasked'.$i.'").val() - jQuery("#qtydelivered'.$i.'").val());'."\n";
     	    	$i++;
     	    }
         	print '});
@@ -1101,6 +1102,7 @@ if ($action == 'create')
     	    while ($i < $numAsked)
     	    {
     	    	print 'jQuery("#qtyl'.$i.'").val(0);'."\n";
+                if (!empty($conf->productbatch->enabled)) print 'jQuery("#qtyl'.$i.'_'.$i.'").val(0);'."\n";
     	    	$i++;
     	    }
         	print '});
@@ -1121,11 +1123,8 @@ if ($action == 'create')
                 print '<td class="center">'.$langs->trans("QtyOrdered").'</td>';
                 print '<td class="center">'.$langs->trans("QtyShipped").'</td>';
                 print '<td class="center">'.$langs->trans("QtyToShip");
-				if (empty($conf->productbatch->enabled))
-				{
-	                print ' <br>(<a href="#" id="autofill">'.$langs->trans("Fill").'</a>';
-	                print ' / <a href="#" id="autoreset">'.$langs->trans("Reset").'</a>)';
-				}
+                print ' <br>(<a href="#" id="autofill">'.$langs->trans("Fill").'</a>';
+                print ' / <a href="#" id="autoreset">'.$langs->trans("Reset").'</a>)';
                 print '</td>';
                 if (!empty($conf->stock->enabled))
                 {
