@@ -71,22 +71,16 @@ $conffiletoshow = "htdocs/conf/conf.php";
 
 // Replace conf filename with "conf" parameter on url by GET
 //* Disabled. This is a serious security hole
-if (! empty($_GET['conf']))
-{
-    if (!defined('NOSESSION'))
-    {
-        session_start();
-    }
-    if(session_status() === PHP_SESSION_ACTIVE){
-        $confname=basename($_GET['conf']);
-        setcookie('dolconf', $confname, 0, '/');
-        $conffile = 'conf/'.$confname.'.php';
-        header("Location: user/logout.php");
-        exit;
-    }
-} else {
-	$confname=basename(empty($_COOKIE['dolconf']) ? 'conf' : $_COOKIE['dolconf']);
-	$conffile = 'conf/'.$confname.'.php';
+if (!empty($_GET['conf']) && $_GET['conf'] != $_COOKIE['dolconf']) {
+    $confname = basename($_GET['conf']);
+    setcookie('dolconf', $confname, 0, '/');//Effacement
+    $conffile = 'conf/' . $confname . '.php';
+    header("Location: user/logout.php");
+    exit;
+}
+else {
+    $confname = basename(empty($_COOKIE['dolconf']) ? 'conf' : $_COOKIE['dolconf']);
+    $conffile = 'conf/'.$confname.'.php';
 }
 //*/
 
