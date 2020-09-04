@@ -1294,7 +1294,7 @@ class ExtraFields
                             } else {
                                 if (!$notrans) {
                                     $translabel = $langs->trans($obj->{$InfoFieldList[1]});
-                                    $labeltoshow = dol_trunc($translabel, 18);
+                                    $labeltoshow =$translabel;
                                 }
                                 if (empty($labeltoshow)) $labeltoshow = '(not defined)';
 
