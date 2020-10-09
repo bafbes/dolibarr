@@ -3331,6 +3331,10 @@ abstract class CommonObject
 		$targetid = (!empty($targetid) ? $targetid : $this->id);
 		$sourcetype = (!empty($sourcetype) ? $sourcetype : $this->element);
 		$targettype = (!empty($targettype) ? $targettype : $this->element);
+		if(!empty($this->module)){
+		    $sourcetype=$this->module.":$sourcetype";
+            $targettype=$this->module.":$targettype";
+        }
 
 		/*if (empty($sourceid) && empty($targetid))
 		 {
@@ -3402,7 +3406,15 @@ abstract class CommonObject
 				foreach ($tmparray as $objecttype => $objectids)       // $objecttype is a module name ('facture', 'mymodule', ...) or a module name with a suffix ('project_task', 'mymodule_myobj', ...)
 				{
 					// Parse element/subelement (ex: project_task, cabinetmed_consultation, ...)
-					$module = $element = $subelement = $objecttype;
+                    list($module,$element)=explode(':',$objecttype);
+                    if(empty($element)) {
+                        $element =$subelement = $objecttype;
+                        $classpath = $element.'/class';
+                    }
+                    else {
+                        $subelement = $element;
+                        $classpath = $module.'/class';
+                    }
 					if ($objecttype != 'supplier_proposal' && $objecttype != 'order_supplier' && $objecttype != 'invoice_supplier'
 						&& preg_match('/^([^_]+)_([^_]+)/i', $objecttype, $regs))
 					{
@@ -3410,7 +3422,6 @@ abstract class CommonObject
 						$subelement = $regs[2];
 					}
 
-					$classpath = $element.'/class';
 					// To work with non standard classpath or module name
 					if ($objecttype == 'facture') {
 						$classpath = 'compta/facture/class';
