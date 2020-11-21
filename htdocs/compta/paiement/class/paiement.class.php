@@ -255,7 +255,7 @@ class Paiement extends CommonObject
 
 		foreach ($amounts as $key => $value)	// How payment is dispatch
 		{
-			$value_converted = Multicurrency::getAmountConversionFromInvoiceRate($key, $value, $way);
+			$value_converted = Multicurrency::getAmountConversionFromInvoiceRate((float)$key,(float)$value, $way);
 			$totalamount_converted += $value_converted;
 			$amounts_to_update[$key] = price2num($value_converted, 'MT');
 
