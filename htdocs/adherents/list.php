@@ -285,7 +285,11 @@ if ($search_categ == -2) $sql .= " AND cm.fk_categorie IS NULL";
 $sql .= " AND d.entity IN (".getEntity('adherent').")";
 if ($sall) $sql .= natural_search(array_keys($fieldstosearchall), $sall);
 if ($search_type > 0) $sql .= " AND t.rowid=".$db->escape($search_type);
-if ($statut != '') $sql .= " AND d.statut in (".$db->escape($statut).")"; // Peut valoir un nombre ou liste de nombre separes par virgules
+if ($statut != '') {
+    if ($statut == 2) $filter = 'uptodate';
+    elseif ($statut == 3) $filter = 'outofdate';
+    else $sql .= " AND d.statut in (".$db->escape($statut).")";
+} // Peut valoir un nombre ou liste de nombre separes par virgules
 if ($search_ref)
 {
 	if (is_numeric($search_ref)) $sql .= " AND (d.rowid = ".$db->escape($search_ref).")";
@@ -626,7 +630,9 @@ if (!empty($arrayfields['d.statut']['checked']))
 	$liststatus = array(
 		'-1'=>$langs->trans("Draft"),
 		'1'=>$langs->trans("Validated"),
-		'0'=>$langs->trans("Resiliated")
+		'0'=>$langs->trans("Resiliated"),
+        '2'=>$langs->trans('MemberStatusUpToDate'),
+        '3'=>$langs->trans('MemberStatusNotUpToDate')
 	);
 	print $form->selectarray('statut', $liststatus, $statut, -2);
 	print '</td>';
