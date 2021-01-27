@@ -86,6 +86,11 @@ else {
     $conffile = 'conf/'.$confname.'.php';
 }
 //*/
+// Exit if conf file does not exist
+if(!file_exists(getcwd()."/$conffile")) {
+    print 'Sorry, Cannot access this page ...';
+    exit;
+}
 
 // Include configuration
 $result = @include_once $conffile; // Keep @ because with some error reporting this break the redirect done when file not found
