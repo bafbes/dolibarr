@@ -87,7 +87,7 @@ else {
 }
 //*/
 // Exit if conf file does not exist
-if(!file_exists(getcwd()."/$conffile")) {
+if(!file_exists(__DIR__."/$conffile")) {
     print 'Sorry, Cannot access this page ...';
     exit;
 }
