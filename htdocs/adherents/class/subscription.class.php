@@ -171,7 +171,7 @@ class Subscription extends CommonObject
 
         if (!$error)
         {
-            $this->id = $this->db->last_insert_id(MAIN_DB_PREFIX.$this->table_element);
+            $this->id =$this->ref= $this->db->last_insert_id(MAIN_DB_PREFIX.$this->table_element);
             $this->fk_type = $type;
         }
 
