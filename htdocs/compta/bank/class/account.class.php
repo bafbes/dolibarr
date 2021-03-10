@@ -2155,8 +2155,9 @@ class AccountLine extends CommonObject
 			$sql .= " WHERE rowid = ".$rowid;
 
 			$result = $this->db->query($sql);
-			if ($result)
-			{
+			if ($result) return 1;
+
+/*			{
 				if ($this->db->affected_rows($result))
 				{
 					return 1;
@@ -2164,8 +2165,9 @@ class AccountLine extends CommonObject
 			} else {
 				dol_print_error($this->db);
 				return 0;
-			}
-		} else dol_print_error($this->db);
+			}*/
+		}
+		else dol_print_error($this->db);
 		return 0;
 	}
 

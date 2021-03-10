@@ -6159,7 +6159,7 @@ class Form
 			$out .= '<input type="text" class="'.$morecss.'"'.($disabled ? ' disabled="disabled"' : '').' name="search_'.$htmlname.'" id="search_'.$htmlname.'" value="'.$selected_input_value.'"'.$placeholder.' />';
 		} else {
 			// Immediate load of table record. Note: filter is inside $objecttmp->filter
-			$out .= $this->selectForFormsList($objecttmp, $htmlname, $preselectedvalue, $showempty, $searchkey, $placeholder, $morecss, $moreparams, $forcecombo, 0, $disabled);
+ 			$out .= $this->selectForFormsList($objecttmp, $htmlname, $preselectedvalue, $showempty, $searchkey, $placeholder, $morecss, $moreparams, $forcecombo, 0, $disabled);
 		}
 
 		return $out;
@@ -6211,7 +6211,7 @@ class Form
 	 */
 	public function selectForFormsList($objecttmp, $htmlname, $preselectedvalue, $showempty = '', $searchkey = '', $placeholder = '', $morecss = '', $moreparams = '', $forcecombo = 0, $outputmode = 0, $disabled = 0)
 	{
-		global $conf, $langs, $user;
+		global $conf, $langs, $user,$hookmanager;
 
 		//print "$objecttmp->filter, $htmlname, $preselectedvalue, $showempty = '', $searchkey = '', $placeholder = '', $morecss = '', $moreparams = '', $forcecombo = 0, $outputmode = 0, $disabled";
 
@@ -6257,27 +6257,34 @@ class Form
 		}
 		if ($objecttmp->ismultientitymanaged == 'fk_soc@societe')
 			if (!$user->rights->societe->client->voir && !$user->socid) $sql .= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
-		$sql .= " WHERE 1=1";
-		if (isset($objecttmp->ismultientitymanaged) && $objecttmp->ismultientitymanaged == 1) $sql .= " AND t.entity IN (".getEntity($objecttmp->table_element).")";
-		if (isset($objecttmp->ismultientitymanaged) && !is_numeric($objecttmp->ismultientitymanaged)) {
-			$sql .= ' AND parenttable.entity = t.'.$tmparray[0];
-		}
-		if ($objecttmp->ismultientitymanaged == 1 && !empty($user->socid)) {
-			if ($objecttmp->element == 'societe') $sql .= " AND t.rowid = ".$user->socid;
-			else $sql .= " AND t.fk_soc = ".$user->socid;
-		}
-		if ($searchkey != '') $sql .= natural_search(explode(',', $fieldstoshow), $searchkey);
-		if ($objecttmp->ismultientitymanaged == 'fk_soc@societe') {
-			if (!$user->rights->societe->client->voir && !$user->socid) $sql .= " AND t.rowid = sc.fk_soc AND sc.fk_user = ".$user->id;
-		}
-		if ($objecttmp->filter) {	 // Syntax example "(t.ref:like:'SO-%') and (t.date_creation:<:'20160101')"
-			/*if (! DolibarrApi::_checkFilters($objecttmp->filter))
-			{
-				throw new RestException(503, 'Error when validating parameter sqlfilters '.$objecttmp->filter);
-			}*/
-			$regexstring = '\(([^:\'\(\)]+:[^:\'\(\)]+:[^:\(\)]+)\)';
-			$sql .= " AND (".preg_replace_callback('/'.$regexstring.'/', 'Form::forgeCriteriaCallback', $objecttmp->filter).")";
-		}
+
+		// Add where from hooks
+        $parameters = array();
+        $reshook = $hookmanager->executeHooks('selectForFormsListWhere', $parameters); // Note that $action and $object may have been modified by hook
+        if(!empty($hookmanager->resPrint)) $sql .= $hookmanager->resPrint;
+		else {
+		    $sql .= " WHERE 1=1";
+            if (isset($objecttmp->ismultientitymanaged) && $objecttmp->ismultientitymanaged == 1) $sql .= " AND t.entity IN (".getEntity($objecttmp->table_element).")";
+            if (isset($objecttmp->ismultientitymanaged) && !is_numeric($objecttmp->ismultientitymanaged)) {
+                $sql .= ' AND parenttable.entity = t.'.$tmparray[0];
+            }
+            if ($objecttmp->ismultientitymanaged == 1 && !empty($user->socid)) {
+                if ($objecttmp->element == 'societe') $sql .= " AND t.rowid = ".$user->socid;
+                else $sql .= " AND t.fk_soc = ".$user->socid;
+            }
+            if ($searchkey != '') $sql .= natural_search(explode(',', $fieldstoshow), $searchkey);
+            if ($objecttmp->ismultientitymanaged == 'fk_soc@societe') {
+                if (!$user->rights->societe->client->voir && !$user->socid) $sql .= " AND t.rowid = sc.fk_soc AND sc.fk_user = ".$user->id;
+            }
+            if ($objecttmp->filter) {	 // Syntax example "(t.ref:like:'SO-%') and (t.date_creation:<:'20160101')"
+                /*if (! DolibarrApi::_checkFilters($objecttmp->filter))
+                {
+                    throw new RestException(503, 'Error when validating parameter sqlfilters '.$objecttmp->filter);
+                }*/
+                $regexstring = '\(([^:\'\(\)]+:[^:\'\(\)]+:[^:\(\)]+)\)';
+                $sql .= " AND (".preg_replace_callback('/'.$regexstring.'/', 'Form::forgeCriteriaCallback', $objecttmp->filter).")";
+            }
+        }
 		$sql .= $this->db->order($fieldstoshow, "ASC");
 		//$sql.=$this->db->plimit($limit, 0);
 		//print $sql;
@@ -7050,9 +7057,16 @@ class Form
 					$tplpath = 'expensereport';
 				} elseif ($objecttype == 'subscription') {
 					$tplpath = 'adherents';
-				}
+				}else{
+                    list($module,$element)=explode(':',$objecttype);
+                    if(!empty($element)){
+                        $tplname="linked{$element}block";
+                        $tplpath=$module;
+                    }
+                }
 
-				global $linkedObjectBlock;
+
+                global $linkedObjectBlock;
 				$linkedObjectBlock = $objects;
 
 

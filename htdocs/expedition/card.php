@@ -1036,23 +1036,23 @@ if ($action == 'create')
 			print '<script type="text/javascript" language="javascript">
             jQuery(document).ready(function() {
 	            jQuery("#autofill").click(function() {';
-			$i = 0;
-			while ($i < $numAsked)
-			{
-				print 'jQuery("#qtyl'.$i.'").val(jQuery("#qtyasked'.$i.'").val() - jQuery("#qtydelivered'.$i.'").val());'."\n";
-				if (!empty($conf->productbatch->enabled)) print 'jQuery("#qtyl'.$i.'_'.$i.'").val(jQuery("#qtyasked'.$i.'").val() - jQuery("#qtydelivered'.$i.'").val());'."\n";
-				$i++;
-			}
-			print '});
-	            jQuery("#autoreset").click(function() { console.log("Reset values to 0"); ';
-			$i = 0;
-			while ($i < $numAsked)
-			{
-				print 'jQuery("#qtyl'.$i.'").val(0);'."\n";
-				if (!empty($conf->productbatch->enabled)) print 'jQuery("#qtyl'.$i.'_'.$i.'").val(0);'."\n";
-				$i++;
-			}
-			print '});
+   	    $i = 0;
+    	    while ($i < $numAsked)
+    	    {
+    	    	print 'jQuery("#qtyl'.$i.'").val(jQuery("#qtyasked'.$i.'").val() - jQuery("#qtydelivered'.$i.'").val());'."\n";
+                if (!empty($conf->productbatch->enabled)) print 'jQuery("#qtyl'.$i.'_'.$i.'").val(jQuery("#qtyasked'.$i.'").val() - jQuery("#qtydelivered'.$i.'").val());'."\n";
+    	    	$i++;
+    	    }
+        	print '});
+	            jQuery("#autoreset").click(function() {';
+    	    $i = 0;
+    	    while ($i < $numAsked)
+    	    {
+    	    	print 'jQuery("#qtyl'.$i.'").val(0);'."\n";
+                if (!empty($conf->productbatch->enabled)) print 'jQuery("#qtyl'.$i.'_'.$i.'").val(0);'."\n";
+    	    	$i++;
+    	    }
+        	print '});
         	});
             </script>';
 

@@ -281,7 +281,13 @@ if ($search_filter == 'withoutsubscription') $sql .= " AND (datefin IS NULL OR t
 if ($search_filter == 'uptodate') $sql .= " AND (datefin >= '".$db->idate($now)."' OR t.subscription = 0)";
 if ($search_filter == 'outofdate') $sql .= " AND (datefin < '".$db->idate($now)."' AND t.subscription = 1)";
 if ($search_status != '') $sql .= " AND d.statut in (".$db->sanitize($db->escape($search_status)).")"; // Peut valoir un nombre ou liste de nombre separes par virgules
-if ($search_ref) {
+if ($statut != '') {
+    if ($statut == 2) $filter = 'uptodate';
+    elseif ($statut == 3) $filter = 'outofdate';
+    else $sql .= " AND d.statut in (".$db->escape($statut).")";
+} // Peut valoir un nombre ou liste de nombre separes par virgules
+if ($search_ref)
+{
 	if (is_numeric($search_ref)) $sql .= " AND (d.rowid = ".$db->escape($search_ref).")";
 	else $sql .= " AND 1 = 2"; // Always wrong
 }
@@ -587,7 +593,9 @@ if (!empty($arrayfields['d.statut']['checked'])) {
 	$liststatus = array(
 		'-1'=>$langs->trans("Draft"),
 		'1'=>$langs->trans("Validated"),
-		'0'=>$langs->trans("Resiliated")
+		'0'=>$langs->trans("Resiliated"),
+        '2'=>$langs->trans('MemberStatusUpToDate'),
+        '3'=>$langs->trans('MemberStatusNotUpToDate')
 	);
 	print $form->selectarray('search_status', $liststatus, $search_status, -2);
 	print '</td>';

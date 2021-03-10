@@ -249,7 +249,7 @@ class Paiement extends CommonObject
 
 		foreach ($amounts as $key => $value)	// How payment is dispatch
 		{
-			$value_converted = Multicurrency::getAmountConversionFromInvoiceRate($key, $value, $way);
+			$value_converted = Multicurrency::getAmountConversionFromInvoiceRate((float)$key,(float)$value, $way);
 			$totalamount_converted += $value_converted;
 			$amounts_to_update[$key] = price2num($value_converted, 'MT');
 
@@ -1303,6 +1303,7 @@ class Paiement extends CommonObject
 	{
 		// phpcs:enable
 		include_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
+		include_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
 
 		if (empty($force_thirdparty_id))
 		{
@@ -1316,7 +1317,8 @@ class Paiement extends CommonObject
 				}
 			}
 		}
-
-		return parent::fetch_thirdparty($force_thirdparty_id);
+        $soc=new Societe($this->db);
+		$soc->fetch($force_thirdparty_id);
+		return $soc;
 	}
 }
