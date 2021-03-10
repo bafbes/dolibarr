@@ -493,17 +493,9 @@ function checkUserAccessToObject($user, $featuresarray, $objectid = 0, $tableand
 					$sql .= " AND dbt.entity IN (".getEntity($sharedelement, 1).")";
 				}
 			}
-			else
-			{
-				$sql .= " WHERE dbt.".$dbt_select." IN (".$objectid.")";
-				$sql .= " AND dbt.entity IN (".getEntity($sharedelement, 1).")";
-			}
-		}
-		elseif (in_array($feature, $checksoc))	// We check feature = checksoc
-		{
-			// If external user: Check permission for external users
-			if ($user->socid > 0  && empty($conf->global->MAIN_SHOW_SOCIETE2EXTERN))
-			{
+		} elseif (in_array($feature, $checksoc)) {	// We check feature = checksoc
+			if ($user->socid > 0) {
+				// If external user: Check permission for external users
 				if ($user->socid <> $objectid) return false;
 			} elseif (!empty($conf->societe->enabled) && ($user->rights->societe->lire && !$user->rights->societe->client->voir)) {
 				// If internal user: Check permission for internal users that are restricted on their objects
@@ -591,8 +583,7 @@ function checkUserAccessToObject($user, $featuresarray, $objectid = 0, $tableand
 			}
 		} elseif (!in_array($feature, $nocheck)) {		// By default (case of $checkdefault), we check on object entity + link to third party on field $dbt_keyfield
 			// If external user: Check permission for external users
-			if ($user->socid > 0  && empty($conf->global->MAIN_SHOW_SOCIETE2EXTERN))
-			{
+			if ($user->socid > 0) {
 				if (empty($dbt_keyfield)) dol_print_error('', 'Param dbt_keyfield is required but not defined');
 				$sql = "SELECT COUNT(dbt.".$dbt_keyfield.") as nb";
 				$sql .= " FROM ".MAIN_DB_PREFIX.$dbtablename." as dbt";
