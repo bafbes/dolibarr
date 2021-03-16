@@ -51,7 +51,7 @@ $month	= GETPOST('month', 'int');
 $year = GETPOST('year', 'int');
 
 // Security check
-if ($user->socid && empty($conf->global->MAIN_SHOW_SOCIETE2EXTERN)) $socid = $user->socid;
+if ($user->socid && empty($conf->global->MAIN_EXTERNAL_USERS_CAN_SEE_SUBSIDIARY_COMPANIES)) $socid = $user->socid;
 $result = restrictedArea($user, 'facture', $facid, '');
 
 $paymentstatic = new Paiement($db);
