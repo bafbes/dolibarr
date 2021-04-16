@@ -56,7 +56,7 @@ $cancel     = GETPOST('cancel', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 $confirm	= GETPOST('confirm');
 $socid = GETPOST('socid', 'int') ?GETPOST('socid', 'int') : GETPOST('id', 'int');
-if ($user->socid) $socid = $user->socid;
+if ($user->socid > 0 && empty($conf->global->MAIN_EXTERNAL_USERS_CAN_SEE_SUBSIDIARY_COMPANIES)) $id = $user->socid;
 if (empty($socid) && $action == 'view') $action = 'create';
 
 $object = new Societe($db);
