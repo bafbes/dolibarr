@@ -89,7 +89,7 @@ if (empty($original_file) && empty($hashp)) accessforbidden('Bad link. Missing i
 if ($modulepart == 'fckeditor') $modulepart = 'medias'; // For backward compatibility
 
 $socid = 0;
-if ($user->socid > 0) $socid = $user->socid;
+if ($user->socid > 0 && empty($conf->global->MAIN_EXTERNAL_USERS_CAN_SEE_SUBSIDIARY_COMPANIES)) $socid = $user->socid;
 
 // For some module part, dir may be privates
 if (in_array($modulepart, array('facture_paiement', 'unpaid')))
