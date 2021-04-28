@@ -91,40 +91,6 @@ function bankline_prepare_head($id)
     return $head;
 }
 
-/**
- * Returns an array with the tabs for the "Bannkline" section
- * It loads tabs from modules looking for the entity payment
- *
- * @param 	int		$id		ID of bank line
- * @return 	array 			Tabs for the Bankline section
- */
-function bankline_prepare_head($id)
-{
-	global $langs, $conf;
-
-	$h = 0;
-	$head = array();
-
-	$head[$h][0] = DOL_URL_ROOT.'/compta/bank/line.php?rowid='.$id;
-	$head[$h][1] = $langs->trans('BankTransaction');
-	$head[$h][2] = 'bankline';
-	$h++;
-
-	// Show more tabs from modules
-	// Entries must be declared in modules descriptor with line
-	// $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
-	// $this->tabs = array('entity:-tabname);   												to remove a tab
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'bankline');
-
-	$head[$h][0] = DOL_URL_ROOT.'/compta/bank/info.php?rowid='.$id;
-	$head[$h][1] = $langs->trans("Info");
-	$head[$h][2] = 'info';
-	$h++;
-
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'bankline', 'remove');
-
-	return $head;
-}
 
 /**
  * Returns an array with the tabs for the "Supplier payment" section
