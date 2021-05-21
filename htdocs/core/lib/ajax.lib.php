@@ -129,7 +129,7 @@ function ajax_autocompleter($selected, $htmlname, $url, $urloption='', $minLengt
 												textarea[key] = item[value];
 											});
 										}
-										return { label: label, value: item.value, id: item.key, update: update, textarea: textarea, disabled: item.disabled, qty:item.qty }
+										return { label: label, value: item.value, id: item.key, update: update, textarea: textarea, disabled: item.disabled, qty:item.qty ,price_ttc:item.price_ttc}
 									}));
 								}
 								else console.error("Error: Ajax url '.$url.($urloption?'?'.$urloption:'').' has returned an empty page. Should be an empty json array.");
@@ -186,6 +186,8 @@ function ajax_autocompleter($selected, $htmlname, $url, $urloption='', $minLengt
     						}
     						console.log("ajax_autocompleter new value selected, we trigger change on original component so field #search_'.$htmlname.'");
     						$("#search_'.$htmlname.'").trigger("change");	// We have changed value of the combo select, we must be sure to trigger all js hook binded on this event. This is required to trigger other javascript change method binded on original field by other code.
+    						
+                            $("#pricedisp").html(ui.item.price_ttc);
                             $("#qty").focus();
                             $("#qty").select();
     					}

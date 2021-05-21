@@ -275,7 +275,7 @@ else {
 	<input type="text" size="5" name="price_ttc" id="price_ttc" class="flat" value="<?php echo (isset($_POST["price_ttc"])?GETPOST("price_ttc",'alpha',2):''); ?>">
 	</td>
 	<?php } ?>
-	<td class="nobottom linecolqty" align="right"><input type="text" size="2" name="qty" id="qty" class="flat" value="<?php echo (isset($_POST["qty"])?GETPOST("qty",'alpha',2):1); ?>">
+    <td class="nobottom linecolqty" align="right"><input type="text" size="2" name="qty" id="qty" class="flat" value="<?php echo (isset($_POST["qty"])?GETPOST("qty",'alpha',2):1); ?>"><br><span id="pricedisp"></span>
 	</td>
 	<?php
 	if($conf->global->PRODUCT_USE_UNITS)
