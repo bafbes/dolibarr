@@ -190,7 +190,7 @@ if (!empty($hashp))
 else
 {
 	// Basic protection (against external users only)
-	if ($user->socid > 0)
+	if ($user->socid > 0 && empty($conf->global->MAIN_EXTERNAL_USERS_CAN_SEE_SUBSIDIARY_COMPANIES))
 	{
 		if ($sqlprotectagainstexternals)
 		{
