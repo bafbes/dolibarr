@@ -77,7 +77,7 @@ if (!empty($conf->global->MAIN_APPLICATION_TITLE)) $title = $langs->trans("HomeA
 llxHeader('', $title);
 
 
-$resultboxes = FormOther::getBoxesArea($user, "0"); // Load $resultboxes (selectboxlist + boxactivated + boxlista + boxlistb)
+if(empty($conf->global->MAIN_HIDEBOXES)) $resultboxes = FormOther::getBoxesArea($user, "0"); // Load $resultboxes (selectboxlist + boxactivated + boxlista + boxlistb)
 
 
 print load_fiche_titre('&nbsp;', $resultboxes['selectboxlist'], '', 0, '', 'titleforhome');
