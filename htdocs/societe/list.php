@@ -675,7 +675,7 @@ if (empty($type) || $type == 'f')
 }
 
 // If the user can view prospects other than his'
-if ($user->rights->societe->client->voir || $socid)
+if (($user->rights->societe->client->voir || $socid )&& empty($conf->global->MAIN_HIDE_COMMERCIALS_IN_THIRDPARTYLIST))
 {
  	$moreforfilter .= '<div class="divsearchfield">';
  	$moreforfilter .= $langs->trans('SalesRepresentatives').': ';
