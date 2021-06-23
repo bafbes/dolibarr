@@ -1,8 +1,8 @@
 # Dolibarr language file - Source file is en_US - stripe
 StripeSetup=Configuration module Stripe
-StripeDesc=Ce module offre des pages pour autoriser les paiements par carte sur <a href="http://www.stripe.com" target="_blank">Stripe</a> par les clients. Elles peuvent êtres utilisées pour un paiement libre ou un paiement sur un objet particulier de Dolibarr (facture, commande, ... )
+StripeDesc=Ce module offre des pages pour autoriser les paiements par carte sur <a href="http://www.stripe.com" target="_blank">Stripe</a> par les partenaires. Elles peuvent êtres utilisées pour un paiement libre ou un paiement sur un objet particulier de Dolibarr (facture, commande, ... )
 StripeOrCBDoPayment=Payez avec une carte bancaire ou Stripe
-FollowingUrlAreAvailableToMakePayments=Les URL suivantes sont disponibles pour permettre à un client de faire un paiement
+FollowingUrlAreAvailableToMakePayments=Les URL suivantes sont disponibles pour permettre à un partenaire de faire un paiement
 PaymentForm=Formulaire de paiement
 WelcomeOnPaymentPage=Bienvenue sur notre service de paiement en ligne
 ThisScreenAllowsYouToPay=Cet écran vous permet de réaliser votre paiement en ligne à destination de %s.
@@ -16,8 +16,8 @@ StripeDoPayment=Payer avec Stripe
 YouWillBeRedirectedOnStripe=Vous allez être redirigé vers la page sécurisée de Stripe pour insérer les informations de votre carte de crédit
 Continue=Continuer
 ToOfferALinkForOnlinePayment=URL de paiement %s
-ToOfferALinkForOnlinePaymentOnOrder=URL offrant une interface de paiement en ligne %s pour le paiement d'une commande client
-ToOfferALinkForOnlinePaymentOnInvoice=URL offrant une interface de paiement en ligne %s pour le paiement  d'une facture client
+ToOfferALinkForOnlinePaymentOnOrder=URL offrant une interface de paiement en ligne %s pour le paiement d'une commande partenaire
+ToOfferALinkForOnlinePaymentOnInvoice=URL offrant une interface de paiement en ligne %s pour le paiement  d'une facture partenaire
 ToOfferALinkForOnlinePaymentOnContractLine=URL offrant une interface de paiement en ligne %s pour le paiement d'une ligne de contrat
 ToOfferALinkForOnlinePaymentOnFreeAmount=URL offrant une interface de paiement en ligne %s d'un montant libre sans existence d'object particulier
 ToOfferALinkForOnlinePaymentOnMemberSubscription=URL offrant une interface de paiement en ligne %s pour le paiement d'une cotisation d'adhérent
@@ -44,13 +44,13 @@ StripeLiveEnabled=Mode live activé (sinon mode test/bac a sable)
 StripeImportPayment=Importer paiements Stripe
 ExampleOfTestCreditCard=Exemple de carte de crédit pour le test: %s => valide, %s => erreur CVC, %s => expiré, %s => paiement en échec
 StripeGateways=Stripe gateways
-OAUTH_STRIPE_TEST_ID=Stripe Connect ID client (ca _...)
-OAUTH_STRIPE_LIVE_ID=Stripe Connect ID client (ca _...)
+OAUTH_STRIPE_TEST_ID=Stripe Connect ID partenaire (ca _...)
+OAUTH_STRIPE_LIVE_ID=Stripe Connect ID partenaire (ca _...)
 BankAccountForBankTransfer=Compte bancaire pour les paiements de fonds
 StripeAccount=Compte Stripe
 StripeChargeList=Liste des encaissements par Stripe
 StripeTransactionList=Liste des transactions Stripe
-StripeCustomerId=Identifiant client Stripe
+StripeCustomerId=Identifiant partenaire Stripe
 StripePaymentModes=Modes de paiement Stripe
 LocalID=ID local
 StripeID=Stripe ID
@@ -60,7 +60,7 @@ ExpiryDate=Date d'expiration
 CVN=CVN
 DeleteACard=Supprimer carte
 ConfirmDeleteCard=Êtes-vous sûr de vouloir supprimer cette carte de crédit ou de débit?
-CreateCustomerOnStripe=Créer client sur Stripe
+CreateCustomerOnStripe=Créer partenaire sur Stripe
 CreateCardOnStripe=Créer carte sur Stripe
 ShowInStripe=Afficher dans Stripe
 StripeUserAccountForActions=Compte d'utilisateur à utiliser pour certains e-mails de notification d'événements Stripe (Stripe payouts)

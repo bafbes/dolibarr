@@ -53,7 +53,7 @@ MenuListNonClosed=Tickets ouverts
 
 TypeContact_ticket_internal_CONTRIBUTOR=Contributeur
 TypeContact_ticket_internal_SUPPORTTEC=Utilisateur assigné
-TypeContact_ticket_external_SUPPORTCLI=Contact client / suivi des tickets
+TypeContact_ticket_external_SUPPORTCLI=Contact partenaire / suivi des tickets
 TypeContact_ticket_external_CONTRIBUTOR=Contributeur externe
 
 OriginEmail=E-mail source

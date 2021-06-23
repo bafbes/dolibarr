@@ -55,10 +55,10 @@ NoDraftProposals=Pas de propositions brouillons
 CopyPropalFrom=Créer proposition/devis par recopie d'un proposition existante
 CreateEmptyPropal=Créer proposition/devis vierge ou avec la liste des produits/services
 DefaultProposalDurationValidity=Délai de validité par défaut (en jours)
-UseCustomerContactAsPropalRecipientIfExist=Utiliser l'adresse de 'contact suivi client' si définie plutôt que l'adresse de la structure comme destinataire des propositions
+UseCustomerContactAsPropalRecipientIfExist=Utiliser l'adresse de 'contact suivi partenaire' si définie plutôt que l'adresse de la structure comme destinataire des propositions
 ConfirmClonePropal=Êtes-vous sûr de vouloir cloner la proposition commerciale <b>%s</b> ?
 ConfirmReOpenProp=Êtes-vous sûr de vouloir réouvrir la proposition commerciale <b>%s</b> ?
-ProposalsAndProposalsLines=Propositions commerciales clients et lignes de propositions
+ProposalsAndProposalsLines=Propositions commerciales partenaires et lignes de propositions
 ProposalLine=Ligne de proposition
 AvailabilityPeriod=Délai de livraison
 SetAvailability=Définir le délai de livraison
@@ -72,9 +72,9 @@ AvailabilityTypeAV_3W=3 semaines
 AvailabilityTypeAV_1M=1 mois
 ##### Types de contacts #####
 TypeContact_propal_internal_SALESREPFOLL=Commercial suivi proposition
-TypeContact_propal_external_BILLING=Contact client facturation proposition
-TypeContact_propal_external_CUSTOMER=Contact client suivi proposition
-TypeContact_propal_external_SHIPPING=Contact client pour la livraison
+TypeContact_propal_external_BILLING=Contact partenaire facturation proposition
+TypeContact_propal_external_CUSTOMER=Contact partenaire suivi proposition
+TypeContact_propal_external_SHIPPING=Contact partenaire pour la livraison
 # Document models
 DocModelAzurDescription=Un modèle de proposition complet (ancienne implémentation du modèle Cyan)
 DocModelCyanDescription=Un modèle de proposition complet
