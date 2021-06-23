@@ -37,8 +37,8 @@ AgendaExtSitesDesc=Cette page permet d'ajouter des sources de calendriers extern
 ActionsEvents=Événements pour lesquels Dolibarr doit insérer un évènement dans l'agenda en automatique.
 EventRemindersByEmailNotEnabled=Les rappels d'événement par email n'ont pas été activés dans la configuration du module %s.
 ##### Agenda event labels #####
-NewCompanyToDolibarr=Tiers %s créé
-COMPANY_DELETEInDolibarr=Tiers  %s supprimé
+NewCompanyToDolibarr=Structure %s créé
+COMPANY_DELETEInDolibarr=Structure  %s supprimé
 ContractValidatedInDolibarr=Contrat %s validé
 CONTRACT_DELETEInDolibarr=Contrat %s supprimé
 PropalClosedSignedInDolibarr=Proposition %s signée
