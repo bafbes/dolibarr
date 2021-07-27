@@ -1,9 +1,9 @@
 # Dolibarr language file - Source file is en_US - ftp
-FTPClientSetup=Configuration du module Client FTP
-NewFTPClient=Nouvelle configuration de connexion FTP
+FTPPartenaireSetup=Configuration du module Partenaire FTP
+NewFTPPartenaire=Nouvelle configuration de connexion FTP
 FTPArea=Espace FTP
 FTPAreaDesc=Cet écran vous présente une vue de serveur FTP
-SetupOfFTPClientModuleNotComplete=La configuration du module Client FTP semble incomplète
+SetupOfFTPPartenaireModuleNotComplete=La configuration du module Partenaire FTP semble incomplète
 FTPFeatureNotSupportedByYourPHP=Votre PHP ne prend pas en charge les fonctions FTP
 FailedToConnectToFTPServer=Échec de connexion au serveur FTP (serveur: %s, port %s)
 FailedToConnectToFTPServerWithCredentials=Échec de connexion avec l'identifiant/mot de passe FTP configuré
