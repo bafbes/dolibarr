@@ -1246,11 +1246,14 @@ else
 	    print '<td colspan="3"><input type="text" class="minwidth300" name="name_alias" id="name_alias_input" value="'.$object->name_alias.'"></td></tr>';
 
         // Prospect/Customer
-        print '<tr><td class="titlefieldcreate">'.$form->editfieldkey('ProspectCustomer', 'customerprospect', '', $object, 0, 'string', '', 1).'</td>';
-	    print '<td class="maxwidthonsmartphone">';
-	    $selected = (GETPOSTISSET('client') ?GETPOST('client', 'int') : $object->client);
-	    print $formcompany->selectProspectCustomerType($selected);
-	    print '</td>';
+        print '<tr>';
+        /*
+            print '<td class="titlefieldcreate">'.$form->editfieldkey('ProspectCustomer', 'customerprospect', '', $object, 0, 'string', '', 1).'</td>';
+      	    print '<td class="maxwidthonsmartphone">';
+                $selected = (GETPOSTISSET('client') ?GETPOST('client', 'int') : $object->client);
+                print $formcompany->selectProspectCustomerType($selected);
+                print '</td>';
+        */
 
 	    if ($conf->browser->layout == 'phone') print '</tr><tr>';
 
@@ -1850,10 +1853,13 @@ else
             }
 
             // Prospect/Customer
-            print '<tr><td>'.$form->editfieldkey('ProspectCustomer', 'customerprospect', '', $object, 0, 'string', '', 1).'</td>';
+            print '<tr>';
+/*
+            print '<td>'.$form->editfieldkey('ProspectCustomer', 'customerprospect', '', $object, 0, 'string', '', 1).'</td>';
 	        print '<td class="maxwidthonsmartphone">';
 	        print $formcompany->selectProspectCustomerType($object->client);
             print '</td>';
+*/
             if ($conf->browser->layout == 'phone') print '</tr><tr>';
             print '<td>'.$form->editfieldkey('CustomerCode', 'customer_code', '', $object, 0).'</td><td>';
 
@@ -2294,12 +2300,12 @@ else
 
         print '<div class="underbanner clearboth"></div>';
         print '<table class="border tableforfield" width="100%">';
-
+/*
     	// Prospect/Customer
     	print '<tr><td class="titlefield">'.$langs->trans('ProspectCustomer').'</td><td>';
     	print $object->getLibCustProspStatut();
     	print '</td></tr>';
-
+*/
     	// Supplier
    		if (!empty($conf->fournisseur->enabled) || !empty($conf->supplier_proposal->enabled))
     	{
