@@ -1339,7 +1339,7 @@ else
         // Country
         print '<tr><td>'.$form->editfieldkey('Country', 'selectcountry_id', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">';
         print img_picto('', 'globe-americas', 'class="paddingrightonly"');
-        print $form->select_country((GETPOST('country_id') != '' ? GETPOST('country_id') : $object->country_id), 'country_id', '', 0, 'minwidth300 widthcentpercentminusx');
+        print $form->select_country((GETPOST('country_id') != '' ? GETPOST('country_id') : $object->country_id), 'country_id', 'disabled', 0, 'minwidth300 widthcentpercentminusx');
         if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
         print '</td></tr>';
 
@@ -1387,7 +1387,7 @@ else
                 }
             }
         }
-
+/*
         // Prof ids
         $i = 1; $j = 0; $NBCOLS = ($conf->browser->layout == 'phone' ? 1 : 2);
         while ($i <= 6)
@@ -1409,8 +1409,9 @@ else
             }
             $i++;
         }
+*/
         if ($NBCOLS > 1 && ($j % 2 == 1)) print '<td colspan="2"></td></tr>';
-
+/*
         // Vat is used
         print '<tr><td>'.$form->editfieldkey('VATIsUsed', 'assujtva_value', '', $object, 0).'</td>';
         print '<td>';
@@ -1473,7 +1474,8 @@ else
             print $form->selectyesno('localtax2assuj_value', (isset($conf->global->THIRDPARTY_DEFAULT_USELOCALTAX2) ? $conf->global->THIRDPARTY_DEFAULT_USELOCALTAX2 : 0), 1);
             print '</td></tr>';
         }
-
+*/
+/*
         // Type - Size
         print '<tr><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.($conf->browser->layout == 'phone' ? ' colspan="3"': '').'>'."\n";
         $sortparam = (empty($conf->global->SOCIETE_SORT_ON_TYPEENT) ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT); // NONE means we keep sort of original array, so we sort on position. ASC, means next function will sort on label.
@@ -1520,7 +1522,7 @@ else
 	        print '<td colspan="3" class="maxwidthonsmartphone">';
 	        print $form->select_incoterms((!empty($object->fk_incoterms) ? $object->fk_incoterms : ''), (!empty($object->location_incoterms) ? $object->location_incoterms : ''));
 			print '</td></tr>';
-		}
+		}*/
 
 		// Categories
 		if (!empty($conf->categorie->enabled) && !empty($user->rights->categorie->lire))
@@ -1557,7 +1559,7 @@ else
 		// Other attributes
 		$parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
 		include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_add.tpl.php';
-
+/*
 		// Assign a sale representative
 		print '<tr>';
 		print '<td>'.$form->editfieldkey('AllocateCommercial', 'commercial_id', '', $object, 0).'</td>';
@@ -1567,7 +1569,7 @@ else
 		$selected = (count(GETPOST('commercial', 'array')) > 0 ? GETPOST('commercial', 'array') : (GETPOST('commercial', 'int') > 0 ? array(GETPOST('commercial', 'int')) : (empty($user->rights->societe->client->voir) ? array($user->id) : array())));
 		print $form->multiselectarray('commercial', $userlist, $selected, null, null, null, null, "90%");
 		print '</td></tr>';
-
+*/
         // Ajout du logo
         print '<tr class="hideonsmartphone">';
         print '<td>'.$form->editfieldkey('Logo', 'photoinput', '', $object, 0).'</td>';
@@ -1834,7 +1836,7 @@ else
 	        // Alias names (commercial, trademark or alias names)
 	        print '<tr id="name_alias"><td><label for="name_alias_input">'.$langs->trans('AliasNames').'</label></td>';
 	        print '<td colspan="3"><input type="text" class="minwidth300" name="name_alias" id="name_alias_input" value="'.dol_escape_htmltag($object->name_alias).'"></td></tr>';
-
+/*
             // Prefix
             if (!empty($conf->global->SOCIETE_USEPREFIX))  // Old not used prefix field
             {
@@ -1851,7 +1853,7 @@ else
                 }
                 print '</td>';
             }
-
+*/
             // Prospect/Customer
             print '<tr>';
 /*
@@ -1936,10 +1938,10 @@ else
                 print '</td></tr>';
             }
 
-            // Status
+/*            // Status
             print '<tr><td>'.$form->editfieldkey('Status', 'status', '', $object, 0).'</td><td colspan="3">';
             print $form->selectarray('status', array('0'=>$langs->trans('ActivityCeased'), '1'=>$langs->trans('InActivity')), $object->status);
-            print '</td></tr>';
+            print '</td></tr>';*/
 
             // Address
             print '<tr><td class="tdtop">'.$form->editfieldkey('Address', 'address', '', $object, 0).'</td>';
@@ -1962,7 +1964,7 @@ else
             // Country
             print '<tr><td>'.$form->editfieldkey('Country', 'selectcounty_id', '', $object, 0).'</td><td colspan="3">';
             print img_picto('', 'globe-americas', 'class="paddingrightonly"');
-            print $form->select_country((GETPOSTISSET('country_id') ? GETPOST('country_id') : $object->country_id), 'country_id', '', 0, 'minwidth300 widthcentpercentminusx');
+            print $form->select_country((GETPOSTISSET('country_id') ? GETPOST('country_id') : $object->country_id), 'country_id', 'disabled', 0, 'minwidth300 widthcentpercentminusx');
             if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
             print '</td></tr>';
 
@@ -2009,7 +2011,7 @@ else
                     }
                 }
             }
-
+/*
             // Prof ids
             $i = 1; $j = 0; $NBCOLS = ($conf->browser->layout == 'phone' ? 1 : 2);
             while ($i <= 6)
@@ -2030,8 +2032,9 @@ else
                 }
                 $i++;
             }
+ */
             if ($NBCOLS > 0 && $j % 2 == 1) print '<td colspan="2"></td></tr>';
-
+/*
             // VAT is used
             print '<tr><td>'.$form->editfieldkey('VATIsUsed', 'assujtva_value', '', $object, 0).'</td><td colspan="3">';
             print $form->selectyesno('assujtva_value', $object->tva_assuj, 1);
@@ -2117,8 +2120,8 @@ else
             }
             print $s;
             print '</td>';
-            print '</tr>';
-
+            print '</tr>';*/
+/*
             // Type - Size
             print '<tr><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone">';
             print $form->selectarray("typent_id", $formcompany->typent_array(0), $object->typent_id, 0, 0, 0, '', 0, 0, 0, (empty($conf->global->SOCIETE_SORT_ON_TYPEENT) ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT));
@@ -2140,7 +2143,7 @@ else
 	        print '<td colspan="3"><input type="text" name="capital" id="capital" size="10" value="';
 	        print $object->capital != '' ? dol_escape_htmltag(price($object->capital)) : '';
 	        print '"> <font class="hideonsmartphone">'.$langs->trans("Currency".$conf->currency).'</font></td></tr>';
-
+*/
             // Default language
             if (!empty($conf->global->MAIN_MULTILANGS))
             {
@@ -2229,7 +2232,7 @@ else
             }
             print '</td>';
             print '</tr>';
-
+/*
             // Assign sale representative
             print '<tr>';
             print '<td>'.$form->editfieldkey('AllocateCommercial', 'commercial_id', '', $object, 0).'</td>';
@@ -2239,7 +2242,7 @@ else
             if (empty($arrayselected)) $arrayselected = $object->getSalesRepresentatives($user, 1);
             print $form->multiselectarray('commercial', $userlist, $arrayselected, null, null, null, null, "90%");
             print '</td></tr>';
-
+*/
             print '</table>';
             print '</div>';
 
@@ -2351,7 +2354,7 @@ else
             print '</td>';
             print '</tr>';
         }
-
+/*
         // Prof ids
         $i = 1; $j = 0;
         while ($i <= 6)
@@ -2375,7 +2378,7 @@ else
                 $j++;
             }
             $i++;
-        }
+        }*/
         //if ($j % 2 == 1)  print '<td colspan="2"></td></tr>';
 
 
@@ -2383,7 +2386,7 @@ else
         // We don't need them into customer profile.
         // Except for spain and localtax where localtax depends on buyer and not seller
 
-        if ($object->fournisseur)
+/*        if ($object->fournisseur)
         {
 	        // VAT is used
 	        print '<tr><td>';
@@ -2524,7 +2527,7 @@ else
         }
         print '</td>';
         print '</tr>';
-
+*/
         // Type + Staff
         $arr = $formcompany->typent_array(1);
         $object->typent = $arr[$object->typent_code];
@@ -2561,12 +2564,12 @@ else
 
         // Legal
         print '<tr><td class="titlefield">'.$langs->trans('JuridicalStatus').'</td><td>'.$object->forme_juridique.'</td></tr>';
-
+/*
         // Capital
         print '<tr><td>'.$langs->trans('Capital').'</td><td>';
         if ($object->capital) print price($object->capital, '', $langs, 0, -1, -1, $conf->currency);
         else print '&nbsp;';
-        print '</td></tr>';
+        print '</td></tr>';*/
 
         // Default language
         if (!empty($conf->global->MAIN_MULTILANGS))
@@ -2617,7 +2620,7 @@ else
 		// Other attributes
 		$parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
 		include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
-
+/*
         // Parent company
         if (empty($conf->global->SOCIETE_DISABLE_PARENTCOMPANY))
         {
@@ -2638,11 +2641,11 @@ else
         	}
         	print '</td>';
         	print '</tr>';
-        }
-
+        }*/
+/*
         // Sales representative
         include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';
-
+*/
         // Module Adherent
         if (!empty($conf->adherent->enabled))
         {

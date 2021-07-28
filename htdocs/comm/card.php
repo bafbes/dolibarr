@@ -248,7 +248,7 @@ if ($object->id > 0)
 
     print '<div class="underbanner clearboth"></div>';
 	print '<table class="border centpercent tableforfield">';
-
+/*
 	// Prospect/Customer
 	print '<tr><td class="titlefield">'.$langs->trans('ProspectCustomer').'</td><td>';
 	print $object->getLibCustProspStatut();
@@ -280,7 +280,7 @@ if ($object->id > 0)
 		print '</td>';
 		print '</tr>';
 	}
-
+*/
 	// This fields are used to know VAT to include in an invoice when the thirdparty is making a sale, so when it is a supplier.
 	// We don't need them into customer profile.
 	// Except for spain and localtax where localtax depends on buyer and not seller
@@ -296,7 +296,7 @@ if ($object->id > 0)
 	print '</td>';
 	print '</tr>';
 	*/
-
+/*
 	if ($mysoc->country_code == 'ES')
 	{
 		// Local Taxes
@@ -318,10 +318,10 @@ if ($object->id > 0)
 	print '<tr><td class="nowrap">'.$langs->trans('VATIntra').'</td><td>';
 	print $object->tva_intra;
 	print '</td></tr>';
-
+*/
 	// default terms of the settlement
 	$langs->load('bills');
-	print '<tr><td>';
+/*	print '<tr><td>';
 	print '<table width="100%" class="nobordernopadding"><tr><td>';
 	print $langs->trans('PaymentConditions');
 	print '<td>';
@@ -356,7 +356,7 @@ if ($object->id > 0)
 		$form->form_modes_reglement($_SERVER['PHP_SELF'].'?socid='.$object->id, $object->mode_reglement_id, 'none');
 	}
 	print "</td>";
-	print '</tr>';
+	print '</tr>';*/
 
 	if (!empty($conf->banque->enabled))
 	{
@@ -381,9 +381,9 @@ if ($object->id > 0)
 	}
 
 	$isCustomer = ($object->client == 1 || $object->client == 3);
-
+/*
 	// Relative discounts (Discounts-Drawbacks-Rebates)
-	if ($isCustomer)
+	if (0&&$isCustomer)
 	{
     	print '<tr><td class="nowrap">';
     	print '<table width="100%" class="nobordernopadding"><tr><td class="nowrap">';
@@ -486,7 +486,7 @@ if ($object->id > 0)
         }
         print "</td>";
         print '</tr>';
-    }
+    }*/
 
 	// Categories
 	if (!empty($conf->categorie->enabled) && !empty($user->rights->categorie->lire)) {
@@ -502,7 +502,7 @@ if ($object->id > 0)
 	include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_view.tpl.php';
 
     // Sales representative
-	include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';
+//	include DOL_DOCUMENT_ROOT.'/societe/tpl/linesalesrepresentative.tpl.php';
 
     // Module Adherent
     if (!empty($conf->adherent->enabled))
