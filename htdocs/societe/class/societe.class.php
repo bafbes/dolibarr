@@ -1151,7 +1151,7 @@ class Societe extends CommonObject
 		$this->code_compta_fournisseur = trim($this->code_compta_fournisseur);
 
 		// Check parameters. More tests are done later in the ->verify()
-		if (!is_numeric($this->client) && !is_numeric($this->fournisseur))
+		if (0 && !is_numeric($this->client) && !is_numeric($this->fournisseur))
 		{
 			$langs->load("errors");
 			$this->error = $langs->trans("BadValueForParameterClientOrSupplier");
