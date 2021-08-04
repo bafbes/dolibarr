@@ -1,6 +1,6 @@
 # Dolibarr language file - Source file is en_US - stripe
 StripeSetup=Configuration module Stripe
-StripeDesc=Ce module offre des pages pour autoriser les paiements par carte sur <a href="http://www.stripe.com" target="_blank">Stripe</a> par les partenaires. Elles peuvent êtres utilisées pour un paiement libre ou un paiement sur un objet particulier de Dolibarr (facture, commande, ... )
+StripeDesc=Ce module offre des pages pour autoriser les paiements par carte sur <a href="http://www.stripe.com" target="_blank">Stripe</a> par les partenaires. Elles peuvent êtres utilisées pour un paiement libre ou un paiement sur un objet particulier de Dolibarr (reversement, commande, ... )
 StripeOrCBDoPayment=Payez avec une carte bancaire ou Stripe
 FollowingUrlAreAvailableToMakePayments=Les URL suivantes sont disponibles pour permettre à un partenaire de faire un paiement
 PaymentForm=Formulaire de paiement
@@ -17,7 +17,7 @@ YouWillBeRedirectedOnStripe=Vous allez être redirigé vers la page sécurisée 
 Continue=Continuer
 ToOfferALinkForOnlinePayment=URL de paiement %s
 ToOfferALinkForOnlinePaymentOnOrder=URL offrant une interface de paiement en ligne %s pour le paiement d'une commande partenaire
-ToOfferALinkForOnlinePaymentOnInvoice=URL offrant une interface de paiement en ligne %s pour le paiement  d'une facture partenaire
+ToOfferALinkForOnlinePaymentOnInvoice=URL offrant une interface de paiement en ligne %s pour le paiement  d'une reversement partenaire
 ToOfferALinkForOnlinePaymentOnContractLine=URL offrant une interface de paiement en ligne %s pour le paiement d'une ligne de contrat
 ToOfferALinkForOnlinePaymentOnFreeAmount=URL offrant une interface de paiement en ligne %s d'un montant libre sans existence d'object particulier
 ToOfferALinkForOnlinePaymentOnMemberSubscription=URL offrant une interface de paiement en ligne %s pour le paiement d'une cotisation d'adhérent
@@ -39,7 +39,7 @@ STRIPE_TEST_WEBHOOK_KEY=Clé test des Webhooks
 STRIPE_LIVE_SECRET_KEY=Clé secrète live
 STRIPE_LIVE_PUBLISHABLE_KEY=Clé plublique live
 STRIPE_LIVE_WEBHOOK_KEY=Clé live des Webhooks
-ONLINE_PAYMENT_WAREHOUSE=Stock à utiliser pour diminuer le stock lorsque le paiement en ligne est effectué <br> (TODO Quand l'option de réduction de stock est effectuée sur une action sur facture et que le paiement en ligne génère lui-même la facture?)
+ONLINE_PAYMENT_WAREHOUSE=Stock à utiliser pour diminuer le stock lorsque le paiement en ligne est effectué <br> (TODO Quand l'option de réduction de stock est effectuée sur une action sur reversement et que le paiement en ligne génère lui-même la reversement?)
 StripeLiveEnabled=Mode live activé (sinon mode test/bac a sable)
 StripeImportPayment=Importer paiements Stripe
 ExampleOfTestCreditCard=Exemple de carte de crédit pour le test: %s => valide, %s => erreur CVC, %s => expiré, %s => paiement en échec

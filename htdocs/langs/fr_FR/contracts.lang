@@ -96,7 +96,7 @@ OtherContracts=Autres contrats
 ##### Types de contacts #####
 TypeContact_contrat_internal_SALESREPSIGN=Commercial signataire du contrat
 TypeContact_contrat_internal_SALESREPFOLL=Commercial suivi du contrat
-TypeContact_contrat_external_BILLING=Contact partenaire facturation contrat
+TypeContact_contrat_external_BILLING=Contact partenaire reversement contrat
 TypeContact_contrat_external_CUSTOMER=Contact partenaire suivi contrat
 TypeContact_contrat_external_SALESREPSIGN=Contact partenaire signataire contrat
 HideClosedServiceByDefault=Masquer les services fermés par défaut
