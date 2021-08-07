@@ -1,4 +1,4 @@
-# Dolibarr language file - Source file is en_US - multicurrency
+# Cgl language file - Source file is en_US - multicurrency
 MultiCurrency=Multi-devise
 ErrorAddRateFail=Erreur lors de l'ajout du taux
 ErrorAddCurrencyFail=Erreur lors de l'ajout de la devise

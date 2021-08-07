@@ -1,4 +1,4 @@
-# Dolibarr language file - Source file is en_US - compta
+# Cgl language file - Source file is en_US - compta
 MenuFinancial=Reversement | Paiement
 TaxModuleSetupToModifyRules=Aller dans la <a href="%s">configuration du module Taxes</a> pour modifier les règles de calcul
 TaxModuleSetupToModifyRulesLT=Aller dans la <a href="%s">configuration de l'institution</a> pour modifier les règles de calcul

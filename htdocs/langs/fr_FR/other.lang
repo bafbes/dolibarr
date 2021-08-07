@@ -1,4 +1,4 @@
-# Dolibarr language file - Source file is en_US - other
+# Cgl language file - Source file is en_US - other
 SecurityCode=Code de sécurité
 NumberingShort=N°
 Tools=Outils
@@ -102,7 +102,7 @@ PredefinedMailContentThirdparty=__(Hello)__\n\n\n__(Sincerely)__\n\n__USER_SIGNA
 PredefinedMailContentContact=__(Hello)__\n\n\n__(Sincerely)__\n\n__USER_SIGNATURE__
 PredefinedMailContentUser=__(Hello)__\n\n\n__(Sincerely)__\n\n__USER_SIGNATURE__
 PredefinedMailContentLink=Vous pouvez cliquer sur le lien ci-dessous pour effectuer votre paiement si ce n'est déjà fait.\n\n%s\n\n
-DemoDesc=Dolibarr est un logiciel de gestion proposant plusieurs modules métiers. Une démonstration qui inclut tous ces modules n'a pas de sens car ce cas n'existe jamais (plusieurs centaines de modules disponibles). Aussi, quelques profils type de démo sont disponibles.
+DemoDesc=Cgl est un logiciel de gestion proposant plusieurs modules métiers. Une démonstration qui inclut tous ces modules n'a pas de sens car ce cas n'existe jamais (plusieurs centaines de modules disponibles). Aussi, quelques profils type de démo sont disponibles.
 ChooseYourDemoProfil=Veuillez choisir le profil de démonstration qui correspond le mieux à votre activité…
 ChooseYourDemoProfilMore=...ou construisez votre propre profil<br>(sélection manuelle des modules)
 DemoFundation=Gestion des adhérents d'une association
@@ -178,10 +178,10 @@ SizeUnitpoint=point
 BugTracker=Suivi de tickets
 SendNewPasswordDesc=Ce formulaire permet de faire une demande pour un nouveau mot de passe. Elle sera envoyée à votre adresse email.<br>La modification du mot de passe ne sera effective qu'après avoir cliqué sur le lien de confirmation dans cet email.<br>Surveillez votre messagerie.
 BackToLoginPage=Retour page de connexion
-AuthenticationDoesNotAllowSendNewPassword=Le mode d'authentification de Dolibarr est configuré à "<b>%s</b>".<br>Dans ce mode, Dolibarr n'a pas la possibilité de connaître ni de modifier votre mot de passe.<br>Contactez votre administrateur pour connaitre les modalités de changement.
+AuthenticationDoesNotAllowSendNewPassword=Le mode d'authentification de Cgl est configuré à "<b>%s</b>".<br>Dans ce mode, Cgl n'a pas la possibilité de connaître ni de modifier votre mot de passe.<br>Contactez votre administrateur pour connaitre les modalités de changement.
 EnableGDLibraryDesc=Vous devez activer ou installer la librairie GD avec votre PHP pour pouvoir activer cette option.
 ProfIdShortDesc=<b>Id prof. %s</b> est une information qui dépend du pays de la structure.<br>Par exemple, pour le pays <b>%s</b>, il s'agit du code <b>%s</b>.
-DolibarrDemo=Démonstration de Dolibarr ERP/CRM
+DolibarrDemo=Démonstration de Cgl ERP/CRM
 StatsByNumberOfUnits=Statistiques de quantités de produits/services
 StatsByNumberOfEntities=Statistiques en nombre d'entités référantes (nb de reversements, ou commandes...)
 NumberOfProposals=Nombre de propositions commerciales

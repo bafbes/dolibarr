@@ -1,4 +1,4 @@
-# Dolibarr language file - Source file is en_US - banks
+# Cgl language file - Source file is en_US - banks
 Bank=Banque
 MenuBankCash=Banques | Caisses
 MenuVariousPayment=Paiements divers
@@ -109,7 +109,7 @@ SocialContributionPayment=Paiement de charge fiscale/sociale
 BankTransfer=Virement bancaire
 BankTransfers=Virements bancaire
 MenuBankInternalTransfer=Virement interne
-TransferDesc=Transférer d'un compte bancaire à un autre, Dolibarr ajoutera deux lignes d'écritures (une ligne de débit dans le compte source et une ligne de crédit dans le compte de destination. le même montant (excepté le signe), le libellé et la date seront utilisés pour la transaction).
+TransferDesc=Transférer d'un compte bancaire à un autre, Cgl ajoutera deux lignes d'écritures (une ligne de débit dans le compte source et une ligne de crédit dans le compte de destination. le même montant (excepté le signe), le libellé et la date seront utilisés pour la transaction).
 TransferFrom=De
 TransferTo=Vers
 TransferFromToDone=Le virement depuis <b>%s</b> vers <b>%s</b> de <b>%s</b> %s a été créé.

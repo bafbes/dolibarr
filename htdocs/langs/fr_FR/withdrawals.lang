@@ -1,4 +1,4 @@
-# Dolibarr language file - Source file is en_US - withdrawals
+# Cgl language file - Source file is en_US - withdrawals
 CustomersStandingOrdersArea=Paiements par prélèvement automatique
 SuppliersStandingOrdersArea=Paiements par virement bancaire
 StandingOrdersPayment=Ordres de prélèvement

@@ -1,4 +1,4 @@
-# Dolibarr language file - Source file is en_US - oauth
+# Cgl language file - Source file is en_US - oauth
 ConfigOAuth=Configuration OAuth
 OAuthServices=Services OAuth
 ManualTokenGeneration=Génération manuelle du jeton

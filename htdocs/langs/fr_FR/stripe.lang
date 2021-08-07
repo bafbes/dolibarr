@@ -1,6 +1,6 @@
-# Dolibarr language file - Source file is en_US - stripe
+# Cgl language file - Source file is en_US - stripe
 StripeSetup=Configuration module Stripe
-StripeDesc=Ce module offre des pages pour autoriser les paiements par carte sur <a href="http://www.stripe.com" target="_blank">Stripe</a> par les partenaires. Elles peuvent êtres utilisées pour un paiement libre ou un paiement sur un objet particulier de Dolibarr (reversement, commande, ... )
+StripeDesc=Ce module offre des pages pour autoriser les paiements par carte sur <a href="http://www.stripe.com" target="_blank">Stripe</a> par les partenaires. Elles peuvent êtres utilisées pour un paiement libre ou un paiement sur un objet particulier de Cgl (reversement, commande, ... )
 StripeOrCBDoPayment=Payez avec une carte bancaire ou Stripe
 FollowingUrlAreAvailableToMakePayments=Les URL suivantes sont disponibles pour permettre à un partenaire de faire un paiement
 PaymentForm=Formulaire de paiement
