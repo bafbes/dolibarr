@@ -1675,7 +1675,7 @@ function top_menu($head, $title = '', $target = '', $disablejs = 0, $disablehead
 			if (empty($helppagename)) $helppagename = 'EN:User_documentation|FR:Documentation_utilisateur|ES:Documentación_usuarios';
 
 			// Get helpbaseurl, helppage and mode from helppagename and langs
-			$arrayres = getHelpParamFor($helppagename, $langs);
+//			$arrayres = getHelpParamFor($helppagename, $langs);
 			$helpbaseurl = $arrayres['helpbaseurl'];
 			$helppage = $arrayres['helppage'];
 			$mode = $arrayres['mode'];
