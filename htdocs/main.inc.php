@@ -1203,7 +1203,7 @@ function top_htmlhead($head, $title = '', $disablejs = 0, $disablehead = 0, $arr
 		print '<meta charset="utf-8">'."\n";
 		print '<meta name="robots" content="noindex'.($disablenofollow ? '' : ',nofollow').'">'."\n"; // Do not index
 		print '<meta name="viewport" content="width=device-width, initial-scale=1.0">'."\n"; // Scale for mobile device
-		print '<meta name="author" content="Dolibarr Development Team">'."\n";
+		print '<meta name="author" content="Opensilog Development Team">'."\n";
 
 		// Favicon
 		$favicon = DOL_URL_ROOT.'/theme/dolibarr_256x256_color.png';
@@ -1801,7 +1801,7 @@ function top_menu_user($hideloginname = 0, $urllogout = '')
     $dropdownBody .= '<br><u>'.$langs->trans("Session").'</u>';
     $dropdownBody .= '<br><b>'.$langs->trans("IPAddress").'</b>: '.dol_escape_htmltag($_SERVER["REMOTE_ADDR"]);
     if (!empty($conf->global->MAIN_MODULE_MULTICOMPANY)) $dropdownBody .= '<br><b>'.$langs->trans("ConnectedOnMultiCompany").':</b> '.$conf->entity.' (user entity '.$user->entity.')';
-    $dropdownBody .= '<br><b>'.$langs->trans("AuthenticationMode").':</b> '.$_SESSION["dol_authmode"].(empty($dolibarr_main_demo) ? '' : ' (demo)');
+//    $dropdownBody .= '<br><b>'.$langs->trans("AuthenticationMode").':</b> '.$_SESSION["dol_authmode"].(empty($dolibarr_main_demo) ? '' : ' (demo)');
     $dropdownBody .= '<br><b>'.$langs->trans("ConnectedSince").':</b> '.dol_print_date($user->datelastlogin, "dayhour", 'tzuser');
     $dropdownBody .= '<br><b>'.$langs->trans("PreviousConnexion").':</b> '.dol_print_date($user->datepreviouslogin, "dayhour", 'tzuser');
     $dropdownBody .= '<br><b>'.$langs->trans("CurrentTheme").':</b> '.$conf->theme;
@@ -2228,13 +2228,13 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
 		// Version
 		if (!empty($conf->global->MAIN_SHOW_VERSION))    // Version is already on help picto and on login page.
 		{
-			$doliurl = 'https://www.dolibarr.org';
+			$doliurl = 'https://www.opensilog.com';
 			//local communities
-			if (preg_match('/fr/i', $langs->defaultlang)) $doliurl = 'https://www.dolibarr.fr';
+/*			if (preg_match('/fr/i', $langs->defaultlang)) $doliurl = 'https://www.dolibarr.fr';
 			if (preg_match('/es/i', $langs->defaultlang)) $doliurl = 'https://www.dolibarr.es';
 			if (preg_match('/de/i', $langs->defaultlang)) $doliurl = 'https://www.dolibarr.de';
 			if (preg_match('/it/i', $langs->defaultlang)) $doliurl = 'https://www.dolibarr.it';
-			if (preg_match('/gr/i', $langs->defaultlang)) $doliurl = 'https://www.dolibarr.gr';
+			if (preg_match('/gr/i', $langs->defaultlang)) $doliurl = 'https://www.dolibarr.gr';*/
 
 			$appli = constant('DOL_APPLICATION_TITLE');
 			if (!empty($conf->global->MAIN_APPLICATION_TITLE))
@@ -2260,7 +2260,7 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
 		if (!empty($conf->global->MAIN_BUGTRACK_ENABLELINK))
 		{
 			require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
-
+/*
             $bugbaseurl = 'https://github.com/Dolibarr/dolibarr/issues/new?labels=Bug';
 			$bugbaseurl .= '&title=';
 			$bugbaseurl .= urlencode("Bug: ");
@@ -2293,7 +2293,7 @@ function left_menu($menu_array_before, $helppagename = '', $notused = '', $menu_
             $bugbaseurl .= urlencode("[*Files*]\n");
             $bugbaseurl .= urlencode("\n");
 
-
+*/
 			// Execute hook printBugtrackInfo
 			$parameters = array('bugbaseurl'=>$bugbaseurl);
 			$reshook = $hookmanager->executeHooks('printBugtrackInfo', $parameters); // Note that $action and $object may have been modified by some hooks
@@ -2408,17 +2408,17 @@ function getHelpParamFor($helppagename, $langs)
 		$reg = array();
 		if (preg_match('/^es/i', $langs->defaultlang))
 		{
-			$helpbaseurl = 'http://wiki.dolibarr.org/index.php/%s';
+			$helpbaseurl = 'http://opensilog.com/%s';
 			if (preg_match('/ES:([^|]+)/i', $helppagename, $reg)) $helppage = $reg[1];
 		}
 		if (preg_match('/^fr/i', $langs->defaultlang))
 		{
-			$helpbaseurl = 'http://wiki.dolibarr.org/index.php/%s';
+			$helpbaseurl = 'http://opensilog.com';
 			if (preg_match('/FR:([^|]+)/i', $helppagename, $reg)) $helppage = $reg[1];
 		}
 		if (empty($helppage))	// If help page not already found
 		{
-			$helpbaseurl = 'http://wiki.dolibarr.org/index.php/%s';
+			$helpbaseurl = 'http://opensilog.com';
 			if (preg_match('/EN:([^|]+)/i', $helppagename, $reg)) $helppage = $reg[1];
 		}
 		$mode = 'wiki';

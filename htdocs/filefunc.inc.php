@@ -30,7 +30,7 @@
  *  \brief      File that include conf.php file and commons lib like functions.lib.php
  */
 
-if (!defined('DOL_APPLICATION_TITLE')) define('DOL_APPLICATION_TITLE', 'Dolibarr');
+if (!defined('DOL_APPLICATION_TITLE')) define('DOL_APPLICATION_TITLE', 'Opensilog');
 if (!defined('DOL_VERSION')) define('DOL_VERSION', '12.0.3'); // a.b.c-alpha, a.b.c-beta, a.b.c-rcX or a.b.c
 
 if (!defined('EURO')) define('EURO', chr(128));
@@ -201,14 +201,14 @@ if (!defined('NOCSRFCHECK') && empty($dolibarr_nocsrfcheck))
 }
 if (empty($dolibarr_main_db_host))
 {
-	print '<div class="center">Dolibarr setup is not yet complete.<br><br>'."\n";
-	print '<a href="install/index.php">Click here to finish Dolibarr install process</a> ...</div>'."\n";
+	print '<div class="center">Cgl setup is not yet complete.<br><br>'."\n";
+	print '<a href="install/index.php">Click here to finish Cgl install process</a> ...</div>'."\n";
 	die;
 }
 if (empty($dolibarr_main_url_root))
 {
 	print 'Value for parameter \'dolibarr_main_url_root\' is not defined in your \'htdocs\conf\conf.php\' file.<br>'."\n";
-	print 'You must add this parameter with your full Dolibarr root Url (Example: http://myvirtualdomain/ or http://mydomain/mydolibarrurl/)'."\n";
+	print 'You must add this parameter with your full Cgl root Url (Example: http://myvirtualdomain/ or http://mydomain/mydolibarrurl/)'."\n";
 	die;
 }
 if (empty($dolibarr_main_data_root))
@@ -300,8 +300,8 @@ if (!defined('ADODB_DATE_VERSION')) include_once ADODB_PATH.'adodb-time.inc.php'
 
 if (!file_exists(DOL_DOCUMENT_ROOT."/core/lib/functions.lib.php"))
 {
-	print "Error: Dolibarr config file content seems to be not correctly defined.<br>\n";
-	print "Please run dolibarr setup by calling page <b>/install</b>.<br>\n";
+	print "Error: Cgl config file content seems to be not correctly defined.<br>\n";
+	print "Please run Cgl setup by calling page <b>/install</b>.<br>\n";
 	exit;
 }
 
