@@ -3130,7 +3130,7 @@ if ($action == 'create')
 
 	if ((empty($origin)) || ((($origin == 'propal') || ($origin == 'commande')) && (!empty($originid))))
 	{
-		// Deposit
+/*		// Deposit
 		if (empty($conf->global->INVOICE_DISABLE_DEPOSIT))
    		{
 			print '<div class="tagtr listofinvoicetype"><div class="tagtd listofinvoicetype">';
@@ -3163,7 +3163,7 @@ if ($action == 'create')
 			print '</td></tr></table>';
 
 			print '</div></div>';
-   		}
+   		}*/
 	}
 
 	if ($socid > 0)
@@ -3251,7 +3251,7 @@ if ($action == 'create')
 	}
 	else
 	{
-	    if (!empty($conf->global->INVOICE_USE_SITUATION))
+/*	    if (!empty($conf->global->INVOICE_USE_SITUATION))
 	    {
     	    print '<div class="tagtr listofinvoicetype"><div class="tagtd listofinvoicetype">';
     	    $tmp = '<input type="radio" name="type" id="radio_situation" value="0" disabled> ';
@@ -3276,7 +3276,7 @@ if ($action == 'create')
 		$text .= '<span class="opacitymedium">('.$langs->trans("YouMustCreateInvoiceFromThird").')</span> ';
 		$desc = $form->textwithpicto($text, $langs->transnoentities("InvoiceReplacementDesc"), 1, 'help', '', 0, 3);
 		print $desc;
-		print '</div></div>';
+		print '</div></div>';*/
 	}
 
 
@@ -3358,25 +3358,25 @@ if ($action == 'create')
 		}
 		else
 		{
-			print '<div class="tagtr listofinvoicetype"><div class="tagtd listofinvoicetype">';
+/*			print '<div class="tagtr listofinvoicetype"><div class="tagtd listofinvoicetype">';
 			if (empty($conf->global->INVOICE_CREDIT_NOTE_STANDALONE)) $tmp = '<input type="radio" name="type" id="radio_creditnote" value="0" disabled> ';
 			else $tmp = '<input type="radio" name="type" id="radio_creditnote" value="2" > ';
 			$text = '<label>'.$tmp.$langs->trans("InvoiceAvoir").'</label> ';
 			$text .= '<span class="opacitymedium">('.$langs->trans("YouMustCreateInvoiceFromThird").')</span> ';
 			$desc = $form->textwithpicto($text, $langs->transnoentities("InvoiceAvoirDesc"), 1, 'help', '', 0, 3);
 			print $desc;
-			print '</div></div>'."\n";
+			print '</div></div>'."\n";*/
 		}
 	}
 
-	// Template invoice
+/*	// Template invoice
 	print '<div class="tagtr listofinvoicetype"><div class="tagtd listofinvoicetype">';
 	$tmp = '<input type="radio" name="type" id="radio_template" value="0" disabled> ';
 	$text = '<label>'.$tmp.$langs->trans("RepeatableInvoice").'</label> ';
 	//$text.= '('.$langs->trans("YouMustCreateStandardInvoiceFirst").') ';
 	$desc = $form->textwithpicto($text, $langs->transnoentities("YouMustCreateStandardInvoiceFirstDesc"), 1, 'help', '', 0, 3);
 	print $desc;
-	print '</div></div>';
+	print '</div></div>';*/
 
 	print '</div>';
 
@@ -5332,7 +5332,7 @@ elseif ($id > 0 || !empty($ref))
 			}
 
 			// Create a credit note
-			if (($object->type == Facture::TYPE_STANDARD || $object->type == Facture::TYPE_DEPOSIT || $object->type == Facture::TYPE_PROFORMA) && $object->statut > 0 && $usercancreate)
+			if (($object->type == Facture::TYPE_STANDARD || $object->type == Facture::TYPE_DEPOSIT || $object->type == Facture::TYPE_PROFORMA) && $object->statut > 0 && $usercancreate && empty($conf->global->INVOICE_DISABLE_CREDIT_NOTE	))
 			{
 				if (!$objectidnext)
 				{
