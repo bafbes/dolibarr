@@ -1558,6 +1558,10 @@ else
 
 		// Other attributes
 		$parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
+		if(!$user->admin) {
+            global $user;
+            $object->array_options['options_affiliation']=$user->socid;
+        }
 		include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_add.tpl.php';
 /*
 		// Assign a sale representative
