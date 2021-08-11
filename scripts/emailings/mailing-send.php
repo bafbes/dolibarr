@@ -79,20 +79,46 @@ if (!empty($conf->global->MAILING_DELAY)) {
 	print 'A delay of '.((float) $conf->global->MAILING_DELAY * 1000000).' millisecond has been set between each email'."\n";
 }
 
-if ($conf->global->MAILING_LIMIT_SENDBYCLI == '-1') {}
+if ($conf->global->MAILING_LIMIT_SENDBYCLI == '-1') {
+}
 
 $user = new User($db);
 // for signature, we use user send as parameter
 if (!empty($login))
-	$user->fetch('', $login);
+    $user->fetch('', $login);
+
+$sql = "SELECT default_lang lang";
+$sql .= " FROM " . MAIN_DB_PREFIX . "societe";
+$sql .= " WHERE email='$obj->email'";
+$sql .= " UNION";
+$sql .= " SELECT default_lang lang";
+$sql .= " FROM " . MAIN_DB_PREFIX . "socpeople";
+$sql .= " WHERE email='$obj->email'";
+$sql .= " UNION";
+$sql .= " SELECT lang";
+$sql .= " FROM " . MAIN_DB_PREFIX . "user";
+$sql .= " WHERE email='$obj->email'";
+$result = $db->query($sql);
+if ($result) {
+    if ($db->num_rows($result)) {
+        $obj = $db->fetch_object($result);
+        $lang = $obj->lang;
+        if (!in_array(substr($obj->lang, 0, 2), ['en', 'fr', 'es'])) $lang = 'en_US';
+    }
+    else $lang = 'en_US';
+}
+$soclang = new Translate('', $conf);
+$soclang->setDefaultLang($lang);
+$soclang->load('commercial');
+
 
 // We get list of emailing id to process
 $sql = "SELECT m.rowid";
-$sql .= " FROM ".MAIN_DB_PREFIX."mailing as m";
+$sql .= " FROM " . MAIN_DB_PREFIX . "mailing as m";
 $sql .= " WHERE m.statut IN (1,2)";
 if ($id != 'all') {
-	$sql .= " AND m.rowid= ".$id;
-	$sql .= " LIMIT 1";
+    $sql .= " AND m.rowid= " . $id;
+    $sql .= " LIMIT 1";
 }
 
 $resql = $db->query($sql);
@@ -189,7 +215,7 @@ if ($resql) {
 						// Array of possible substitutions (See also file mailing-send.php that should manage same substitutions)
 						$substitutionarray['__ID__'] = $obj->source_id;
 						$substitutionarray['__EMAIL__'] = $obj->email;
-						$substitutionarray['__LASTNAME__'] = $obj->lastname;
+                        $substitutionarray['__LASTNAME__'] = !empty($obj->lastname)?$obj->lastname:$soclang->trans('Customer');
 						$substitutionarray['__FIRSTNAME__'] = $obj->firstname;
 						$substitutionarray['__MAILTOEMAIL__'] = '<a href="mailto:'.$obj->email.'">'.$obj->email.'</a>';
 						$substitutionarray['__OTHER1__'] = $other1;

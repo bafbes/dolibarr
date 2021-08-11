@@ -200,10 +200,33 @@ if (empty($reshook))
 						$parameters = array('mode'=>'emailing');
 						$substitutionarray = getCommonSubstitutionArray($langs, 0, array('object', 'objectamount'), $targetobject); // Note: On mass emailing, this is null because be don't know object
 
+                        $sql = "SELECT default_lang lang";
+                        $sql .= " FROM " . MAIN_DB_PREFIX . "societe";
+                        $sql .= " WHERE email='$obj->email'";
+                        $sql .= " UNION";
+                        $sql .= " SELECT default_lang lang";
+                        $sql .= " FROM " . MAIN_DB_PREFIX . "socpeople";
+                        $sql .= " WHERE email='$obj->email'";
+                        $sql .= " UNION";
+                        $sql .= " SELECT lang";
+                        $sql .= " FROM " . MAIN_DB_PREFIX . "user";
+                        $sql .= " WHERE email='$obj->email'";
+                        $result = $db->query($sql);
+                        if ($result) {
+                            if ($db->num_rows($result)) {
+                                $obj = $db->fetch_object($result);
+                                $lang=$obj->lang;
+                                if(!in_array(substr($obj->lang,0,2),['en','fr','es']))$lang='en_US';
+                            }
+                            else $lang='en_US';
+                        }
+                        $soclang=new Translate('',$conf);
+                        $soclang->setDefaultLang($lang);
+                        $soclang->load('commercial');
 						// Array of possible substitutions (See also file mailing-send.php that should manage same substitutions)
 						$substitutionarray['__ID__'] = $obj->source_id;
 						$substitutionarray['__EMAIL__'] = $obj->email;
-						$substitutionarray['__LASTNAME__'] = $obj->lastname;
+						$substitutionarray['__LASTNAME__'] = !empty($obj->lastname)?$obj->lastname:$soclang->trans('Customer');
 						$substitutionarray['__FIRSTNAME__'] = $obj->firstname;
 						$substitutionarray['__MAILTOEMAIL__'] = '<a href="mailto:'.$obj->email.'">'.$obj->email.'</a>';
 						$substitutionarray['__OTHER1__'] = $other1;
