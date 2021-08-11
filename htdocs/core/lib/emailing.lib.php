@@ -67,3 +67,79 @@ function emailing_prepare_head(Mailing $object)
 
 	return $head;
 }
+
+
+function mail2lang($subject, $message, $sendto)
+{
+    global $db;
+    $origsubject=$subject;
+    $origmessage=$message;
+    if(strstr($sendto,'<')) $sendto=preg_replace('/.*<(.+)>.*/i','$1',$sendto);
+    if (empty(strstr($subject, 'LANG_'))) return [$subject, $message];//Retour si symbole inexistant dans sujet du mail
+    $sql = "SELECT default_lang lang";
+    $sql .= " FROM " . MAIN_DB_PREFIX . "societe";
+    $sql .= " WHERE email='$sendto'";
+    $sql .= " UNION";
+    $sql .= " SELECT default_lang lang";
+    $sql .= " FROM " . MAIN_DB_PREFIX . "socpeople";
+    $sql .= " WHERE email='$sendto'";
+    $sql .= " UNION";
+    $sql .= " SELECT lang";
+    $sql .= " FROM " . MAIN_DB_PREFIX . "user";
+    $sql .= " WHERE email='$sendto'";
+    $result = $db->query($sql);
+    if ($result) {
+        if ($db->num_rows($result)) {
+            $obj = $db->fetch_object($result);
+            $lang=substr($obj->lang,0,2);
+            if(!in_array($lang,['en','fr','es']))$lang='en';
+        }
+        else $lang='en';
+    }
+    else $lang='en';
+    if($lang=='fr'){
+        $subject=strstr($subject, 'LANG_FR');//Chaine depuis position LANG_FR
+        if(!empty($subject)) {
+            $subject = substr($subject, 7, 500000);//Chaine sans ...LANG_FR
+            $pos = strpos($subject, 'LANG_');//deuxième occurence de LANG_XX
+            if (is_numeric($pos)) $subject=substr($subject,0,$pos);
+
+            $message=strstr($message, 'LANG_FR');//Chaine depuis position LANG_FR
+            $message = substr($message, 7, 500000);//Chaine sans LANG_FR
+            $pos = strpos($message, 'LANG_');
+            if (is_numeric($pos)) $message=substr($message,0,$pos);
+            return [$subject,$message];
+        }
+        else $lang='en';
+    }
+    elseif($lang=='es'){
+        $subject=strstr($subject, 'LANG_ES');//Chaine depuis position LANG_XX
+        if(!empty($subject)) {
+            $subject = substr($subject, 7, 500000);//Chaine sans LANG_XX
+            $pos = strpos($subject, 'LANG_');//deuxième occurence de LANG_XX
+            if (is_numeric($pos)) $subject=substr($subject,0,$pos);
+
+            $message=strstr($message, 'LANG_ES');//Chaine depuis position LANG_XX
+            $message = substr($message, 7, 500000);//Chaine sans LANG_XX
+            $pos = strpos($message, 'LANG_');//deuxième occurence de LANG_XX
+            if (is_numeric($pos)) $message=substr($message,0,$pos);
+            return [$subject,$message];
+        }
+        else $lang='en';
+    }
+    if($lang=='en'){
+        $subject=strstr($origsubject, 'LANG_EN');//Chaine depuis position LANG_XX
+        if(!empty($subject)) {
+            $subject = substr($subject, 7, 500000);//Chaine sans LANG_XX
+            $pos = strpos($subject, 'LANG_');
+            if (is_numeric($pos)) $subject=substr($subject,0,$pos);
+
+            $message=strstr($origmessage, 'LANG_EN');//Chaine depuis position LANG_XX
+            $message = substr($message, 7, 500000);//Chaine sans LANG_XX
+            $pos = strpos($message, 'LANG_');
+            if (is_numeric($pos)) $message=substr($message,0,$pos);
+            return [$subject,$message];
+        }
+    }
+    return [$origsubject,$origmessage];
+}

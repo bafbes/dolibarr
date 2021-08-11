@@ -120,7 +120,8 @@ if (empty($reshook))
 		{
 			setEventMessages($langs->trans("NotEnoughPermissions"), null, 'warnings');
 			$action = '';
-		} else {
+		}
+		else {
 			$upload_dir = $conf->mailing->dir_output."/".get_exdir($object->id, 2, 0, 1, $object, 'mailing');
 
 			if ($object->statut == 0)
@@ -275,6 +276,9 @@ if (empty($reshook))
 
 						// Mail making
 						$trackid = 'emailing-'.$obj->fk_mailing.'-'.$obj->rowid;
+
+						list($newsubject,$newmessage)=mail2lang($newsubject,$newmessage,$sendto);
+
 						$mail = new CMailFile($newsubject, $sendto, $from, $newmessage, $arr_file, $arr_mime, $arr_name, '', '', 0, $msgishtml, $errorsto, $arr_css, $trackid, '', 'emailing');
 
 						if ($mail->error)
@@ -442,6 +446,7 @@ if (empty($reshook))
 			}
 
 			$trackid = 'emailingtest';
+            list($tmpsujet,$tmpbody)=mail2lang($tmpsujet,$tmpbody,$object->sendto);
 			$mailfile = new CMailFile($tmpsujet, $object->sendto, $object->email_from, $tmpbody, $arr_file, $arr_mime, $arr_name, '', '', 0, $msgishtml, $object->email_errorsto, $arr_css, $trackid, '', 'emailing');
 
 			$result = $mailfile->sendfile();

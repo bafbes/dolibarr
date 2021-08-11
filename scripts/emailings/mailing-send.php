@@ -56,6 +56,7 @@ if (isset($argv[3]) || !empty($argv[3])) $max = $argv[3];
 require_once $path."../../htdocs/master.inc.php";
 require_once DOL_DOCUMENT_ROOT."/core/class/CMailFile.class.php";
 require_once DOL_DOCUMENT_ROOT."/comm/mailing/class/mailing.class.php";
+require_once DOL_DOCUMENT_ROOT.'/core/lib/emailing.lib.php';
 
 // Global variables
 $version = DOL_VERSION;
@@ -267,6 +268,7 @@ if ($resql) {
 						}
 						// Fabrication du mail
 						$trackid = 'emailing-'.$obj->fk_mailing.'-'.$obj->rowid;
+                        list($newsubject,$newmessage)=mail2lang($newsubject,$newmessage,$sendto);
 						$mail = new CMailFile($newsubject, $sendto, $from, $newmessage, $arr_file, $arr_mime, $arr_name, '', '', 0, $msgishtml, $errorsto, $arr_css, $trackid, '', 'emailing');
 
 						if ($mail->error) {
