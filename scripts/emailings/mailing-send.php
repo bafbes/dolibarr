@@ -87,30 +87,6 @@ $user = new User($db);
 if (!empty($login))
     $user->fetch('', $login);
 
-$sql = "SELECT default_lang lang";
-$sql .= " FROM " . MAIN_DB_PREFIX . "societe";
-$sql .= " WHERE email='$obj->email'";
-$sql .= " UNION";
-$sql .= " SELECT default_lang lang";
-$sql .= " FROM " . MAIN_DB_PREFIX . "socpeople";
-$sql .= " WHERE email='$obj->email'";
-$sql .= " UNION";
-$sql .= " SELECT lang";
-$sql .= " FROM " . MAIN_DB_PREFIX . "user";
-$sql .= " WHERE email='$obj->email'";
-$result = $db->query($sql);
-if ($result) {
-    if ($db->num_rows($result)) {
-        $obj = $db->fetch_object($result);
-        $lang = $obj->lang;
-        if (!in_array(substr($obj->lang, 0, 2), ['en', 'fr', 'es'])) $lang = 'en_US';
-    }
-    else $lang = 'en_US';
-}
-$soclang = new Translate('', $conf);
-$soclang->setDefaultLang($lang);
-$soclang->load('commercial');
-
 
 // We get list of emailing id to process
 $sql = "SELECT m.rowid";
@@ -191,7 +167,32 @@ if ($resql) {
 
 						$obj = $db->fetch_object($resql2);
 
-						// sendto en RFC2822
+                        //Find mail owner language if exists
+                        $sqlx = "SELECT default_lang lang";
+                        $sqlx .= " FROM " . MAIN_DB_PREFIX . "societe";
+                        $sqlx .= " WHERE email='$obj->email'";
+                        $sqlx .= " UNION";
+                        $sqlx .= " SELECT default_lang lang";
+                        $sqlx .= " FROM " . MAIN_DB_PREFIX . "socpeople";
+                        $sqlx .= " WHERE email='$obj->email'";
+                        $sqlx .= " UNION";
+                        $sqlx .= " SELECT lang";
+                        $sqlx .= " FROM " . MAIN_DB_PREFIX . "user";
+                        $sqlx .= " WHERE email='$obj->email'";
+                        $resultx = $db->query($sqlx);
+                        if ($resultx) {
+                            if ($db->num_rows($resultx)) {
+                                $objx = $db->fetch_object($resultx);
+                                $lang = $objx->lang;
+                                if (!in_array(substr($objx->lang, 0, 2), ['en', 'fr', 'es'])) $lang = 'en_US';
+                            }
+                            else $lang = 'en_US';
+                        }
+                        $soclang = new Translate('', $conf);
+                        $soclang->setDefaultLang($lang);
+                        $soclang->load('commercial');
+
+                        // sendto en RFC2822
 						$sendto = str_replace(',', ' ', dolGetFirstLastname($obj->firstname, $obj->lastname)." <".$obj->email.">");
 
 						// Make subtsitutions on topic and body
@@ -308,6 +309,7 @@ if ($resql) {
 						// Send Email
 						if ($res) {
 							$res = $mail->sendfile();
+							if($res) echo "$i/$num2 :Mail to $sendto sent.\n";
 						}
 
 						if ($res) {
