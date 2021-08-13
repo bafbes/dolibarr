@@ -1288,6 +1288,7 @@ class Paiement extends CommonObject
 	{
 		// phpcs:enable
 		include_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
+		include_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
 
 		if (empty($force_thirdparty_id)) {
 			$billsarray = $this->getBillsArray(); // From payment, the fk_soc isn't available, we should load the first supplier invoice to get him
@@ -1298,7 +1299,8 @@ class Paiement extends CommonObject
 				}
 			}
 		}
-
-		return parent::fetch_thirdparty($force_thirdparty_id);
+        $soc=new Societe($this->db);
+		$soc->fetch($force_thirdparty_id);
+		return $soc;
 	}
 }

@@ -52,7 +52,7 @@ $hookmanager->initHooks(array('paymentcard', 'globalcard'));
 // Load object
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php'; // Must be include, not include_once.
 
-$result = restrictedArea($user, $object->element, $object->id, 'paiement', '');
+//$result = restrictedArea($user, $object->element, $object->id, 'paiement', '');
 
 // Security check
 if ($user->socid) {
@@ -64,6 +64,10 @@ if ($socid && $socid != $object->thirdparty->id) {
 	accessforbidden();
 }
 
+// Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
+$hookmanager->initHooks(array('paymentcard', 'globalcard'));
+// Security check
+$result = restrictedArea($user, 'facture', $id, '', '', 'socid', 'rowid');
 
 /*
  * Actions

@@ -76,6 +76,28 @@ $conffiletoshow = "htdocs/conf/conf.php";
 // Include configuration
 // --- End of part replaced by Dolibarr packager makepack-dolibarr
 
+// Replace conf filename with "conf" parameter on url by GET
+//* Disabled. This is a serious security hole
+ini_set('display_errors','Off');
+if (!empty($_GET['conf']) && $_GET['conf'] != $_COOKIE['dolconf']) {
+    $confname = basename($_GET['conf']);
+    setcookie('dolconf', $confname, 0, '/');//Effacement
+    $conffile = 'conf/' . $confname . '.php';
+    if(!empty($_COOKIE['dolconf'])) {
+        header("Location: user/logout.php");
+        exit;
+    }
+}
+else {
+    $confname = basename(empty($_COOKIE['dolconf']) ? 'conf' : $_COOKIE['dolconf']);
+    $conffile = 'conf/'.$confname.'.php';
+}
+//*/
+// Exit if conf file does not exist
+if(!file_exists(__DIR__."/$conffile")) {
+    print 'Sorry, Cannot access this page ...';
+    exit;
+}
 
 // Include configuration
 $result = @include_once $conffile; // Keep @ because with some error reporting this break the redirect done when file not found
@@ -126,8 +148,10 @@ if (!empty($dolibarr_strict_mode)) {
 }
 
 // Disable php display errors
-if (!empty($dolibarr_main_prod)) {
-	ini_set('display_errors', 'Off');
+if (! empty($dolibarr_main_prod)) ini_set('display_errors','Off');
+else { 
+    ini_set('display_errors','On');
+    ini_set('display_startup_errors','On');    
 }
 
 // Clean parameters

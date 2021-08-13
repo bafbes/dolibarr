@@ -355,6 +355,9 @@ class pdf_azur extends ModelePDFPropales
 				}
 
 				$pdf->SetMargins($this->marge_gauche, $this->marge_haute, $this->marge_droite); // Left, Top, Right
+//                $fontname = $pdf->addTTFfont(DOL_DOCUMENT_ROOT.'/includes/tecnickcom/tcpdf/fonts/angsana_new/angsa.ttf', 'TrueTypeUnicode', '', 96);
+//                $pdf->SetFont($fontname, '', 14, '', false);
+                $pdf->SetFont('freeserif', '', 24);
 
 				// Positionne $this->atleastonediscount si on a au moins une remise
 				for ($i = 0; $i < $nblines; $i++) {

@@ -789,6 +789,12 @@ class Notify
 						$object_type = 'action';
 						$mesg = $langs->transnoentitiesnoconv("EMailTextActionAdded", $link);
 						break;
+                    case 'ACTION_CREATE':
+                        $link = '<a href="'.$urlwithroot.'/comm/action/card.php?id='.$object->id.'">'.$newref.'</a>';
+                        $dir_output = $conf->agenda->dir_output;
+                        $object_type = 'action';
+                        $mesg = $langs->transnoentitiesnoconv("EMailTextActionAdded", $link);
+                        break;
 				}
 				$ref = dol_sanitizeFileName($newref);
 				$pdf_path = $dir_output."/".$ref."/".$ref.".pdf";

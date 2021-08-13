@@ -2188,6 +2188,7 @@ class AccountLine extends CommonObject
 			$sql .= " WHERE rowid = ".((int) $rowid);
 
 			$result = $this->db->query($sql);
+
 			if ($result) {
 				if ($this->db->affected_rows($result)) {
 					return 1;

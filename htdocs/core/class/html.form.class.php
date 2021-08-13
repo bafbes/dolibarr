@@ -6668,7 +6668,7 @@ class Form
 			$out .= '<input type="text" class="'.$morecss.'"'.($disabled ? ' disabled="disabled"' : '').' name="search_'.$htmlname.'" id="search_'.$htmlname.'" value="'.$selected_input_value.'"'.$placeholder.' />';
 		} else {
 			// Immediate load of table record. Note: filter is inside $objecttmp->filter
-			$out .= $this->selectForFormsList($objecttmp, $htmlname, $preselectedvalue, $showempty, $searchkey, $placeholder, $morecss, $moreparams, $forcecombo, 0, $disabled);
+ 			$out .= $this->selectForFormsList($objecttmp, $htmlname, $preselectedvalue, $showempty, $searchkey, $placeholder, $morecss, $moreparams, $forcecombo, 0, $disabled);
 		}
 
 		return $out;
@@ -7642,9 +7642,16 @@ class Form
 					$tplpath = 'expensereport';
 				} elseif ($objecttype == 'subscription') {
 					$tplpath = 'adherents';
-				}
+				}else{
+                    list($module,$element)=explode(':',$objecttype);
+                    if(!empty($element)){
+                        $tplname="linked{$element}block";
+                        $tplpath=$module;
+                    }
+                }
 
-				global $linkedObjectBlock;
+
+                global $linkedObjectBlock;
 				$linkedObjectBlock = $objects;
 
 

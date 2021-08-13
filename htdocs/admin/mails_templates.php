@@ -1152,7 +1152,7 @@ if ($resql) {
 
 print '</table>';
 print '</div>';
-
+print "Nb models = $num";
 print '</form>';
 
 

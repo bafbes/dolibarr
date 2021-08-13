@@ -122,7 +122,8 @@ if (empty($reshook)) {
 		} elseif ($conf->global->MAILING_LIMIT_SENDBYWEB < 0) {
 			setEventMessages($langs->trans("NotEnoughPermissions"), null, 'warnings');
 			$action = '';
-		} else {
+		}
+		else {
 			$upload_dir = $conf->mailing->dir_output."/".get_exdir($object->id, 2, 0, 1, $object, 'mailing');
 
 			if ($object->statut == 0) {
@@ -181,7 +182,32 @@ if (empty($reshook)) {
 
 						$obj = $db->fetch_object($resql);
 
+                        //Find mail owner language if exists
+                        $sqlx = "SELECT default_lang lang";
+                        $sqlx .= " FROM " . MAIN_DB_PREFIX . "societe";
+                        $sqlx .= " WHERE email='$obj->email'";
+                        $sqlx .= " UNION";
+                        $sqlx .= " SELECT default_lang lang";
+                        $sqlx .= " FROM " . MAIN_DB_PREFIX . "socpeople";
+                        $sqlx .= " WHERE email='$obj->email'";
+                        $sqlx .= " UNION";
+                        $sqlx .= " SELECT lang";
+                        $sqlx .= " FROM " . MAIN_DB_PREFIX . "user";
+                        $sqlx .= " WHERE email='$obj->email'";
+                        $resultx = $db->query($sqlx);
+                        if ($resultx) {
+                            if ($db->num_rows($resultx)) {
+                                $objx = $db->fetch_object($resultx);
+                                $lang = $objx->lang;
+                                if (!in_array(substr($objx->lang, 0, 2), ['en', 'fr', 'es'])) $lang = 'en_US';
+                            }
+                            else $lang = 'en_US';
+                        }
+                        $soclang = new Translate('', $conf);
+                        $soclang->setDefaultLang($lang);
+                        $soclang->load('commercial');
 						// sendto en RFC2822
+
 						$sendto = str_replace(',', ' ', dolGetFirstLastname($obj->firstname, $obj->lastname))." <".$obj->email.">";
 
 						// Make substitutions on topic and body. From (AA=YY;BB=CC;...) we keep YY, CC, ...
@@ -201,7 +227,7 @@ if (empty($reshook)) {
 						// Array of possible substitutions (See also file mailing-send.php that should manage same substitutions)
 						$substitutionarray['__ID__'] = $obj->source_id;
 						$substitutionarray['__EMAIL__'] = $obj->email;
-						$substitutionarray['__LASTNAME__'] = $obj->lastname;
+						$substitutionarray['__LASTNAME__'] = !empty($obj->lastname)?$obj->lastname:$soclang->trans('Customer');
 						$substitutionarray['__FIRSTNAME__'] = $obj->firstname;
 						$substitutionarray['__MAILTOEMAIL__'] = '<a href="mailto:'.$obj->email.'">'.$obj->email.'</a>';
 						$substitutionarray['__OTHER1__'] = $other1;
@@ -306,7 +332,10 @@ if (empty($reshook)) {
 
 						// Mail making
 						$trackid = 'emailing-'.$obj->fk_mailing.'-'.$obj->rowid;
-						$mail = new CMailFile($newsubject, $sendto, $from, $newmessage, $arr_file, $arr_mime, $arr_name, '', '', 0, $msgishtml, $errorsto, $arr_css, $trackid, $moreinheader, 'emailing');
+
+						list($newsubject,$newmessage)=mail2lang($newsubject,$newmessage,$lang);
+
+						$mail = new CMailFile($newsubject, $sendto, $from, $newmessage, $arr_file, $arr_mime, $arr_name, '', '', 0, $msgishtml, $errorsto, $arr_css, $trackid, '', 'emailing');
 
 						if ($mail->error) {
 							$res = 0;
@@ -466,6 +495,7 @@ if (empty($reshook)) {
 			}
 
 			$trackid = 'emailingtest';
+            list($tmpsujet,$tmpbody)=mail2lang($tmpsujet,$tmpbody,$object->sendto);
 			$mailfile = new CMailFile($tmpsujet, $object->sendto, $object->email_from, $tmpbody, $arr_file, $arr_mime, $arr_name, '', '', 0, $msgishtml, $object->email_errorsto, $arr_css, $trackid, '', 'emailing');
 
 			$result = $mailfile->sendfile();

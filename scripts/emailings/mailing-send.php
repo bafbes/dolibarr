@@ -62,6 +62,7 @@ if (isset($argv[3]) || !empty($argv[3])) {
 require_once $path."../../htdocs/master.inc.php";
 require_once DOL_DOCUMENT_ROOT."/core/class/CMailFile.class.php";
 require_once DOL_DOCUMENT_ROOT."/comm/mailing/class/mailing.class.php";
+require_once DOL_DOCUMENT_ROOT.'/core/lib/emailing.lib.php';
 
 // Global variables
 $version = DOL_VERSION;
@@ -94,7 +95,7 @@ if (!empty($login)) {
 
 // We get list of emailing id to process
 $sql = "SELECT m.rowid";
-$sql .= " FROM ".MAIN_DB_PREFIX."mailing as m";
+$sql .= " FROM " . MAIN_DB_PREFIX . "mailing as m";
 $sql .= " WHERE m.statut IN (1,2)";
 if ($id != 'all') {
 	$sql .= " AND m.rowid= ".((int) $id);
@@ -172,7 +173,32 @@ if ($resql) {
 
 						$obj = $db->fetch_object($resql2);
 
-						// sendto en RFC2822
+                        //Find mail owner language if exists
+                        $sqlx = "SELECT default_lang lang";
+                        $sqlx .= " FROM " . MAIN_DB_PREFIX . "societe";
+                        $sqlx .= " WHERE email='$obj->email'";
+                        $sqlx .= " UNION";
+                        $sqlx .= " SELECT default_lang lang";
+                        $sqlx .= " FROM " . MAIN_DB_PREFIX . "socpeople";
+                        $sqlx .= " WHERE email='$obj->email'";
+                        $sqlx .= " UNION";
+                        $sqlx .= " SELECT lang";
+                        $sqlx .= " FROM " . MAIN_DB_PREFIX . "user";
+                        $sqlx .= " WHERE email='$obj->email'";
+                        $resultx = $db->query($sqlx);
+                        if ($resultx) {
+                            if ($db->num_rows($resultx)) {
+                                $objx = $db->fetch_object($resultx);
+                                $lang = $objx->lang;
+                                if (!in_array(substr($objx->lang, 0, 2), ['en', 'fr', 'es'])) $lang = 'en_US';
+                            }
+                            else $lang = 'en_US';
+                        }
+                        $soclang = new Translate('', $conf);
+                        $soclang->setDefaultLang($lang);
+                        $soclang->load('commercial');
+
+                        // sendto en RFC2822
 						$sendto = str_replace(',', ' ', dolGetFirstLastname($obj->firstname, $obj->lastname)." <".$obj->email.">");
 
 						// Make subtsitutions on topic and body
@@ -196,7 +222,7 @@ if ($resql) {
 						// Array of possible substitutions (See also file mailing-send.php that should manage same substitutions)
 						$substitutionarray['__ID__'] = $obj->source_id;
 						$substitutionarray['__EMAIL__'] = $obj->email;
-						$substitutionarray['__LASTNAME__'] = $obj->lastname;
+                        $substitutionarray['__LASTNAME__'] = !empty($obj->lastname)?$obj->lastname:$soclang->trans('Customer');
 						$substitutionarray['__FIRSTNAME__'] = $obj->firstname;
 						$substitutionarray['__MAILTOEMAIL__'] = '<a href="mailto:'.$obj->email.'">'.$obj->email.'</a>';
 						$substitutionarray['__OTHER1__'] = $other1;
@@ -291,7 +317,8 @@ if ($resql) {
 						}
 						// Fabrication du mail
 						$trackid = 'emailing-'.$obj->fk_mailing.'-'.$obj->rowid;
-						$mail = new CMailFile($newsubject, $sendto, $from, $newmessage, $arr_file, $arr_mime, $arr_name, '', '', 0, $msgishtml, $errorsto, $arr_css, $trackid, $moreinheader, 'emailing');
+            list($newsubject,$newmessage)=mail2lang($newsubject,$newmessage,$sendto);
+						$mail = new CMailFile($newsubject, $sendto, $from, $newmessage, $arr_file, $arr_mime, $arr_name, '', '', 0, $msgishtml, $errorsto, $arr_css, $trackid, '', 'emailing');
 
 						if ($mail->error) {
 							$res = 0;
@@ -304,6 +331,7 @@ if ($resql) {
 						// Send Email
 						if ($res) {
 							$res = $mail->sendfile();
+							if($res) echo "$i/$num2 :Mail to $sendto sent.\n";
 						}
 
 						if ($res) {

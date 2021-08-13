@@ -67,3 +67,64 @@ function emailing_prepare_head(Mailing $object)
 
 	return $head;
 }
+
+/**
+ * @param $subject Mail subject
+ * @param $message Mail message
+ * @param $lang Mail language
+ * @return array [$subject,$message] parsed with $lang
+ */
+function mail2lang($subject, $message, $lang)
+{
+    global $db;
+    $origsubject=$subject;
+    $origmessage=$message;
+    if (empty(strstr($subject, 'LANG_'))) return [$subject, $message];//Retour si symbole inexistant dans sujet du mail
+    $lang=substr($lang,0,2);
+    if($lang=='fr'){
+        $subject=strstr($subject, 'LANG_FR');//Chaine depuis position LANG_FR
+        if(!empty($subject)) {
+            $subject = substr($subject, 7, 500000);//Chaine sans ...LANG_FR
+            $pos = strpos($subject, 'LANG_');//deuxième occurence de LANG_XX
+            if (is_numeric($pos)) $subject=substr($subject,0,$pos);
+
+            $message=strstr($message, 'LANG_FR');//Chaine depuis position LANG_FR
+            $message = substr($message, 7, 500000);//Chaine sans LANG_FR
+            $pos = strpos($message, 'LANG_');
+            if (is_numeric($pos)) $message=substr($message,0,$pos);
+            return [$subject,$message];
+        }
+        else $lang='en';
+    }
+    elseif($lang=='es'){
+        $subject=strstr($subject, 'LANG_ES');//Chaine depuis position LANG_XX
+        if(!empty($subject)) {
+            $subject = substr($subject, 7, 500000);//Chaine sans LANG_XX
+            $pos = strpos($subject, 'LANG_');//deuxième occurence de LANG_XX
+            if (is_numeric($pos)) $subject=substr($subject,0,$pos);
+
+            $message=strstr($message, 'LANG_ES');//Chaine depuis position LANG_XX
+            $message = substr($message, 7, 500000);//Chaine sans LANG_XX
+            $pos = strpos($message, 'LANG_');//deuxième occurence de LANG_XX
+            if (is_numeric($pos)) $message=substr($message,0,$pos);
+            return [$subject,$message];
+        }
+        else $lang='en';
+    }
+    else $lang='en';
+    if($lang=='en'){
+        $subject=strstr($origsubject, 'LANG_EN');//Chaine depuis position LANG_XX
+        if(!empty($subject)) {
+            $subject = substr($subject, 7, 500000);//Chaine sans LANG_XX
+            $pos = strpos($subject, 'LANG_');
+            if (is_numeric($pos)) $subject=substr($subject,0,$pos);
+
+            $message=strstr($origmessage, 'LANG_EN');//Chaine depuis position LANG_XX
+            $message = substr($message, 7, 500000);//Chaine sans LANG_XX
+            $pos = strpos($message, 'LANG_');
+            if (is_numeric($pos)) $message=substr($message,0,$pos);
+            return [$subject,$message];
+        }
+    }
+    return [$origsubject,$origmessage];
+}
