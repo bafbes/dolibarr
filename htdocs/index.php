@@ -76,6 +76,61 @@ if (!empty($conf->global->MAIN_APPLICATION_TITLE)) $title = $langs->trans("HomeA
 
 llxHeader('', $title);
 
+?>
+
+    <a href="<?= $dolibarr_main_url_root?>/societe/list.php?type=c&amp;mainmenu=companies" class="boxstatsindicator thumbstat nobold nounderline">
+        <div class="boxstats">
+            <span class="boxstatstext" title="Partenaires">Structures</span><br>
+            <span class="boxstatsindicator">
+                <span class="fas fa-building inline-block" style=" color: #37a;"></span> Structures
+            </span>
+        </div>
+    </a>
+
+    <a href="<?= $dolibarr_main_url_root?>/contact/list.php?mainmenu=companies" class="boxstatsindicator thumbstat nobold nounderline">
+        <div class="boxstats">
+            <span class="boxstatstext" title="Contacts">Contacts</span><br>
+            <span class="boxstatsindicator">
+                <span class="fas fa-address-book inline-block" style=" color: #37a;"></span> Contacts
+            </span>
+        </div>
+    </a>
+
+    <a href="<?= $dolibarr_main_url_root?>/adherents/list.php?statut=1&amp;mainmenu=members" class="boxstatsindicator thumbstat nobold nounderline">
+        <div class="boxstats">
+            <span class="boxstatstext" title="Adhérents">Adhérents</span><br>
+            <span class="boxstatsindicator">
+                <span class="fas fa-users infobox-adherent inline-block" style=""></span> Adhérents
+            </span>
+        </div>
+    </a>
+
+    <a href="<?= $dolibarr_main_url_root?>/compta/facture/list.php?mainmenu=billing&amp;leftmenu=customers_bills" class="boxstatsindicator thumbstat nobold nounderline">
+        <div class="boxstats">
+            <span class="boxstatstext" title="Reversements ">Reversements</span><br>
+            <span class="boxstatsindicator">
+                <span class="fas fa-file-invoice-dollar infobox-commande inline-block" style=""></span> partenaires
+            </span>
+        </div>
+    </a>
+
+    <a href="<?= $dolibarr_main_url_root?>/user/list.php" class="boxstatsindicator thumbstat nobold nounderline">
+        <div class="boxstats">
+            <span class="boxstatstext" title="Utilisateurs">Utilisateurs</span><br>
+            <span class="boxstatsindicator">
+                <span class="fas fa-user infobox-adherent inline-block" style=""></span>
+                Utilisateurs
+            </span>
+        </div>
+    </a>
+
+    <div id="dropdown-bookmarks-list">
+        <a  class="button" id="bookmark-item-1" data-id="1" target="_blank" href="<?= $dolibarr_main_url_root?>/custom/cgl/tabs/hierarchie.php?id=157">Hiérarchie des structures</a>
+    </div>
+
+
+<?php
+
 
 if(empty($conf->global->MAIN_HIDEBOXES)) $resultboxes = FormOther::getBoxesArea($user, "0"); // Load $resultboxes (selectboxlist + boxactivated + boxlista + boxlistb)
 
