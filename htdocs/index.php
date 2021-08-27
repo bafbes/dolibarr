@@ -92,7 +92,10 @@ if ($resql) {
             $("#UR").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=$obj->fk_object&type=UR",2)?>", success: function(result){
-                        $("#div1").html(result);
+                        pos=result.indexOf(' ');
+                        n=result.substring(0,pos);
+                        result=result.substring(pos+1,50000);
+                        $("#div1").html("<h1>"+n+"</h1>"+result);
                     }});
             });
         });
@@ -100,7 +103,10 @@ if ($resql) {
             $("#UD").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=$obj->fk_object&type=UD",2)?>", success: function(result){
-                        $("#div2").html(result);
+                        pos=result.indexOf(' ');
+                        n=result.substring(0,pos);
+                        result=result.substring(pos+1,50000);
+                        $("#div2").html("<h1>"+n+"</h1>"+result);
                     }});
             });
         });
@@ -108,7 +114,10 @@ if ($resql) {
             $("#UL").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=$obj->fk_object&type=UL",2)?>", success: function(result){
-                        $("#div3").html(result);
+                        pos=result.indexOf(' ');
+                        n=result.substring(0,pos);
+                        result=result.substring(pos+1,50000);
+                        $("#div3").html("<h1>"+n+"</h1>"+result);
                     }});
             });
         });
@@ -116,23 +125,32 @@ if ($resql) {
             $("#ASS").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=$obj->fk_object&type=ASS",2)?>", success: function(result){
-                        $("#div4").html(result);
+                        pos=result.indexOf(' ');
+                        n=result.substring(0,pos);
+                        result=result.substring(pos+1,50000);
+                        $("#div4").html("<h1>"+n+"</h1>"+result);
                     }});
             });
         });
         $(document).ready(function(){
             $("#IN").click(function(){
                 hide_all();
-                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/adherents.php?id=$obj->fk_object&type=IN",2)?>", success: function(result){
-                        $("#div5").html(result);
+                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/adherents.php?type=IN",2)?>", success: function(result){
+                        pos=result.indexOf(' ');
+                        n=result.substring(0,pos);
+                        result=result.substring(pos+1,50000);
+                        $("#div5").html("<h1>"+n+"</h1>"+result);
                     }});
             });
         });
         $(document).ready(function(){
             $("#PM").click(function(){
                 hide_all();
-                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/adherents.php?id=$obj->fk_object&type=PM",2)?>", success: function(result){
-                        $("#div6").html(result);
+                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/adherents.php?type=PM",2)?>", success: function(result){
+                        pos=result.indexOf(' ');
+                        n=result.substring(0,pos);
+                        result=result.substring(pos+1,50000);
+                        $("#div6").html("<h1>"+n+"</h1>"+result);
                     }});
             });
         });
@@ -189,29 +207,3 @@ if ($resql) {
     <div style="height:80px;width:40px;float:left;"></div>
     <div id="div6" style="height:80px;width:150px;float:left;"></div>
 <?php
-
-
-function print_arbo($parent, $id, $h)
-{
-    global $db;
-    $s=new Societe($db);
-    $s->fetch($parent);
-    if($parent==$id) print '<b>';
-    print "$h ".str_replace('<a ','<a target=_blank ',$s->getNomUrl(1));
-    if($parent!=$id) print ' <a href="'.dol_buildpath("/cgl/tabs/niveau1.php?id=$parent",1)
-        .'" target=_blank><span class="fa fa-plus-circle valignmiddle paddingleft" title="Niveau 1"></span></a>';
-    print '<br>';
-    if($parent==$id) print '</b>';
-
-    $sql = "SELECT se.fk_object  FROM ".MAIN_DB_PREFIX."societe s JOIN ".MAIN_DB_PREFIX."societe_extrafields se ON s.rowid=se.fk_object";
-    $sql.=" WHERE affiliation=$parent ORDER BY se.type_structure desc,s.nom asc";
-    $resql = $db->query($sql);
-    if ($resql) {
-        $num = $db->num_rows($resql);
-        for ($i = 0; $i < $num; $i++) {
-            $obj = $db->fetch_object($resql);
-            print '  ';
-            if($parent==$id)print_arbo($obj->fk_object,$id,$h.'|__');
-        }
-    }
-}
