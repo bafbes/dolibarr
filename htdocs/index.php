@@ -1,27 +1,9 @@
 <?php
-/* Copyright (C) 2001-2004	Rodolphe Quiedeville	<rodolphe@quiedeville.org>
- * Copyright (C) 2004-2020	Laurent Destailleur		<eldy@users.sourceforge.net>
- * Copyright (C) 2005-2017	Regis Houssin			<regis.houssin@inodbox.com>
- * Copyright (C) 2011-2012	Juanjo Menent			<jmenent@2byte.es>
- * Copyright (C) 2015		Marcos García			<marcosgdf@gmail.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
- */
 
 /**
  *	\file       htdocs/index.php
- *	\brief      Dolibarr home page
+ *	\brief      Affichage des éléments du hauts comme liens vers listes de structures du type choisi
+ *              Contient les liens vers les scripts ajax pour afficher la première colonne sur la gauche
  */
 
 define('NOCSRFCHECK', 1); // This is main home and login page. We must be able to go on it from another web site.
@@ -84,14 +66,14 @@ if ($resql) {
 ?>
     <script>
         function hide_all(){
-            for(i=1;i<7;i++){
+            for(i=1;i<6;i++){
                 $("#div"+i).html("");
             }
         }
         $(document).ready(function(){
             $("#UR").click(function(){
                 hide_all();
-                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=$obj->fk_object&type=UR",2)?>", success: function(result){
+                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures1.php?id=$obj->fk_object&type=UR",2)?>", success: function(result){
                         pos=result.indexOf(' ');
                         n=result.substring(0,pos);
                         result=result.substring(pos+1,50000);
@@ -102,7 +84,7 @@ if ($resql) {
         $(document).ready(function(){
             $("#UD").click(function(){
                 hide_all();
-                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=$obj->fk_object&type=UD",2)?>", success: function(result){
+                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures1.php?id=$obj->fk_object&type=UD",2)?>", success: function(result){
                         pos=result.indexOf(' ');
                         n=result.substring(0,pos);
                         result=result.substring(pos+1,50000);
@@ -113,7 +95,7 @@ if ($resql) {
         $(document).ready(function(){
             $("#UL").click(function(){
                 hide_all();
-                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=$obj->fk_object&type=UL",2)?>", success: function(result){
+                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures1.php?id=$obj->fk_object&type=UL",2)?>", success: function(result){
                         pos=result.indexOf(' ');
                         n=result.substring(0,pos);
                         result=result.substring(pos+1,50000);
@@ -124,7 +106,7 @@ if ($resql) {
         $(document).ready(function(){
             $("#ASS").click(function(){
                 hide_all();
-                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=$obj->fk_object&type=ASS",2)?>", success: function(result){
+                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures1.php?id=$obj->fk_object&type=ASS",2)?>", success: function(result){
                         pos=result.indexOf(' ');
                         n=result.substring(0,pos);
                         result=result.substring(pos+1,50000);
