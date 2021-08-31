@@ -84,7 +84,7 @@ if ($resql) {
         $(document).ready(function(){
             $("#UR").click(function(){
                 hide_all();
-                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=$obj->fk_object&type=UR",2)?>", success: function(result){
+                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=id=0t&type=UR",2)?>", success: function(result){
                         pos=result.indexOf(' ');
                         n=result.substring(0,pos);
                         result=result.substring(pos+1,50000);
@@ -95,7 +95,7 @@ if ($resql) {
         $(document).ready(function(){
             $("#UD").click(function(){
                 hide_all();
-                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=$obj->fk_object&type=UD",2)?>", success: function(result){
+                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=id=0&type=UD",2)?>", success: function(result){
                         pos=result.indexOf(' ');
                         n=result.substring(0,pos);
                         result=result.substring(pos+1,50000);
@@ -106,7 +106,7 @@ if ($resql) {
         $(document).ready(function(){
             $("#UL").click(function(){
                 hide_all();
-                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=$obj->fk_object&type=UL",2)?>", success: function(result){
+                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=id=0&type=UL",2)?>", success: function(result){
                         pos=result.indexOf(' ');
                         n=result.substring(0,pos);
                         result=result.substring(pos+1,50000);
@@ -117,7 +117,7 @@ if ($resql) {
         $(document).ready(function(){
             $("#ASS").click(function(){
                 hide_all();
-                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=$obj->fk_object&type=ASS",2)?>", success: function(result){
+                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=id=0&type=ASS",2)?>", success: function(result){
                         pos=result.indexOf(' ');
                         n=result.substring(0,pos);
                         result=result.substring(pos+1,50000);
@@ -193,18 +193,18 @@ if ($resql) {
     </a>
 
     </br>
-    <div style="height:80px;width:10px;float:left;"></div>
+    <div style="height:80px;width:20px;float:left;"></div>
     <div id="div0" style="height:80px;width:150px;float:left;"></div>
-    <div style="height:80px;width:10px;float:left;"></div>
+    <div style="height:80px;width:30px;float:left;"></div>
     <div id="div1" style="height:80px;width:150px;float:left;"></div>
     <div style="height:80px;width:30px;float:left;"></div>
     <div id="div2" style="height:80px;width:150px;float:left;"></div>
-    <div style="height:80px;width:40px;float:left;"></div>
+    <div style="height:80px;width:30px;float:left;"></div>
     <div id="div3" style="height:80px;width:150px;float:left;"></div>
-    <div style="height:80px;width:40px;float:left;"></div>
+    <div style="height:80px;width:30px;float:left;"></div>
     <div id="div4" style="height:80px;width:150px;float:left;"></div>
     <div style="height:80px;width:40px;float:left;"></div>
     <div id="div5" style="height:80px;width:150px;float:left;"></div>
-    <div style="height:80px;width:40px;float:left;"></div>
+    <div style="height:80px;width:35px;float:left;"></div>
     <div id="div6" style="height:80px;width:150px;float:left;"></div>
 <?php
