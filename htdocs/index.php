@@ -66,7 +66,12 @@ if ($resql) {
 ?>
     <script>
         function hide_all(){
-            for(i=0;i<6;i++){
+            for(i=0;i<7;i++){
+                $("#div"+i).html("");
+            }
+        }
+        function hide_adherents(){
+            for(i=5;i<7;i++){
                 $("#div"+i).html("");
             }
         }
@@ -127,7 +132,6 @@ if ($resql) {
         });
         $(document).ready(function(){
             $("#IN").click(function(){
-                hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/adherents.php?type=IN",2)?>", success: function(result){
                         pos=result.indexOf(' ');
                         n=result.substring(0,pos);
@@ -138,7 +142,6 @@ if ($resql) {
         });
         $(document).ready(function(){
             $("#PM").click(function(){
-                hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/adherents.php?type=PM",2)?>", success: function(result){
                         pos=result.indexOf(' ');
                         n=result.substring(0,pos);
