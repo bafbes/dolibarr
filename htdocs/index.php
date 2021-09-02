@@ -65,6 +65,7 @@ if ($resql) {
 
 ?>
     <script>
+        var current_element='';
         function hide_all(){
             for(i=0;i<7;i++){
                 $("#div"+i).html("");
@@ -80,6 +81,7 @@ if ($resql) {
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UN",2)?>", success: function(result){
                     $("#div0").html("<h1>"+result.num+"</h1>"+result.out);
+                    current_element='UN'
                 }});
             });
         });
@@ -87,46 +89,59 @@ if ($resql) {
             $("#UR").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UR",2)?>", success: function(result){
-                        $("#div1").html("<h1>"+result.num+"</h1>"+result.out);
-                    }});
+                    $("#div1").html("<h1>"+result.num+"</h1>"+result.out);
+                    current_element='UR'
+                }});
             });
         });
         $(document).ready(function(){
             $("#UD").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UD",2)?>", success: function(result){
-                        $("#div2").html("<h1>"+result.num+"</h1>"+result.out);
-                    }});
+                    $("#div2").html("<h1>"+result.num+"</h1>"+result.out);
+                    current_element='UD'
+                }});
             });
         });
         $(document).ready(function(){
             $("#UL").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UL",2)?>", success: function(result){
-                        $("#div3").html("<h1>"+result.num+"</h1>"+result.out);
-                    }});
+                    $("#div3").html("<h1>"+result.num+"</h1>"+result.out);
+                    current_element='UL'
+                }});
             });
         });
         $(document).ready(function(){
-            $("#ASS").click(function(){
+            $("#ASS").click(function () {
                 hide_all();
-                $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=ASS",2)?>", success: function(result){
-                        $("#div4").html("<h1>"+result.num+"</h1>"+result.out);
-                    }});
+                $.ajax({
+                    url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=ASS", 2)?>",
+                    success: function (result) {
+                        $("#div4").html("<h1>" + result.num + "</h1>" + result.out);
+                        current_element = 'ASS'
+                    }
+                });
             });
         });
         $(document).ready(function(){
             $("#IN").click(function(){
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/adherents.php?type=IN",2)?>"+"&id="+current_element, success: function(result){
-                        $("#div5").html("<h1>"+result.num+"</h1>"+result.out);
-                    }});
+                   pos=result.indexOf(' ');
+                   n=result.substring(0,pos);
+                   result=result.substring(pos+1,50000);
+                   $("#div5").html("<h1>"+n+"</h1>"+result);
+                }});
             });
         });
         $(document).ready(function(){
             $("#PM").click(function(){
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/adherents.php?type=PM",2)?>"+"&id="+current_element, success: function(result){
-                        $("#div6").html("<h1>"+result.num+"</h1>"+result.out);
-                    }});
+                   pos=result.indexOf(' ');
+                   n=result.substring(0,pos);
+                   result=result.substring(pos+1,50000);
+                   $("#div6").html("<h1>"+n+"</h1>"+result);
+                }});
             });
         });
 
