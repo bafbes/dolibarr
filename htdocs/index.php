@@ -65,7 +65,6 @@ if ($resql) {
 
 ?>
     <script>
-        var current_element=0;
         function hide_all(){
             for(i=0;i<7;i++){
                 $("#div"+i).html("");
@@ -80,21 +79,15 @@ if ($resql) {
             $("#UN").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UN",2)?>", success: function(result){
-                        pos=result.indexOf(' ');
-                        n=result.substring(0,pos);
-                        result=result.substring(pos+1,50000);
-                        $("#div0").html("<h1>"+n+"</h1>"+result);
-                    }});
+                    $("#div0").html("<h1>"+result.num+"</h1>"+result.out);
+                }});
             });
         });
         $(document).ready(function(){
             $("#UR").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UR",2)?>", success: function(result){
-                        pos=result.indexOf(' ');
-                        n=result.substring(0,pos);
-                        result=result.substring(pos+1,50000);
-                        $("#div1").html("<h1>"+n+"</h1>"+result);
+                        $("#div1").html("<h1>"+result.num+"</h1>"+result.out);
                     }});
             });
         });
@@ -102,10 +95,7 @@ if ($resql) {
             $("#UD").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UD",2)?>", success: function(result){
-                        pos=result.indexOf(' ');
-                        n=result.substring(0,pos);
-                        result=result.substring(pos+1,50000);
-                        $("#div2").html("<h1>"+n+"</h1>"+result);
+                        $("#div2").html("<h1>"+result.num+"</h1>"+result.out);
                     }});
             });
         });
@@ -113,10 +103,7 @@ if ($resql) {
             $("#UL").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UL",2)?>", success: function(result){
-                        pos=result.indexOf(' ');
-                        n=result.substring(0,pos);
-                        result=result.substring(pos+1,50000);
-                        $("#div3").html("<h1>"+n+"</h1>"+result);
+                        $("#div3").html("<h1>"+result.num+"</h1>"+result.out);
                     }});
             });
         });
@@ -124,30 +111,21 @@ if ($resql) {
             $("#ASS").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=ASS",2)?>", success: function(result){
-                        pos=result.indexOf(' ');
-                        n=result.substring(0,pos);
-                        result=result.substring(pos+1,50000);
-                        $("#div4").html("<h1>"+n+"</h1>"+result);
+                        $("#div4").html("<h1>"+result.num+"</h1>"+result.out);
                     }});
             });
         });
         $(document).ready(function(){
             $("#IN").click(function(){
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/adherents.php?type=IN",2)?>"+"&id="+current_element, success: function(result){
-                        pos=result.indexOf(' ');
-                        n=result.substring(0,pos);
-                        result=result.substring(pos+1,50000);
-                        $("#div5").html("<h1>"+n+"</h1>"+result);
+                        $("#div5").html("<h1>"+result.num+"</h1>"+result.out);
                     }});
             });
         });
         $(document).ready(function(){
             $("#PM").click(function(){
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/adherents.php?type=PM",2)?>"+"&id="+current_element, success: function(result){
-                        pos=result.indexOf(' ');
-                        n=result.substring(0,pos);
-                        result=result.substring(pos+1,50000);
-                        $("#div6").html("<h1>"+n+"</h1>"+result);
+                        $("#div6").html("<h1>"+result.num+"</h1>"+result.out);
                     }});
             });
         });
