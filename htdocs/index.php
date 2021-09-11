@@ -149,7 +149,7 @@ if ($resql) {
 
     <a id="UN" class="boxstatsindicator thumbstat nobold nounderline">
         <div class="boxstats" style="height:80px;width:150px;background:rgb(51,113,255);color: white;">
-            <h1>UN</h1>
+            <h1>Siège</h1>
         </div>
     </a>
 
@@ -174,7 +174,7 @@ if ($resql) {
 
     <a id="ASS" class="boxstatsindicator thumbstat nobold nounderline">
         <div class="boxstats" style="height:80px;width:150px;background:rgb(51,113,255);color: white;">
-            <h2>ASSOCIATION</h2>
+            <h2>ASSOCIATIONS</h2>
         </div>
     </a>
 
