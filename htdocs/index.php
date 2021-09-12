@@ -81,11 +81,9 @@ if ($resql) {
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UN",2)?>", success: function(result){
                     $("#div0").html("<h1>"+result.num+"</h1>"+result.out);
-                    current_element='UN'
-                }});
+                    current_element='UN';
+               }});
             });
-        });
-        $(document).ready(function(){
             $("#UR").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UR",2)?>", success: function(result){
@@ -93,8 +91,6 @@ if ($resql) {
                     current_element='UR'
                 }});
             });
-        });
-        $(document).ready(function(){
             $("#UD").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UD",2)?>", success: function(result){
@@ -102,8 +98,6 @@ if ($resql) {
                     current_element='UD'
                 }});
             });
-        });
-        $(document).ready(function(){
             $("#UL").click(function(){
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UL",2)?>", success: function(result){
@@ -111,8 +105,6 @@ if ($resql) {
                     current_element='UL'
                 }});
             });
-        });
-        $(document).ready(function(){
             $("#ASS").click(function () {
                 hide_all();
                 $.ajax({
@@ -123,8 +115,6 @@ if ($resql) {
                     }
                 });
             });
-        });
-        $(document).ready(function(){
             $("#IN").click(function(){
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/adherents.php?type=IN",2)?>"+"&id="+current_element, success: function(result){
                    pos=result.indexOf(' ');
@@ -133,8 +123,6 @@ if ($resql) {
                    $("#div5").html("<h1>"+n+"</h1>"+result);
                 }});
             });
-        });
-        $(document).ready(function(){
             $("#PM").click(function(){
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/adherents.php?type=PM",2)?>"+"&id="+current_element, success: function(result){
                    pos=result.indexOf(' ');
