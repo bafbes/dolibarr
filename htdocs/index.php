@@ -81,8 +81,8 @@ if ($resql) {
                 hide_all();
                 $.ajax({url: "<?= dol_buildpath("/cgl/tabs/structures.php?id=0&type=UN",2)?>", success: function(result){
                     $("#div0").html("<h1>"+result.num+"</h1>"+result.out);
-                    current_element='UN';
-               }});
+                    current_element='UN'
+                }});
             });
             $("#UR").click(function(){
                 hide_all();
