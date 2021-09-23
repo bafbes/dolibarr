@@ -773,7 +773,7 @@ function pdf_bank(&$pdf, $outputlangs, $curx, $cury, $account, $onlynumber = 0, 
 					$content = $account->code_guichet;
 				} elseif ($val == 'BankAccountNumber') {
 					// Number
-					$tmplength = 24;
+					$tmplength = 28;
 					$content = $account->number;
 				} elseif ($val == 'BankAccountNumberKey') {
 					// Key
