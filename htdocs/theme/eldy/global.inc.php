@@ -656,7 +656,7 @@ textarea.centpercent {
 	word-break: break-word;
 }
 .wordbreak {
-	word-break: break-all;
+	word-break: normal;
 }
 .bold {
 	font-weight: bold !important;
