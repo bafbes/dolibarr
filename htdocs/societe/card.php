@@ -2125,7 +2125,7 @@ else
             print $s;
             print '</td>';
             print '</tr>';*/
-/*
+
             // Type - Size
             print '<tr><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone">';
             print $form->selectarray("typent_id", $formcompany->typent_array(0), $object->typent_id, 0, 0, 0, '', 0, 0, 0, (empty($conf->global->SOCIETE_SORT_ON_TYPEENT) ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT));
@@ -2137,17 +2137,17 @@ else
             if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
             print '</td></tr>';
 
-            // Juridical type
+/*            // Juridical type
             print '<tr><td>'.$form->editfieldkey('JuridicalStatus', 'forme_juridique_code', '', $object, 0).'</td><td class="maxwidthonsmartphone" colspan="3">';
             print $formcompany->select_juridicalstatus($object->forme_juridique_code, $object->country_code, '', 'forme_juridique_code');
             print '</td></tr>';
-
+*/
             // Capital
             print '<tr><td>'.$form->editfieldkey('Capital', 'capital', '', $object, 0).'</td>';
 	        print '<td colspan="3"><input type="text" name="capital" id="capital" size="10" value="';
 	        print $object->capital != '' ? dol_escape_htmltag(price($object->capital)) : '';
 	        print '"> <font class="hideonsmartphone">'.$langs->trans("Currency".$conf->currency).'</font></td></tr>';
-*/
+
             // Default language
             if (!empty($conf->global->MAIN_MULTILANGS))
             {
