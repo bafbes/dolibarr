@@ -557,3 +557,5 @@ UPDATE llx_facturedet SET situation_percent = 100 WHERE situation_percent IS NUL
 
 DELETE FROM llx_rights_def WHERE module = 'hrm' AND perms = 'employee';
 
+ALTER TABLE `llx_c_tva` CHANGE `code` `code` varchar(20) AFTER `fk_pays`;
+
