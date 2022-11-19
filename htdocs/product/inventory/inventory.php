@@ -932,6 +932,12 @@ if ($object->status == $object::STATUS_DRAFT || $object->status == $object::STAT
 	//print $langs->trans("StockMovement");
 	print '</td>';
 }
+if(!empty($conf->global->MAIN_ROLLING_INVENTORY) && ($object->status == $object::STATUS_VALIDATED || $object->status == $object::STATUS_RECORDED || $object->status == $object::STATUS_CANCELED)) {
+    // Column for rolling Inventories
+    print '<td class="right">';
+    print $form->textwithpicto($langs->trans("Tours"), $langs->trans("NumberOfRolls"));
+    print '</td>';
+}
 print '</tr>';
 
 // Line to add a new line in inventory
@@ -976,11 +982,11 @@ if ($object->status == $object::STATUS_DRAFT || $object->status == $object::STAT
 // Request to show lines of inventory (prefilled after start/validate step)
 $sql = 'SELECT id.rowid, id.datec as date_creation, id.tms as date_modification, id.fk_inventory, id.fk_warehouse,';
 $sql .= ' id.fk_product, id.batch, id.qty_stock, id.qty_view, id.qty_regulated, id.fk_movement, id.pmp_real, id.pmp_expected';
+if(!empty($conf->global->MAIN_ROLLING_INVENTORY)) $sql .= ',id.nb_tours';
 $sql .= ' FROM '.MAIN_DB_PREFIX.'inventorydet as id';
 $sql .= ' WHERE id.fk_inventory = '.((int) $object->id);
 $sql .= $db->order('id.rowid', 'ASC');
 $sql .= $db->plimit($limit, $offset);
-
 $cacheOfProducts = array();
 $cacheOfWarehouses = array();
 
@@ -1061,7 +1067,6 @@ if ($resql) {
 		// Real quantity
 		if ($object->status == $object::STATUS_DRAFT || $object->status == $object::STATUS_VALIDATED) {
 			$qty_view = GETPOST("id_".$obj->rowid) && price2num(GETPOST("id_".$obj->rowid), 'MS') >= 0 ? GETPOST("id_".$obj->rowid) : $obj->qty_view;
-
 			//if (!$hasinput && $qty_view !== null && $obj->qty_stock != $qty_view) {
 			if ($qty_view != '') {
 				$hasinput = true;
@@ -1159,6 +1164,15 @@ if ($resql) {
 				print $stockmovment->getNomUrl(1, 'movements');
 			}
 			print '</td>';
+      if(!empty($conf->global->INVENTORY_MANAGE_REAL_PMP) && ($object->status == $object::STATUS_VALIDATED || $object->status == $object::STATUS_RECORDED || $object->status == $object::STATUS_CANCELED)) {
+          // Column for rolling Inventories
+          print '<td class="right">';
+          if (empty($obj->batch)){
+              if ($object->status == $object::STATUS_VALIDATED) print '<button type="button" onclick="recordtour('.$obj->rowid.')" >'.img_picto('Tour','refresh').'</button>';
+              print '&nbsp;&nbsp;<span id="id_'.$obj->rowid.'_span">'.(is_numeric($obj->nb_tours)?$obj->nb_tours:'&nbsp;').'</span>';
+          }
+          print '</td>';
+      }
 		}
 		print '</tr>';
 
