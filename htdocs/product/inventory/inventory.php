@@ -891,6 +891,35 @@ print 'jQuery(document).ready(function() {
 		return false;	/* disable submit */
 	});
 });';
+if(!empty($conf->global->MAIN_ROLLING_INVENTORY)) print '
+function recordtour(inventorylineid){
+  var qty=$("#id_"+inventorylineid+"_input").val();
+      nbtours=parseInt($("#id_"+inventorylineid+"_span").html());
+      if(isNaN(nbtours)) nbtours=0;
+  if(qty.length==0){alert("'.$langs->trans('Quantité réelle non saisie').'");}
+  else{
+      $.ajax({ url: "'.DOL_URL_ROOT.'/product/inventory/ajax/recordtour.php",
+        data: { "token":"'.newToken().'", "action":"recordtour", "inventorylineid":inventorylineid, "qty":qty},
+        type: "POST",
+        async: false,
+        success: function(response) {
+          response = JSON.parse(response);
+          if(response.status == "success"){
+            console.log(response.message);
+            $("#id_"+inventorylineid).html(qty);
+            $("#id_"+inventorylineid+"_span").html(nbtours+1);
+            $("#id_"+inventorylineid+"_a").hide();
+          }else{
+            console.error(response.message);
+          }
+        },
+        error : function(output) {
+          console.error("Error on line update function");
+        },
+      });
+  }
+  return false;
+}';
 print '</script>';
 
 print '<div class="fichecenter">';
@@ -957,6 +986,12 @@ if ($object->status == $object::STATUS_DRAFT || $object->status == $object::STAT
 	print '<td class="right"></td>';
 	if (!empty($conf->global->INVENTORY_MANAGE_REAL_PMP)) {
 		print '<td class="right">';
+    if (!empty($conf->global->MAIN_ROLLING_INVENTORY) && ($object->status == $object::STATUS_VALIDATED || $object->status == $object::STATUS_RECORDED || $object->status == $object::STATUS_CANCELED)) {
+        // Column for rolling Inventories
+        print '<td class="right">';
+        print $form->textwithpicto($langs->trans("Tours"), $langs->trans("NumberOfRolls"));
+        print '</td>';
+    }
 		print '</td>';
 		print '<td class="right">';
 		print '</td>';
@@ -1118,7 +1153,7 @@ if ($resql) {
 
 			// Picto delete line
 			print '<td class="right">';
-			print '<a class="reposition" href="'.DOL_URL_ROOT.'/product/inventory/inventory.php?id='.$object->id.'&lineid='.$obj->rowid.'&action=deleteline&page='.$page.$paramwithsearch.'&token='.newToken().'">'.img_delete().'</a>';
+			if(!empty($conf->global->MAIN_ROLLING_INVENTORY) || empty($obj->nb_tours)) print '<a class="reposition" href="'.DOL_URL_ROOT.'/product/inventory/inventory.php?id='.$object->id.'&lineid='.$obj->rowid.'&action=deleteline&page='.$page.$paramwithsearch.'&token='.newToken().'">'.img_delete().'</a>';
 			$qty_tmp = price2num(GETPOST("id_".$obj->rowid."_input_tmp", 'MS')) >= 0 ? GETPOST("id_".$obj->rowid."_input_tmp") : $qty_view;
 			print '<input type="hidden" class="maxwidth50 right realqty" name="id_'.$obj->rowid.'_input_tmp" id="id_'.$obj->rowid.'_input_tmp" value="'.$qty_tmp.'">';
 			print '</td>';
@@ -1153,9 +1188,10 @@ if ($resql) {
 
 				$totalExpectedValuation += $pmp_valuation;
 				$totalRealValuation += $pmp_valuation_real;
-			} else {
+			}
+			else {
 				print '<td class="right nowraponall">';
-				print $obj->qty_view;	// qty found
+				print $obj->qty_view;    // qty found
 				print '</td>';
 			}
 			if ($obj->fk_movement > 0) {
@@ -1164,21 +1200,31 @@ if ($resql) {
 				print $stockmovment->getNomUrl(1, 'movements');
 			}
 			print '</td>';
-      if(!empty($conf->global->INVENTORY_MANAGE_REAL_PMP) && ($object->status == $object::STATUS_VALIDATED || $object->status == $object::STATUS_RECORDED || $object->status == $object::STATUS_CANCELED)) {
-          // Column for rolling Inventories
-          print '<td class="right">';
-          if (empty($obj->batch)){
-              if ($object->status == $object::STATUS_VALIDATED) print '<button type="button" onclick="recordtour('.$obj->rowid.')" >'.img_picto('Tour','refresh').'</button>';
-              print '&nbsp;&nbsp;<span id="id_'.$obj->rowid.'_span">'.(is_numeric($obj->nb_tours)?$obj->nb_tours:'&nbsp;').'</span>';
-          }
-          print '</td>';
-      }
+			if (!empty($conf->global->INVENTORY_MANAGE_REAL_PMP) && ($object->status == $object::STATUS_VALIDATED || $object->status == $object::STATUS_RECORDED || $object->status == $object::STATUS_CANCELED)) {
+				// Column for rolling Inventories
+				print '<td class="right">';
+				if (empty($obj->batch)) {
+					if ($object->status == $object::STATUS_VALIDATED) print '<button type="button" onclick="recordtour(' . $obj->rowid . ')" >' . img_picto('Tour', 'refresh') . '</button>';
+					print '&nbsp;&nbsp;<span id="id_' . $obj->rowid . '_span">' . (is_numeric($obj->nb_tours) ? $obj->nb_tours : '&nbsp;') . '</span>';
+				}
+				print '</td>';
+			}
+		}
+		if (!empty($conf->global->MAIN_ROLLING_INVENTORY) && ($object->status == $object::STATUS_VALIDATED || $object->status == $object::STATUS_RECORDED || $object->status == $object::STATUS_CANCELED)) {
+			// Column for rolling Inventories
+			print '<td class="right">';
+			if (empty($obj->batch)) {
+				if ($object->status == $object::STATUS_VALIDATED) print '<button type="button" onclick="recordtour(' . $obj->rowid . ')" >' . img_picto('Tour', 'refresh') . '</button>';
+				print '&nbsp;&nbsp;<span id="id_' . $obj->rowid . '_span">' . (is_numeric($obj->nb_tours) ? $obj->nb_tours : '&nbsp;') . '</span>';
+			}
+			print '</td>';
 		}
 		print '</tr>';
 
 		$i++;
 	}
-} else {
+}
+else {
 	dol_print_error($db);
 }
 if (!empty($conf->global->INVENTORY_MANAGE_REAL_PMP)) {
