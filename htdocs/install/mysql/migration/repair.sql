@@ -654,3 +654,4 @@ alter table llx_product_attribute_combination_price_level drop index fk_product_
 ALTER TABLE llx_product_attribute_combination_price_level ADD UNIQUE INDEX uk_prod_att_comb_price_level(fk_product_attribute_combination, fk_price_level);
 
 
+ALTER TABLE `llx_c_tva` CHANGE `code` `code` varchar(20) AFTER `fk_pays`;

@@ -29,6 +29,7 @@ doxygen_warnings.log
 /htdocs/includes/**/.git
 # Composer autoloader and unwanted files
 composer.phar
+composer.json
 htdocs/includes/autoload.php
 htdocs/includes/bin/
 htdocs/includes/composer/
