@@ -150,7 +150,7 @@ class FactureTest extends PHPUnit\Framework\TestCase
 		$localobject=new Facture($this->savdb);
 		$localobject->initAsSpecimen();
 		$result=$localobject->create($user);
-		$this->assertLessThan($result, 0);
+		$this->assertLessThan(0,$result,$localobject->error);
 		print __METHOD__." result=".$result."\n";
 		return $result;
 	}
@@ -175,7 +175,7 @@ class FactureTest extends PHPUnit\Framework\TestCase
 		$localobject=new Facture($this->savdb);
 		$result=$localobject->fetch($id);
 
-		$this->assertLessThan($result, 0);
+		$this->assertLessThan(0,$result,$localobject->error);
 		print __METHOD__." id=".$id." result=".$result."\n";
 		return $localobject;
 	}
