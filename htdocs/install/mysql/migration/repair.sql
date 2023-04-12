@@ -595,7 +595,6 @@ DELETE FROM llx_rights_def WHERE module = 'hrm' AND perms = 'employee';
 DELETE FROM llx_c_departements WHERE fk_region <> 0 AND fk_region IN (select code_region FROM llx_c_regions WHERE fk_pays NOT IN (select rowid from llx_c_country));
 DELETE from llx_c_regions WHERE fk_pays NOT IN (select rowid from llx_c_country);
 
-
 -- Drop duplicate indexes not named correctly and create the only one we should have
 alter table llx_product_attribute_combination_price_level drop index fk_product_attribute_combination;
 alter table llx_product_attribute_combination_price_level drop index fk_product_attribute_combinati_2;
@@ -662,4 +661,4 @@ alter table llx_product_attribute_combination_price_level drop index fk_product_
 alter table llx_product_attribute_combination_price_level drop index fk_product_attribute_combinati_63;
 ALTER TABLE llx_product_attribute_combination_price_level ADD UNIQUE INDEX uk_prod_att_comb_price_level(fk_product_attribute_combination, fk_price_level);
 
-
+ALTER TABLE `llx_c_tva` CHANGE `code` `code` varchar(20) AFTER `fk_pays`;
