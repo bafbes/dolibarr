@@ -76,7 +76,7 @@ function emailing_prepare_head(Mailing $object)
  */
 function mail2lang($subject, $message, $lang)
 {
-    global $db;
+
     $origsubject=$subject;
     $origmessage=$message;
     if (empty(strstr($subject, 'LANG_'))) return [$subject, $message];//Retour si symbole inexistant dans sujet du mail
@@ -126,5 +126,6 @@ function mail2lang($subject, $message, $lang)
             return [$subject,$message];
         }
     }
+	//On ne peut normalement pas arriver la
     return [$origsubject,$origmessage];
 }

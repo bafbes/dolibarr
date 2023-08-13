@@ -185,24 +185,27 @@ if (empty($reshook)) {
                         //Find mail owner language if exists
                         $sqlx = "SELECT default_lang lang";
                         $sqlx .= " FROM " . MAIN_DB_PREFIX . "societe";
-                        $sqlx .= " WHERE email='$obj->email'";
+                        $sqlx .= " WHERE email='$obj->email' AND default_lang is not null";
                         $sqlx .= " UNION";
                         $sqlx .= " SELECT default_lang lang";
                         $sqlx .= " FROM " . MAIN_DB_PREFIX . "socpeople";
-                        $sqlx .= " WHERE email='$obj->email'";
+                        $sqlx .= " WHERE email='$obj->email' AND default_lang is not null";
                         $sqlx .= " UNION";
                         $sqlx .= " SELECT lang";
                         $sqlx .= " FROM " . MAIN_DB_PREFIX . "user";
-                        $sqlx .= " WHERE email='$obj->email'";
+                        $sqlx .= " WHERE email='$obj->email' AND lang is not null";
                         $resultx = $db->query($sqlx);
                         if ($resultx) {
                             if ($db->num_rows($resultx)) {
                                 $objx = $db->fetch_object($resultx);
                                 $lang = $objx->lang;
-                                if (!in_array(substr($objx->lang, 0, 2), ['en', 'fr', 'es'])) $lang = 'en_US';
+                                if (substr($objx->lang, 0, 2)=='fr')$lang = 'fr_FR';
+                                elseif (substr($objx->lang, 0, 2)=='es')$lang = 'es_ES';
+								else $lang = 'en_US';
                             }
                             else $lang = 'en_US';
-                        }
+                        } else $lang = 'en_US';
+
                         $soclang = new Translate('', $conf);
                         $soclang->setDefaultLang($lang);
                         $soclang->load('commercial');
@@ -334,6 +337,8 @@ if (empty($reshook)) {
 						$trackid = 'emailing-'.$obj->fk_mailing.'-'.$obj->rowid;
 
 						list($newsubject,$newmessage)=mail2lang($newsubject,$newmessage,$lang);
+
+//							dol_syslog('CMailFile($newsubject, $sendto, $from, $newmessage, $arr_file, $arr_mime, $arr_name, , , 0, $msgishtml, $errorsto, $arr_css, $trackid, , emailing)='."CMailFile($newsubject, $sendto, $from, $newmessage, $arr_file, $arr_mime, $arr_name, '', '', 0, $msgishtml, $errorsto, $arr_css, $trackid, '', 'emailing')", 1);
 
 						$mail = new CMailFile($newsubject, $sendto, $from, $newmessage, $arr_file, $arr_mime, $arr_name, '', '', 0, $msgishtml, $errorsto, $arr_css, $trackid, '', 'emailing');
 
