@@ -585,8 +585,6 @@ DELETE FROM llx_rights_def WHERE module = 'hrm' AND perms = 'employee';
 -- Sequence to fix the content of llx_bank.amount_main_currency (sign was wrong with some version)
 -- UPDATE llx_bank as b SET b.amount_main_currency = -b.amount_main_currency WHERE b.amount IS NOT NULL AND b.amount_main_currency IS NOT NULL AND SIGN(b.amount_main_currency) <> SIGN(b.amount);
 
-
-
 -- Delete duplicate entries into llx_c_transport_mode
 -- VMYSQL4.1 DELETE T1 FROM llx_c_transport_mode as T1, llx_c_transport_mode as T2 where T1.entity = T2.entity AND T1.code = T2.code and T1.rowid > T2.rowid;
 -- VPGSQL8.2 DELETE FROM llx_c_transport_mode as T1 WHERE rowid NOT IN (SELECT min(rowid) FROM llx_c_transport_mode GROUP BY code, entity);
@@ -594,7 +592,6 @@ DELETE FROM llx_rights_def WHERE module = 'hrm' AND perms = 'employee';
 -- Delete department of regions linked to no coutry, then delete region with no country
 DELETE FROM llx_c_departements WHERE fk_region <> 0 AND fk_region IN (select code_region FROM llx_c_regions WHERE fk_pays NOT IN (select rowid from llx_c_country));
 DELETE from llx_c_regions WHERE fk_pays NOT IN (select rowid from llx_c_country);
-
 
 -- Drop duplicate indexes not named correctly and create the only one we should have
 alter table llx_product_attribute_combination_price_level drop index fk_product_attribute_combination;
@@ -662,4 +659,8 @@ alter table llx_product_attribute_combination_price_level drop index fk_product_
 alter table llx_product_attribute_combination_price_level drop index fk_product_attribute_combinati_63;
 ALTER TABLE llx_product_attribute_combination_price_level ADD UNIQUE INDEX uk_prod_att_comb_price_level(fk_product_attribute_combination, fk_price_level);
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> master1700
+ALTER TABLE `llx_c_tva` CHANGE `code` `code` varchar(20) AFTER `fk_pays`;

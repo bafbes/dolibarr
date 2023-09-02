@@ -71,7 +71,7 @@ class Warehouses extends DolibarrApi
 			throw new RestException(404, 'warehouse not found');
 		}
 
-		if (!DolibarrApi::_checkAccessToResource('warehouse', $this->warehouse->id)) {
+		if (!DolibarrApi::_checkAccessToResource('stock', $this->warehouse->id,'entrepot')) {
 			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 
@@ -142,7 +142,9 @@ class Warehouses extends DolibarrApi
 				$obj = $this->db->fetch_object($result);
 				$warehouse_static = new Entrepot($this->db);
 				if ($warehouse_static->fetch($obj->rowid)) {
-					$obj_ret[] = $this->_cleanObjectDatas($warehouse_static);
+//					$obj_ret[] = $this->_cleanObjectDatas($warehouse_static);
+					$warehouse_static2=['id'=>$warehouse_static->id,'ref'=>$warehouse_static->label,'label'=>$warehouse_static->lieu,'address'=>$warehouse_static->address];
+					$obj_ret[] = $this->_cleanObjectDatas($warehouse_static2);
 				}
 				$i++;
 			}
