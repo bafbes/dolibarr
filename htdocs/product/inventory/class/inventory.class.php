@@ -811,6 +811,7 @@ class InventoryLine extends CommonObjectLine
 		'qty_regulated' => array('type'=>'double', 'label'=>'QtyDelta', 'visible'=>1, 'enabled'=>1, 'position'=>34, 'index'=>1, 'help'=>'Qty aadded or removed (filled once movements are validated)'),
 		'pmp_real'      => array('type'=>'double', 'label'=>'PMPReal', 'visible'=>1, 'enabled'=>1, 'position'=>35),
 		'pmp_expected'  => array('type'=>'double', 'label'=>'PMPExpected', 'visible'=>1, 'enabled'=>1, 'position'=>36),
+		'nb_tours' => array('type'=>'double', 'label'=>'Nbtours', 'visible'=>1, 'enabled'=>1, 'position'=>35, 'index'=>1, 'help'=>'Number of rolls'),
 	);
 
 	/**

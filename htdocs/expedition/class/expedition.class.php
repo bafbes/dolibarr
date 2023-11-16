@@ -1371,6 +1371,7 @@ class Expedition extends CommonObject
 		$this->db->begin();
 
 		// Add a protection to refuse deleting if shipment has at least one delivery
+		unset($this->linkedObjectsIds);//Linked objects may be already set in doActions hook
 		$this->fetchObjectLinked($this->id, 'shipping', 0, 'delivery'); // Get deliveries linked to this shipment
 		if (count($this->linkedObjectsIds) > 0) {
 			$this->error = 'ErrorThereIsSomeDeliveries';
