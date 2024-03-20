@@ -143,6 +143,7 @@ class Warehouses extends DolibarrApi
 				$obj = $this->db->fetch_object($result);
 				$warehouse_static = new Entrepot($this->db);
 				if ($warehouse_static->fetch($obj->rowid)) {
+					$warehouse_static=['id'=>$warehouse_static->id,'ref'=>$warehouse_static->label,'label'=>$warehouse_static->lieu,'address'=>$warehouse_static->address];
 					$obj_ret[] = $this->_filterObjectProperties($this->_cleanObjectDatas($warehouse_static), $properties);
 				}
 				$i++;
