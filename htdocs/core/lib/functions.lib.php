@@ -1184,7 +1184,7 @@ function sanitizeVal($out = '', $check = 'alphanohtml', $filter = null, $options
 				do {
 					$oldstringtoclean = $out;
 					// Remove html tags
-					$out = dol_string_nohtmltag($out, 0);
+					$out = dol_string_nohtmltag($out, 0,  'UTF-8', 0, 0);
 					// Refuse octal syntax \999, hexa syntax \x999 and unicode syntax \u{999} by replacing the \ into / (so if it is a \ for a windows path, it is still ok).
 					$out = preg_replace('/\\\([0-9xu])/', '/\1', $out);
 					// Remove also other dangerous string sequences
@@ -1218,7 +1218,7 @@ function sanitizeVal($out = '', $check = 'alphanohtml', $filter = null, $options
 			}
 			break;
 		case 'nohtml':		// No html
-			$out = dol_string_nohtmltag($out, 0);
+			$out = dol_string_nohtmltag($out, 0,  'UTF-8', 0, 0);
 			break;
 		case 'restricthtmlnolink':
 		case 'restricthtml':		// Recommended for most html textarea
