@@ -3271,3 +3271,4 @@ if (!function_exists("llxFooter")) {
 		print "</html>\n";
 	}
 }
+include 'conf/confaftermain.php';
