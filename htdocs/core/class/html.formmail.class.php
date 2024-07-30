@@ -1439,7 +1439,7 @@ class FormMail extends Form
 		if ($active >= 0) {
 			$sql .= " AND active = ".((int) $active);
 		}
-		//if (is_object($outputlangs)) $sql.= " AND (lang = '".$this->db->escape($outputlangs->defaultlang)."' OR lang IS NULL OR lang = '')";	// Return all languages
+		if (is_object($outputlangs)) $sql.= " AND (lang = '".$this->db->escape($outputlangs->defaultlang)."' OR lang IS NULL OR lang = '')";	// Return all languages
 		$sql .= $this->db->order("position,lang,label", "ASC");
 		//print $sql;
 
