@@ -1430,10 +1430,14 @@ class FormMail extends Form
 	public function fetchAllEMailTemplate($type_template, $user, $outputlangs, $active = 1)
 	{
 		global $conf;
-
+		$lang=$this->db->escape($type_template);
+		$sublang=substr($lang,0,2);
+		if($sublang=='en')$lang='en_US';
+		elseif($sublang=='fr')$lang='fr_FR';
+		elseif($sublang=='es')$lang='es_ES';
 		$sql = "SELECT rowid, module, label, topic, content, content_lines, lang, fk_user, private, position";
 		$sql .= " FROM ".MAIN_DB_PREFIX.'c_email_templates';
-		$sql .= " WHERE type_template IN ('".$this->db->escape($type_template)."', 'all')";
+		$sql .= " WHERE type_template IN ('$lang', 'all')";
 		$sql .= " AND entity IN (".getEntity('c_email_templates').")";
 		$sql .= " AND (private = 0 OR fk_user = ".$user->id.")"; // See all public templates or templates I own.
 		if ($active >= 0) {
