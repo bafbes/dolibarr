@@ -1831,229 +1831,242 @@ if ($placeid > 0) {
 		$tmplines = array_reverse($invoice->lines);
 		$htmlsupplements = array();
 		foreach ($tmplines as $line) {
-			if ($line->fk_parent_line != false) {
-				$htmlsupplements[$line->fk_parent_line] .= '<tr class="drag drop oddeven posinvoiceline';
-				if ($line->special_code == "4") {
-					$htmlsupplements[$line->fk_parent_line] .= ' order';
-				}
-				$htmlsupplements[$line->fk_parent_line] .= '" id="'.$line->id.'"';
-				if ($line->special_code == "4") {
-					$htmlsupplements[$line->fk_parent_line] .= ' title="'.dol_escape_htmltag($langs->trans("AlreadyPrinted")).'"';
-				}
-				$htmlsupplements[$line->fk_parent_line] .= '>';
-				$htmlsupplements[$line->fk_parent_line] .= '<td class="left">';
-				$htmlsupplements[$line->fk_parent_line] .= img_picto('', 'rightarrow');
-				if ($line->product_label) {
-					$htmlsupplements[$line->fk_parent_line] .= $line->product_label;
-				}
-				if ($line->product_label && $line->desc) {
-					$htmlsupplements[$line->fk_parent_line] .= '<br>';
-				}
-				if ($line->product_label != $line->desc) {
-					$firstline = dolGetFirstLineOfText($line->desc);
-					if ($firstline != $line->desc) {
-						$htmlsupplements[$line->fk_parent_line] .= $form->textwithpicto(dolGetFirstLineOfText($line->desc), $line->desc);
-					} else {
-						$htmlsupplements[$line->fk_parent_line] .= $line->desc;
-					}
-				}
-				$htmlsupplements[$line->fk_parent_line] .= '</td>';
+            // complete line by hook
+            $parameters = array('line' => $line,
+                'htmlsupplements'=>$htmlsupplements,
+                'form'=>$form,
+                'tooltiptext'=>$tooltiptext,
+            );
+            $reshook = $hookmanager->executeHooks('showTakePosInvoiceLine', $parameters, $invoice, $action);    // Note that $action and $object may have been modified by some hooks
+            if ($reshook < 0) {
+                setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+            }
+            elseif(empty($reshook)) {
+                if ($line->fk_parent_line != false) {
+                    $htmlsupplements[$line->fk_parent_line] .= '<tr class="drag drop oddeven posinvoiceline';
+                    if ($line->special_code == "4") {
+                        $htmlsupplements[$line->fk_parent_line] .= ' order';
+                    }
+                    $htmlsupplements[$line->fk_parent_line] .= '" id="' . $line->id . '"';
+                    if ($line->special_code == "4") {
+                        $htmlsupplements[$line->fk_parent_line] .= ' title="' . dol_escape_htmltag($langs->trans("AlreadyPrinted")) . '"';
+                    }
+                    $htmlsupplements[$line->fk_parent_line] .= '>';
+                    $htmlsupplements[$line->fk_parent_line] .= '<td class="left">';
+                    $htmlsupplements[$line->fk_parent_line] .= img_picto('', 'rightarrow');
+                    if ($line->product_label) {
+                        $htmlsupplements[$line->fk_parent_line] .= $line->product_label;
+                    }
+                    if ($line->product_label && $line->desc) {
+                        $htmlsupplements[$line->fk_parent_line] .= '<br>';
+                    }
+                    if ($line->product_label != $line->desc) {
+                        $firstline = dolGetFirstLineOfText($line->desc);
+                        if ($firstline != $line->desc) {
+                            $htmlsupplements[$line->fk_parent_line] .= $form->textwithpicto(dolGetFirstLineOfText($line->desc), $line->desc);
+                        } else {
+                            $htmlsupplements[$line->fk_parent_line] .= $line->desc;
+                        }
+                    }
+                    $htmlsupplements[$line->fk_parent_line] .= '</td>';
 
-				// complete line by hook
-				$parameters = array('line' => $line);
-				$reshook = $hookmanager->executeHooks('completeTakePosInvoiceParentLine', $parameters, $invoice, $action);    // Note that $action and $object may have been modified by some hooks
-				if ($reshook < 0) {
-					setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
-				}
-				$htmlsupplements[$line->fk_parent_line] .= $hookmanager->resPrint;
+                    // complete line by hook
+                    $parameters = array('line' => $line);
+                    $reshook = $hookmanager->executeHooks('completeTakePosInvoiceParentLine', $parameters, $invoice, $action);    // Note that $action and $object may have been modified by some hooks
+                    if ($reshook < 0) {
+                        setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+                    }
+                    $htmlsupplements[$line->fk_parent_line] .= $hookmanager->resPrint;
 
-				if (empty($_SESSION["basiclayout"]) || $_SESSION["basiclayout"] != 1) {
-					$htmlsupplements[$line->fk_parent_line] .= '<td class="right">'.vatrate($line->remise_percent, true).'</td>';
-					$htmlsupplements[$line->fk_parent_line] .= '<td class="right">'.$line->qty.'</td>';
-					$htmlsupplements[$line->fk_parent_line] .= '<td class="right">'.price($line->total_ttc).'</td>';
-				}
-				$htmlsupplements[$line->fk_parent_line] .= '</tr>'."\n";
-				continue;
-			}
-			$htmlforlines = '';
+                    if (empty($_SESSION["basiclayout"]) || $_SESSION["basiclayout"] != 1) {
+                        $htmlsupplements[$line->fk_parent_line] .= '<td class="right">' . vatrate($line->remise_percent, true) . '</td>';
+                        $htmlsupplements[$line->fk_parent_line] .= '<td class="right">' . $line->qty . '</td>';
+                        $htmlsupplements[$line->fk_parent_line] .= '<td class="right">' . price($line->total_ttc) . '</td>';
+                    }
+                    $htmlsupplements[$line->fk_parent_line] .= '</tr>' . "\n";
+                    continue;
+                }
+                $htmlforlines = '';
 
-			$htmlforlines .= '<tr class="drag drop oddeven posinvoiceline';
-			if ($line->special_code == "4") {
-				$htmlforlines .= ' order';
-			}
-			$htmlforlines .= '" id="'.$line->id.'"';
-			if ($line->special_code == "4") {
-				$htmlforlines .= ' title="'.dol_escape_htmltag($langs->trans("AlreadyPrinted")).'"';
-			}
-			$htmlforlines .= '>';
-			$htmlforlines .= '<td class="left">';
-			if (!empty($_SESSION["basiclayout"]) && $_SESSION["basiclayout"] == 1) {
-				$htmlforlines .= '<span class="phoneqty">'.$line->qty."</span> x ";
-			}
-			if (isset($line->product_type)) {
-				if (empty($line->product_type)) {
-					$htmlforlines .= img_object('', 'product').' ';
-				} else {
-					$htmlforlines .= img_object('', 'service').' ';
-				}
-			}
-			$tooltiptext = '';
-			if (!getDolGlobalString('TAKEPOS_SHOW_N_FIRST_LINES')) {
-				if ($line->product_ref) {
-					$tooltiptext .= '<b>'.$langs->trans("Ref").'</b> : '.$line->product_ref.'<br>';
-					$tooltiptext .= '<b>'.$langs->trans("Label").'</b> : '.$line->product_label.'<br>';
-					if (!empty($line->batch)) {
-						$tooltiptext .= '<br><b>'.$langs->trans("LotSerial").'</b> : '.$line->batch.'<br>';
-					}
-					if (!empty($line->fk_warehouse)) {
-						$tooltiptext .= '<b>'.$langs->trans("Warehouse").'</b> : '.$line->fk_warehouse.'<br>';
-					}
-					if ($line->product_label != $line->desc) {
-						if ($line->desc) {
-							$tooltiptext .= '<br>';
-						}
-						$tooltiptext .= $line->desc;
-					}
-				}
-				if (getDolGlobalInt('TAKEPOS_SHOW_PRODUCT_REFERENCE') == 1) {
-					$htmlforlines .= $form->textwithpicto($line->product_label ? '<b>' . $line->product_ref . '</b> - ' . $line->product_label : dolGetFirstLineOfText($line->desc, 1), $tooltiptext);
-				} elseif (getDolGlobalInt('TAKEPOS_SHOW_PRODUCT_REFERENCE') == 2) {
-					$htmlforlines .= $form->textwithpicto($line->product_ref ? '<b>'.$line->product_ref.'<b>' : dolGetFirstLineOfText($line->desc, 1), $tooltiptext);
-				} else {
-					$htmlforlines .= $form->textwithpicto($line->product_label ? $line->product_label : ($line->product_ref ? $line->product_ref : dolGetFirstLineOfText($line->desc, 1)), $tooltiptext);
-				}
-			} else {
-				if ($line->product_ref) {
-					$tooltiptext .= '<b>'.$langs->trans("Ref").'</b> : '.$line->product_ref.'<br>';
-					$tooltiptext .= '<b>'.$langs->trans("Label").'</b> : '.$line->product_label.'<br>';
-				}
-				if (!empty($line->batch)) {
-					$tooltiptext .= '<br><b>'.$langs->trans("LotSerial").'</b> : '.$line->batch.'<br>';
-				}
-				if (!empty($line->fk_warehouse)) {
-					$tooltiptext .= '<b>'.$langs->trans("Warehouse").'</b> : '.$line->fk_warehouse.'<br>';
-				}
+                $htmlforlines .= '<tr class="drag drop oddeven posinvoiceline';
+                if ($line->special_code == "4") {
+                    $htmlforlines .= ' order';
+                }
+                $htmlforlines .= '" id="' . $line->id . '"';
+                if ($line->special_code == "4") {
+                    $htmlforlines .= ' title="' . dol_escape_htmltag($langs->trans("AlreadyPrinted")) . '"';
+                }
+                $htmlforlines .= '>';
+                $htmlforlines .= '<td class="left">';
+                if (!empty($_SESSION["basiclayout"]) && $_SESSION["basiclayout"] == 1) {
+                    $htmlforlines .= '<span class="phoneqty">' . $line->qty . "</span> x ";
+                }
+                if (isset($line->product_type)) {
+                    if (empty($line->product_type)) {
+                        $htmlforlines .= img_object('', 'product') . ' ';
+                    } else {
+                        $htmlforlines .= img_object('', 'service') . ' ';
+                    }
+                }
+                $tooltiptext = '';
+                if (!getDolGlobalString('TAKEPOS_SHOW_N_FIRST_LINES')) {
+                    if ($line->product_ref) {
+                        $tooltiptext .= '<b>' . $langs->trans("Ref") . '</b> : ' . $line->product_ref . '<br>';
+                        $tooltiptext .= '<b>' . $langs->trans("Label") . '</b> : ' . $line->product_label . '<br>';
+                        if (!empty($line->batch)) {
+                            $tooltiptext .= '<br><b>' . $langs->trans("LotSerial") . '</b> : ' . $line->batch . '<br>';
+                        }
+                        if (!empty($line->fk_warehouse)) {
+                            $tooltiptext .= '<b>' . $langs->trans("Warehouse") . '</b> : ' . $line->fk_warehouse . '<br>';
+                        }
+                        if ($line->product_label != $line->desc) {
+                            if ($line->desc) {
+                                $tooltiptext .= '<br>';
+                            }
+                            $tooltiptext .= $line->desc;
+                        }
+                    }
+                    if (getDolGlobalInt('TAKEPOS_SHOW_PRODUCT_REFERENCE') == 1) {
+                        $htmlforlines .= $form->textwithpicto($line->product_label ? '<b>' . $line->product_ref . '</b> - ' . $line->product_label : dolGetFirstLineOfText($line->desc, 1), $tooltiptext);
+                    } elseif (getDolGlobalInt('TAKEPOS_SHOW_PRODUCT_REFERENCE') == 2) {
+                        $htmlforlines .= $form->textwithpicto($line->product_ref ? '<b>' . $line->product_ref . '<b>' : dolGetFirstLineOfText($line->desc, 1), $tooltiptext);
+                    } else {
+                        $htmlforlines .= $form->textwithpicto($line->product_label ? $line->product_label : ($line->product_ref ? $line->product_ref : dolGetFirstLineOfText($line->desc, 1)), $tooltiptext);
+                    }
+                } else {
+                    if ($line->product_ref) {
+                        $tooltiptext .= '<b>' . $langs->trans("Ref") . '</b> : ' . $line->product_ref . '<br>';
+                        $tooltiptext .= '<b>' . $langs->trans("Label") . '</b> : ' . $line->product_label . '<br>';
+                    }
+                    if (!empty($line->batch)) {
+                        $tooltiptext .= '<br><b>' . $langs->trans("LotSerial") . '</b> : ' . $line->batch . '<br>';
+                    }
+                    if (!empty($line->fk_warehouse)) {
+                        $tooltiptext .= '<b>' . $langs->trans("Warehouse") . '</b> : ' . $line->fk_warehouse . '<br>';
+                    }
 
-				if ($line->product_label) {
-					$htmlforlines .= $line->product_label;
-				}
-				if ($line->product_label != $line->desc) {
-					if ($line->product_label && $line->desc) {
-						$htmlforlines .= '<br>';
-					}
-					$firstline = dolGetFirstLineOfText($line->desc, $conf->global->TAKEPOS_SHOW_N_FIRST_LINES);
-					if ($firstline != $line->desc) {
-						$htmlforlines .= $form->textwithpicto(dolGetFirstLineOfText($line->desc), $line->desc);
-					} else {
-						$htmlforlines .= $line->desc;
-					}
-				}
-			}
-			if (!empty($line->array_options['options_order_notes'])) {
-				$htmlforlines .= "<br>(".$line->array_options['options_order_notes'].")";
-			}
-			if (!empty($_SESSION["basiclayout"]) && $_SESSION["basiclayout"] == 1) {
-				$htmlforlines .= '</td><td class="right phonetable"><button type="button" onclick="SetQty(place, '.$line->rowid.', '.($line->qty - 1).');" class="publicphonebutton2 phonered">-</button>&nbsp;&nbsp;<button type="button" onclick="SetQty(place, '.$line->rowid.', '.($line->qty + 1).');" class="publicphonebutton2 phonegreen">+</button>';
-			}
-			if (empty($_SESSION["basiclayout"]) || $_SESSION["basiclayout"] != 1) {
-				$moreinfo = '';
-				$moreinfo .= $langs->transcountry("TotalHT", $mysoc->country_code).': '.price($line->total_ht);
-				if ($line->vat_src_code) {
-					$moreinfo .= '<br>'.$langs->trans("VATCode").': '.$line->vat_src_code;
-				}
-				$moreinfo .= '<br>'.$langs->transcountry("TotalVAT", $mysoc->country_code).': '.price($line->total_tva);
-				$moreinfo .= '<br>'.$langs->transcountry("TotalLT1", $mysoc->country_code).': '.price($line->total_localtax1);
-				$moreinfo .= '<br>'.$langs->transcountry("TotalLT2", $mysoc->country_code).': '.price($line->total_localtax2);
-				$moreinfo .= '<hr>';
-				$moreinfo .= $langs->transcountry("TotalTTC", $mysoc->country_code).': '.price($line->total_ttc);
-				//$moreinfo .= $langs->trans("TotalHT").': '.$line->total_ht;
-				if ($line->date_start || $line->date_end) {
-					$htmlforlines .= '<br><div class="clearboth nowraponall">'.get_date_range($line->date_start, $line->date_end).'</div>';
-				}
-				$htmlforlines .= '</td>';
+                    if ($line->product_label) {
+                        $htmlforlines .= $line->product_label;
+                    }
+                    if ($line->product_label != $line->desc) {
+                        if ($line->product_label && $line->desc) {
+                            $htmlforlines .= '<br>';
+                        }
+                        $firstline = dolGetFirstLineOfText($line->desc, $conf->global->TAKEPOS_SHOW_N_FIRST_LINES);
+                        if ($firstline != $line->desc) {
+                            $htmlforlines .= $form->textwithpicto(dolGetFirstLineOfText($line->desc), $line->desc);
+                        } else {
+                            $htmlforlines .= $line->desc;
+                        }
+                    }
+                }
+                if (!empty($line->array_options['options_order_notes'])) {
+                    $htmlforlines .= "<br>(" . $line->array_options['options_order_notes'] . ")";
+                }
+                if (!empty($_SESSION["basiclayout"]) && $_SESSION["basiclayout"] == 1) {
+                    $htmlforlines .= '</td><td class="right phonetable"><button type="button" onclick="SetQty(place, ' . $line->rowid . ', ' . ($line->qty - 1) . ');" class="publicphonebutton2 phonered">-</button>&nbsp;&nbsp;<button type="button" onclick="SetQty(place, ' . $line->rowid . ', ' . ($line->qty + 1) . ');" class="publicphonebutton2 phonegreen">+</button>';
+                }
+                if (empty($_SESSION["basiclayout"]) || $_SESSION["basiclayout"] != 1) {
+                    $moreinfo = '';
+                    $moreinfo .= $langs->transcountry("TotalHT", $mysoc->country_code) . ': ' . price($line->total_ht);
+                    if ($line->vat_src_code) {
+                        $moreinfo .= '<br>' . $langs->trans("VATCode") . ': ' . $line->vat_src_code;
+                    }
+                    $moreinfo .= '<br>' . $langs->transcountry("TotalVAT", $mysoc->country_code) . ': ' . price($line->total_tva);
+                    $moreinfo .= '<br>' . $langs->transcountry("TotalLT1", $mysoc->country_code) . ': ' . price($line->total_localtax1);
+                    $moreinfo .= '<br>' . $langs->transcountry("TotalLT2", $mysoc->country_code) . ': ' . price($line->total_localtax2);
+                    $moreinfo .= '<hr>';
+                    $moreinfo .= $langs->transcountry("TotalTTC", $mysoc->country_code) . ': ' . price($line->total_ttc);
+                    //$moreinfo .= $langs->trans("TotalHT").': '.$line->total_ht;
+                    if ($line->date_start || $line->date_end) {
+                        $htmlforlines .= '<br><div class="clearboth nowraponall">' . get_date_range($line->date_start, $line->date_end) . '</div>';
+                    }
+                    $htmlforlines .= '</td>';
 
-				// complete line by hook
-				$parameters = array('line' => $line);
-				$reshook = $hookmanager->executeHooks('completeTakePosInvoiceLine', $parameters, $invoice, $action);    // Note that $action and $object may have been modified by some hooks
-				if ($reshook < 0) {
-					setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
-				}
-				$htmlforlines .= $hookmanager->resPrint;
+                    // complete line by hook
+                    $parameters = array('line' => $line);
+                    $reshook = $hookmanager->executeHooks('completeTakePosInvoiceLine', $parameters, $invoice, $action);    // Note that $action and $object may have been modified by some hooks
+                    if ($reshook < 0) {
+                        setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+                    }
+                    if (empty($hookmanager->resPrint)) {
+                        $htmlforlines .= $hookmanager->resPrint;
 
-				if (getDolGlobalInt("TAKEPOS_SHOW_SUBPRICE")) {
-					$htmlforlines .= '<td class="right">'.price($line->subprice).'</td>';
-				}
-				$htmlforlines .= '<td class="right">'.vatrate($line->remise_percent, true).'</td>';
-				$htmlforlines .= '<td class="right">';
-				if (isModEnabled('stock') && $user->hasRight('stock', 'mouvement', 'lire')) {
-					$constantforkey = 'CASHDESK_ID_WAREHOUSE'.$_SESSION["takeposterminal"];
-					if (getDolGlobalString($constantforkey) && $line->fk_product > 0 && !getDolGlobalString('TAKEPOS_HIDE_STOCK_ON_LINE')) {
-						$sql = "SELECT e.rowid, e.ref, e.lieu, e.fk_parent, e.statut, ps.reel, ps.rowid as product_stock_id, p.pmp";
-						$sql .= " FROM ".MAIN_DB_PREFIX."entrepot as e,";
-						$sql .= " ".MAIN_DB_PREFIX."product_stock as ps";
-						$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."product as p ON p.rowid = ps.fk_product";
-						$sql .= " WHERE ps.reel != 0";
-						$sql .= " AND ps.fk_entrepot = ".((int) getDolGlobalString($constantforkey));
-						$sql .= " AND e.entity IN (".getEntity('stock').")";
-						$sql .= " AND ps.fk_product = ".((int) $line->fk_product);
-						$resql = $db->query($sql);
-						if ($resql) {
-							$stock_real = 0;
-							$obj = $db->fetch_object($resql);
-							if ($obj) {
-								$stock_real = price2num($obj->reel, 'MS');
-							}
-							$htmlforlines .= $line->qty;
-							$htmlforlines .= '&nbsp; ';
-							$htmlforlines .= '<span class="opacitylow" title="'.$langs->trans("Stock").' '.price($stock_real, 1, '', 1, 0).'">';
-							$htmlforlines .= '(';
-							if ($line->qty && $line->qty > $stock_real) {
-								$htmlforlines .= '<span style="color: var(--amountremaintopaycolor)">';
-							}
-							$htmlforlines .= img_picto('', 'stock', 'class="pictofixedwidth"').price($stock_real, 1, '', 1, 0);
-							if ($line->qty && $line->qty > $stock_real) {
-								$htmlforlines .= "</span>";
-							}
-							$htmlforlines .= ')';
-							$htmlforlines .= '</span>';
-						} else {
-							dol_print_error($db);
-						}
-					} else {
-						$htmlforlines .= $line->qty;
-					}
-				} else {
-					$htmlforlines .= $line->qty;
-				}
+                        if (getDolGlobalInt("TAKEPOS_SHOW_SUBPRICE")) {
+                            $htmlforlines .= '<td class="right">' . price($line->subprice) . '</td>';
+                        }
+                        $htmlforlines .= '<td class="right">' . vatrate($line->remise_percent, true) . '</td>';
+                        $htmlforlines .= '<td class="right">';
+                        if (isModEnabled('stock') && $user->hasRight('stock', 'mouvement', 'lire')) {
+                            $constantforkey = 'CASHDESK_ID_WAREHOUSE' . $_SESSION["takeposterminal"];
+                            if (getDolGlobalString($constantforkey) && $line->fk_product > 0 && !getDolGlobalString('TAKEPOS_HIDE_STOCK_ON_LINE')) {
+                                $sql = "SELECT e.rowid, e.ref, e.lieu, e.fk_parent, e.statut, ps.reel, ps.rowid as product_stock_id, p.pmp";
+                                $sql .= " FROM " . MAIN_DB_PREFIX . "entrepot as e,";
+                                $sql .= " " . MAIN_DB_PREFIX . "product_stock as ps";
+                                $sql .= " LEFT JOIN " . MAIN_DB_PREFIX . "product as p ON p.rowid = ps.fk_product";
+                                $sql .= " WHERE ps.reel != 0";
+                                $sql .= " AND ps.fk_entrepot = " . ((int)getDolGlobalString($constantforkey));
+                                $sql .= " AND e.entity IN (" . getEntity('stock') . ")";
+                                $sql .= " AND ps.fk_product = " . ((int)$line->fk_product);
+                                $resql = $db->query($sql);
+                                if ($resql) {
+                                    $stock_real = 0;
+                                    $obj = $db->fetch_object($resql);
+                                    if ($obj) {
+                                        $stock_real = price2num($obj->reel, 'MS');
+                                    }
+                                    $htmlforlines .= $line->qty;
+                                    $htmlforlines .= '&nbsp; ';
+                                    $htmlforlines .= '<span class="opacitylow" title="' . $langs->trans("Stock") . ' ' . price($stock_real, 1, '', 1, 0) . '">';
+                                    $htmlforlines .= '(';
+                                    if ($line->qty && $line->qty > $stock_real) {
+                                        $htmlforlines .= '<span style="color: var(--amountremaintopaycolor)">';
+                                    }
+                                    $htmlforlines .= img_picto('', 'stock', 'class="pictofixedwidth"') . price($stock_real, 1, '', 1, 0);
+                                    if ($line->qty && $line->qty > $stock_real) {
+                                        $htmlforlines .= "</span>";
+                                    }
+                                    $htmlforlines .= ')';
+                                    $htmlforlines .= '</span>';
+                                } else {
+                                    dol_print_error($db);
+                                }
+                            } else {
+                                $htmlforlines .= $line->qty;
+                            }
+                        } else {
+                            $htmlforlines .= $line->qty;
+                        }
+                    }
+                    $htmlforlines .= '</td>';
+                    if (getDolGlobalInt('TAKEPOS_SHOW_HT')) {
+                        $htmlforlines .= '<td class="right classfortooltip" title="' . $moreinfo . '">';
+                        $htmlforlines .= price($line->total_ht, 1, '', 1, -1, -1, $conf->currency);
+                        if (isModEnabled('multicurrency') && !empty($_SESSION["takeposcustomercurrency"]) && $conf->currency != $_SESSION["takeposcustomercurrency"]) {
+                            //Only show customer currency if multicurrency module is enabled, if currency selected and if this currency selected is not the same as main currency
+                            include_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
+                            $multicurrency = new MultiCurrency($db);
+                            $multicurrency->fetch(0, $_SESSION["takeposcustomercurrency"]);
+                            $htmlforlines .= '<br><span id="linecolht-span-total" style="font-size:0.9em; font-style:italic;">(' . price($line->total_ht * $multicurrency->rate->rate) . ' ' . $_SESSION["takeposcustomercurrency"] . ')</span>';
+                        }
+                        $htmlforlines .= '</td>';
+                    }
+                    $htmlforlines .= '<td class="right classfortooltip" title="' . $moreinfo . '">';
+                    $htmlforlines .= price($line->total_ttc, 1, '', 1, -1, -1, $conf->currency);
+                    if (isModEnabled('multicurrency') && !empty($_SESSION["takeposcustomercurrency"]) && $conf->currency != $_SESSION["takeposcustomercurrency"]) {
+                        //Only show customer currency if multicurrency module is enabled, if currency selected and if this currency selected is not the same as main currency
+                        include_once DOL_DOCUMENT_ROOT . '/multicurrency/class/multicurrency.class.php';
+                        $multicurrency = new MultiCurrency($db);
+                        $multicurrency->fetch(0, $_SESSION["takeposcustomercurrency"]);
+                        $htmlforlines .= '<br><span id="linecolht-span-total" style="font-size:0.9em; font-style:italic;">(' . price($line->total_ttc * $multicurrency->rate->rate) . ' ' . $_SESSION["takeposcustomercurrency"] . ')</span>';
+                    }
+                    $htmlforlines .= '</td>';
+                }
+                $htmlforlines .= '</tr>' . "\n";
+                $htmlforlines .= empty($htmlsupplements[$line->id]) ? '' : $htmlsupplements[$line->id];
 
-				$htmlforlines .= '</td>';
-				if (getDolGlobalInt('TAKEPOS_SHOW_HT')) {
-					$htmlforlines .= '<td class="right classfortooltip" title="'.$moreinfo.'">';
-					$htmlforlines .= price($line->total_ht, 1, '', 1, -1, -1, $conf->currency);
-					if (isModEnabled('multicurrency') && !empty($_SESSION["takeposcustomercurrency"]) && $conf->currency != $_SESSION["takeposcustomercurrency"]) {
-						//Only show customer currency if multicurrency module is enabled, if currency selected and if this currency selected is not the same as main currency
-						include_once DOL_DOCUMENT_ROOT.'/multicurrency/class/multicurrency.class.php';
-						$multicurrency = new MultiCurrency($db);
-						$multicurrency->fetch(0, $_SESSION["takeposcustomercurrency"]);
-						$htmlforlines .= '<br><span id="linecolht-span-total" style="font-size:0.9em; font-style:italic;">('.price($line->total_ht * $multicurrency->rate->rate).' '.$_SESSION["takeposcustomercurrency"].')</span>';
-					}
-					$htmlforlines .= '</td>';
-				}
-				$htmlforlines .= '<td class="right classfortooltip" title="'.$moreinfo.'">';
-				$htmlforlines .= price($line->total_ttc, 1, '', 1, -1, -1, $conf->currency);
-				if (isModEnabled('multicurrency') && !empty($_SESSION["takeposcustomercurrency"]) && $conf->currency != $_SESSION["takeposcustomercurrency"]) {
-					//Only show customer currency if multicurrency module is enabled, if currency selected and if this currency selected is not the same as main currency
-					include_once DOL_DOCUMENT_ROOT.'/multicurrency/class/multicurrency.class.php';
-					$multicurrency = new MultiCurrency($db);
-					$multicurrency->fetch(0, $_SESSION["takeposcustomercurrency"]);
-					$htmlforlines .= '<br><span id="linecolht-span-total" style="font-size:0.9em; font-style:italic;">('.price($line->total_ttc * $multicurrency->rate->rate).' '.$_SESSION["takeposcustomercurrency"].')</span>';
-				}
-				$htmlforlines .= '</td>';
-			}
-			$htmlforlines .= '</tr>'."\n";
-			$htmlforlines .= empty($htmlsupplements[$line->id]) ? '' : $htmlsupplements[$line->id];
-
-			print $htmlforlines;
+                print $htmlforlines;
+            }
 		}
 	} else {
 		print '<tr class="drag drop oddeven"><td class="left"><span class="opacitymedium">'.$langs->trans("Empty").'</span></td><td></td>';
