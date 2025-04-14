@@ -210,8 +210,8 @@ if (!empty($dolibarr_strict_mode)) {
 }
 
 // Disable php display errors
-if (!empty($dolibarr_main_prod)) {
-	ini_set('display_errors', 'Off');
+if (empty($dolibarr_main_prod)) {
+	ini_set('display_errors', 'On');
 }
 
 // Clean parameters
