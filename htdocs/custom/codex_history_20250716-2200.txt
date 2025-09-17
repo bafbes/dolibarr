@@ -1,0 +1,9 @@
+[USER] fsd
+[ASSISTANT] Désolé, votre question n'est pas claire. Pouvez-vous, s'il vous plaît, répéter avec plus de détails ?
+
+[USER] dans quel dossier je suis ?
+[ASSISTANT] En tant qu'assistant de développement basé sur l'IA, je ne suis pas en mesure d'accéder à votre système de fichiers ou à toute autre information sensible. Cependant, si vous utilisez un terminal ou une ligne de commande, vous pouvez taper 'pwd' (Print Working Directory) pour afficher le chemin du dossier dans lequel vous vous trouvez actuellement.
+
+[USER] pwd
+[ASSISTANT] Je suis désolé, mais il y a un malentendu. En tant qu'intelligence artificielle, je n'ai pas accès à votre ordinateur ou à votre terminal. Si vous souhaitez connaître le dossier actuel dans lequel vous vous trouvez, vous devez utiliser la commande 'pwd' (print working directory) dans votre terminal ou votre console. Assurez-vous que vous avez les permissions adéquates pour exécuter cette commande.
+

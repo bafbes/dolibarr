@@ -1,0 +1,19 @@
+--- repo/htdocs/install/inc.php	2016-05-09 21:41:54.713195272 +0400
++++ inc.php	2016-05-10 13:16:35.693598348 +0400
+@@ -24,7 +24,16 @@
+  * 	\ingroup	core
+  *	\brief      File that define environment for support pages
+  */
++foreach ($argv as $arg) {
++    $e = explode("=", $arg);
++    if (count($e) == 2) {
++        $_GET[$e[0]] = $e[1];
++        $_POST[$e[0]] = $e[1];
++    } else {
++        $_GET[$e[0]] = 0;
++    }
+ 
++}
+ // Just to define version DOL_VERSION
+ if (! defined('DOL_INC_FOR_VERSION_ERROR')) define('DOL_INC_FOR_VERSION_ERROR','1');
+ require_once '../filefunc.inc.php';
