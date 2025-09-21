@@ -213,6 +213,7 @@ if (!empty($dolibarr_strict_mode)) {
 if (empty($dolibarr_main_prod)) {
 	ini_set('display_errors', 'On');
 }
+else ini_set('display_errors', 'Off');
 
 // Clean parameters
 $dolibarr_main_data_root = (empty($dolibarr_main_data_root) ? '' : trim($dolibarr_main_data_root));

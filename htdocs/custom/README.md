@@ -25,3 +25,10 @@ two lines, so dolibarr will also scan /custom directory to find external externa
 $dolibarr_main_url_root_alt='/custom';
 $dolibarr_main_document_root_alt='/path_to_dolibarr/htdocs/custom/';
 ```
+Branches :
+- Sellyoursaas :
+    - 2byte : branche spécifique a dolify et au module twobyte sous Dolibarr 20.0.2
+    - mymaster : branche spécifique à 01consulting sous Dolibarr 20.0.2
+    - master :
+    - master21 :
+    - abbes :
