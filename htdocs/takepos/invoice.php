@@ -1241,11 +1241,10 @@ if (empty($reshook)) {
 		if ($remaintopay <= 0 && getDolGlobalString('TAKEPOS_AUTO_PRINT_TICKETS') && $action != "history") {
 			$sectionwithinvoicelink .= '<script type="text/javascript">$("#buttonprint").click();</script>';
 		}
-    }else {
-        $sectionwithinvoicelink = $hookmanager->resPrint;
-    }
+	}
+}else {
+	$sectionwithinvoicelink=$hookmanager->resPrint;
 }
-
 
 /*
  * View

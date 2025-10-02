@@ -344,7 +344,6 @@ if (!getDolGlobalInt("TAKEPOS_NUMPAD")) {
 		$reshook = $hookmanager->executeHooks('paramsForValidatePayment', $parameters, $invoice, $action);
 		?>
 		console.log("Launch Validate");
-
 		var invoiceid = <?php echo($invoiceid > 0 ? $invoiceid : 0); ?>;
 		var accountid = $("#selectaccountid").val();
 		var amountpayed = $("#change1").val();
@@ -353,7 +352,7 @@ if (!getDolGlobalInt("TAKEPOS_NUMPAD")) {
 			amountpayed = <?php echo $invoice->total_ttc; ?>;
 		}
 		console.log("We click on the payment mode to pay amount = "+amountpayed);
-        parent.$("#poslines").load("invoice.php?place=<?php echo $place; ?>&action=valid&token=<?php echo newToken(); ?>&pay="+payment+"&amount="+amountpayed+"&excess="+excess+"&invoiceid="+invoiceid+"&accountid="+accountid+validatePaymentParams, function() {
+		parent.$("#poslines").load("invoice.php?place=<?php echo $place; ?>&action=valid&token=<?php echo newToken(); ?>&pay="+payment+"&amount="+amountpayed+"&excess="+excess+"&invoiceid="+invoiceid+"&accountid="+accountid+validatePaymentParams, function() {
 			if (amountpayed > <?php echo $remaintopay; ?> || amountpayed == <?php echo $remaintopay; ?> || amountpayed==0 ) {
 				console.log("Close popup");
 				parent.$.colorbox.close();
