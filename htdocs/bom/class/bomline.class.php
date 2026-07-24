@@ -334,6 +334,78 @@ class BOMLine extends CommonObjectLine
 	}
 
 	/**
+	 * Compute the unit to use during BOM line import.
+	 *
+	 * @param array<array{val:null|int|float|string,type:int<-1,1>}> $arrayrecord Array of read values
+	 * @param array<string,int>                                      $listfields  Target field to source index map
+	 * @param int                                                    $record_key  Current record key
+	 * @return int Unit id, or 0 if no unit can be inferred
+	 */
+	public function computeDefaultUnit(&$arrayrecord, $listfields, $record_key)
+	{
+		$unitValue = '';
+		if (isset($listfields['bd.fk_unit']) && isset($arrayrecord[$listfields['bd.fk_unit']]['val'])) {
+			$unitValue = trim((string) $arrayrecord[$listfields['bd.fk_unit']]['val']);
+		}
+
+		if ($unitValue !== '') {
+			require_once DOL_DOCUMENT_ROOT.'/core/class/cunits.class.php';
+
+			$unitValue = preg_replace('/^(id|ref):/i', '', $unitValue);
+			$unit = new CUnits($this->db);
+			if (is_numeric($unitValue)) {
+				$unit->fetch((int) $unitValue);
+			} else {
+				$unit->fetch('', $unitValue);
+				if (empty($unit->id)) {
+					$unit->fetch('', '', $unitValue);
+				}
+			}
+
+			if (!empty($unit->id)) {
+				return (int) $unit->id;
+			}
+
+			$this->error = 'ErrorFieldValueNotIn';
+			return 0;
+		}
+
+		if (empty($listfields['bd.fk_product']) || !isset($arrayrecord[$listfields['bd.fk_product']]['val'])) {
+			return 0;
+		}
+
+		require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
+
+		$productValue = trim((string) $arrayrecord[$listfields['bd.fk_product']]['val']);
+		$productValue = preg_replace('/^(id|ref):/i', '', $productValue);
+		if ($productValue === '') {
+			return 0;
+		}
+
+		$product = new Product($this->db);
+		if (is_numeric($productValue)) {
+			$result = $product->fetch((int) $productValue);
+			if ($result <= 0) {
+				$product->fetch(0, $productValue);
+			}
+		} else {
+			$product->fetch(0, $productValue);
+		}
+
+		if (!empty($product->duration_unit)) {
+			require_once DOL_DOCUMENT_ROOT.'/core/class/cunits.class.php';
+
+			$unit = new CUnits($this->db);
+			$fkUnit = $unit->getUnitFromCode($product->duration_unit, 'short_label', 'time');
+			if (!empty($fkUnit)) {
+				return (int) $fkUnit;
+			}
+		}
+
+		return empty($product->fk_unit) ? 0 : (int) $product->fk_unit;
+	}
+
+	/**
 	 * Delete object in database
 	 *
 	 * @param User 	$user       User that deletes

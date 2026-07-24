@@ -409,6 +409,7 @@ class modBom extends DolibarrModules
 			'bd.qty_frozen'     => 'LineIsFrozen',
 			'bd.disable_stock_change' => 'Disable Stock Change',
 			'bd.efficiency'     => 'Efficiency',
+			'bd.fk_unit'        => 'Unit',
 			'bd.position'       => 'LinePosition'
 		);
 
@@ -424,7 +425,10 @@ class modBom extends DolibarrModules
 		}
 		// End add extra fields
 
-		$this->import_fieldshidden_array[$r] = array('extra.fk_object' => 'lastrowid-'.MAIN_DB_PREFIX.'bom_bomline');
+		$this->import_fieldshidden_array[$r] = array(
+			'bd.fk_unit' => 'rule-computeDefaultUnit',
+			'extra.fk_object' => 'lastrowid-'.MAIN_DB_PREFIX.'bom_bomline'
+		);
 		$this->import_regex_array[$r] = array();
 		$this->import_updatekeys_array[$r] = array('bd.fk_bom' => 'BOM Id', 'bd.fk_product' => 'ProductRef');
 		$this->import_convertvalue_array[$r] = array(
@@ -441,6 +445,14 @@ class modBom extends DolibarrModules
 				'class'   => 'Product',
 				'method'  => 'fetch',
 				'element' => 'Product'
+			),
+			'bd.fk_unit' => array(
+				'rule' => 'compute',
+				'type' => 'int',
+				'classfile' => '/bom/class/bomline.class.php',
+				'class' => 'BOMLine',
+				'method' => 'computeDefaultUnit',
+				'element' => 'bomline'
 			),
 		);
 	}

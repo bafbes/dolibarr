@@ -1463,10 +1463,19 @@ class BOM extends CommonObject
 					// Convert qty of line into hours
 					require_once DOL_DOCUMENT_ROOT.'/core/class/cunits.class.php';
 					$measuringUnits = new CUnits($this->db);
-					$measuringUnits->fetch($line->fk_unit);
+					$fkUnitForCost = $line->fk_unit;
+					if (empty($fkUnitForCost) && !empty($tmpproduct->duration_unit)) {
+						$fkUnitForCost = $measuringUnits->getUnitFromCode($tmpproduct->duration_unit, 'short_label', 'time');
+					}
+					if (empty($fkUnitForCost)) {
+						$fkUnitForCost = $tmpproduct->fk_unit;
+					}
 
 					// The unit is a unit for time, so the $measuringUnits->scale is not a power of 10, but directly the factor to change unit into seconds
-					$qtyhourforline = $line->qty * (int) $measuringUnits->scale / 3600;
+					$qtyhourforline = 0;
+					if (!empty($fkUnitForCost) && $measuringUnits->fetch($fkUnitForCost) > 0) {
+						$qtyhourforline = $line->qty * (int) $measuringUnits->scale / 3600;
+					}
 
 					if (isModEnabled('workstation') && !empty($line->fk_default_workstation)) {
 						$workstation = new Workstation($this->db);
