@@ -198,3 +198,5 @@ CashLifetime=Cash lifetime
 ChequeLifetime=Cheque lifetime
 CardLifetime=Card lifetime
 DefaultCashPOSLabel=Cash account for POS
+ErrorSplitSaleNotDraft=This sale is already validated or paid, it can't be split.
+CurrentSale=Current sale

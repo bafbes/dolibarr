@@ -198,3 +198,5 @@ CashLifetime=Perpétuel Espèce
 ChequeLifetime=Perpétuel Chèque
 CardLifetime=Perpétuel Carte
 DefaultCashPOSLabel=Compte Espèce pour point de vente
+ErrorSplitSaleNotDraft=Cette vente est déjà validée ou payée, elle ne peut pas être fractionnée.
+CurrentSale=Vente en cours
