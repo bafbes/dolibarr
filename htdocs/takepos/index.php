@@ -69,6 +69,10 @@ $setterminal = GETPOSTINT('setterminal');
 $setcurrency = GETPOST('setcurrency', 'aZ09');
 
 $hookmanager->initHooks(array('takeposfrontend'));
+
+// The simple layout is set by the public page auto_order.php. The cashier interface must never inherit it.
+unset($_SESSION["basiclayout"]);
+
 if (empty($_SESSION["takeposterminal"])) {
 	$enabledterminals = takeposEnabledTerminals();
 	if (count($enabledterminals) == 1) {
