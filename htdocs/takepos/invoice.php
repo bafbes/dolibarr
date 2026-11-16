@@ -1520,6 +1520,9 @@ if (empty($reshook)) {
 			}
 		}
 	}
+} else {
+	// Standard actions replaced by a hook: the hook provides the section with the invoice link
+	$sectionwithinvoicelink = $hookmanager->resPrint;
 }
 
 
@@ -1767,9 +1770,14 @@ function showPrintResultPopup(message, duration) {
 
 
 // Call url to generate a credit note (with same lines) from existing invoice
+var creditNoteParams="";
 function CreditNote() {
-	$("#poslines").load("<?php print DOL_URL_ROOT; ?>/takepos/invoice.php?action=creditnote&token=<?php echo newToken() ?>&invoiceid="+placeid, function() {	});
-	return true;
+	<?php
+	$parameters = array();
+	$reshook = $hookmanager->executeHooks('paramsForCreditNote', $parameters, $invoice, $action);?>
+	$("#poslines").load("<?php
+		print DOL_URL_ROOT; ?>/takepos/invoice.php?action=creditnote&token=<?php echo newToken() ?>&invoiceid="+placeid+creditNoteParams, function() {	});
+		return true;
 }
 
 // Call url to add notes
@@ -2170,6 +2178,16 @@ if ($placeid > 0) {
 		$tmplines = array_reverse($invoice->lines);
 		$htmlsupplements = array();
 		foreach ($tmplines as $line) {
+			// Allow external modules to replace the display of a line
+			$parameters = array('line' => $line, 'htmlsupplements' => $htmlsupplements, 'form' => $form);
+			$reshook = $hookmanager->executeHooks('showTakePosInvoiceLine', $parameters, $invoice, $action);    // Note that $action and $object may have been modified by some hooks
+			if ($reshook < 0) {
+				setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+			} elseif ($reshook > 0) {
+				print $hookmanager->resPrint;
+				continue;
+			}
+
 			if ($line->fk_parent_line != false) {
 				if (!isset($htmlsupplements[$line->fk_parent_line])) {
 					$htmlsupplements[$line->fk_parent_line] = '';
