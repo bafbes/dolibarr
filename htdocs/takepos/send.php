@@ -87,11 +87,23 @@ if ($action == "send" && $user->hasRight('takepos', 'run')) {
 	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formmail.class.php';
 	$formmail = new FormMail($db);
 	$outputlangs = new Translate('', $conf);
+	$outputlangs->setDefaultLang(empty($customer->default_lang) ? $langs->defaultlang : $customer->default_lang);
 	$model_id = getDolGlobalInt('TAKEPOS_EMAIL_TEMPLATE_INVOICE');
 	$arraydefaultmessage = $formmail->getEMailTemplate($db, 'facture_send', $user, $outputlangs, $model_id);
 
+	// Replace substitution variables of the template (__REF__, __AMOUNT_FORMATTED__, __MYCOMPANY_NAME__...)
+	// and __LINES__, built with the line template (content_lines) repeated for each line of the invoice
+	$formmail->setSubstitFromObject($invoice, $outputlangs);
+	$substitutionarray = $formmail->substit;
+	$substitutionarray['__LINES__'] = '';
+	if (!empty($arraydefaultmessage->content_lines)) {
+		foreach ($formmail->substit_lines as $substit_line) {
+			$substitutionarray['__LINES__'] .= make_substitutions((string) $arraydefaultmessage->content_lines, $substit_line, $outputlangs)."\n";
+		}
+	}
+
 	// Subject
-	$subject = $arraydefaultmessage->topic;
+	$subject = make_substitutions((string) $arraydefaultmessage->topic, $substitutionarray, $outputlangs);
 
 	$receipt = '';
 
@@ -102,10 +114,13 @@ if ($action == "send" && $user->hasRight('takepos', 'run')) {
 	if (!getDolGlobalString('TAKEPOS_SEND_INVOICE_AS_PDF')) {
 		$nojs = 1;	// used by include of takepos/receipt.php
 
-		ob_start(); // turn on output receipt
-		include DOL_DOCUMENT_ROOT.'/takepos/receipt.php';
-		$receipt = ob_get_contents(); // get the contents of the output buffer
-		ob_end_clean();
+		// The receipt is added under the message, except if the template already shows the lines of the sale with __LINES__
+		if (strpos((string) $arraydefaultmessage->content, '__LINES__') === false) {
+			ob_start(); // turn on output receipt
+			include DOL_DOCUMENT_ROOT.'/takepos/receipt.php';
+			$receipt = ob_get_contents(); // get the contents of the output buffer
+			ob_end_clean();
+		}
 	} else {
 		if ($arraydefaultmessage->joinfiles == 1 && !empty($invoice->last_main_doc)) {
 			// TODO
@@ -123,7 +138,7 @@ if ($action == "send" && $user->hasRight('takepos', 'run')) {
 
 	// Content
 	$msg = "<html>";
-	$msg .= $arraydefaultmessage->content;
+	$msg .= make_substitutions((string) $arraydefaultmessage->content, $substitutionarray, $outputlangs);
 	if ($receipt) {
 		$msg .= "<br>";
 		$msg .= $receipt;
