@@ -172,8 +172,13 @@ foreach ($categories as $key => $categorycursor) {
 	}
 }
 
-$maincategories = dol_sort_array($maincategories, 'label');
-$subcategories = dol_sort_array($subcategories, 'label');
+// Sort categories on their position, then on their label (case insensitive) when positions are equal
+$sortcategories = function ($a, $b) {
+	$result = (int) $a['position'] - (int) $b['position'];
+	return ($result != 0 ? $result : strnatcasecmp((string) $a['label'], (string) $b['label']));
+};
+usort($maincategories, $sortcategories);
+usort($subcategories, $sortcategories);
 ?>
 <?php
 $keyCodeForEnter = '';
