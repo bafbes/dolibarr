@@ -418,6 +418,7 @@ function LoadProducts(position, issubcat) {
 				$("#prodiv"+ishow).attr("data-rowid","");
 
 				$("#prodiv"+ishow).data("iscat","0");
+				$("#prodiv"+ishow).data("unit", "");
 				$("#prodiv"+ishow).attr("data-iscat","0");
 
 				$("#prodiv"+ishow).attr("class","wrapper2 divempty");
@@ -465,6 +466,9 @@ function LoadProducts(position, issubcat) {
 
 				$("#prodiv"+ishow).data("iscat", 0);
 				$("#prodiv"+ishow).attr("data-iscat", 0);
+
+				// Unit of the product, used to ask the weighing scale for products sold by weight (unit kg)
+				$("#prodiv"+ishow).data("unit", data[idata]['fk_unit']);
 
 				$("#prodiv"+ishow).attr("class","wrapper2");
 
@@ -620,16 +624,16 @@ function ClickProduct(position, qty = 1, qty_std = 0) {
 			});
 		};
 
-		// call WeighingScale() if product is a product that need to measure weight
-		<?php if (getDolGlobalString('TAKEPOS_WEIGHING_SCALE')) { ?>
-			if ($('#prodiv'+position).data('unit') == 2) {
+		// For a product sold by weight (unit kg), read the weighing scale, or ask the weight if there is no scale
+		if ($('#prodiv'+position).data('unit') == 2) {
+			<?php if (getDolGlobalString('TAKEPOS_WEIGHING_SCALE')) { ?>
 				WeighingScale(addInvoiceLine);
-			} else {
-				addInvoiceLine(qty, qty_std);
-			}
-		<?php } else { ?>
+			<?php } else { ?>
+				AskWeight(addInvoiceLine);
+			<?php } ?>
+		} else {
 			addInvoiceLine(qty, qty_std);
-		<?php } ?>
+		}
 	}
 
 	ClearSearch(false);
@@ -1126,6 +1130,23 @@ function FullScreen() {
 	document.documentElement.requestFullscreen();
 }
 
+/**
+ * Ask the weight of a product sold by weight (when there is no weighing scale or when it does not answer)
+ *
+ * @param   {function}  callback    Function called with the weight entered
+ * @return  {void}
+ */
+function AskWeight(callback) {
+	var weight = prompt("<?php $langs->load("other"); echo dol_escape_js($langs->transnoentitiesnoconv("Weight").' (kg)'); ?>");
+	if (weight === null) {
+		return;
+	}
+	weight = parseFloat(String(weight).replace(',', '.'));
+	if (weight > 0) {
+		callback(weight);
+	}
+}
+
 function WeighingScale(callback) {
 	console.log("Weighing Scale: invoiceid = " + placeid + ", lineid = " + selectedline);
 	<?php if (getDolGlobalString('TAKEPOS_CONNECTOR_TO_WHB_SCALE')) {?>
@@ -1156,6 +1177,14 @@ function WeighingScale(callback) {
 			});
 		<?php } else { ?>
 			// Protocole par défaut de takeposconnector: réception continue du poids/stabilité
+			if (callback !== undefined) {
+				if (parseFloat(globalWeight) > 0) {
+					callback(parseFloat(globalWeight));
+				} else {
+					AskWeight(callback);
+				}
+				return;
+			}
 			editnumber = globalWeight;
 			$("#poslines").load("invoice.php?token=<?php echo currentToken(); ?>&action=updateqty&place="+place+"&idline="+selectedline+"&number="+editnumber, function() {
 				editnumber="";
@@ -1168,9 +1197,26 @@ function WeighingScale(callback) {
 		url: '<?php print getDolGlobalString('TAKEPOS_PRINT_SERVER'); ?>/scale/index.php',
 	})
 	.done(function( editnumber ) {
+		// No valid weight (no scale plugged or no answer): ask it
+		if (!(parseFloat(editnumber) > 0)) {
+			if (callback !== undefined) {
+				AskWeight(callback);
+			}
+			return;
+		}
+		// Weighing at the click on a product: add the line with the weight read
+		if (callback !== undefined) {
+			callback(parseFloat(editnumber));
+			return;
+		}
 		$("#poslines").load("invoice.php?token=<?php echo currentToken(); ?>&action=updateqty&place="+place+"&idline="+selectedline+"&number="+editnumber, function() {
 				editnumber="";
 			});
+	})
+	.fail(function() {
+		if (callback !== undefined) {
+			AskWeight(callback);
+		}
 	});
 	<?php } ?>
 }
