@@ -266,6 +266,8 @@ if ($action == 'getProducts' && $user->hasRight('takepos', 'run')) {
 							'object' => 'product',
 							'img' => $ig,
 							'qty' => $qty,
+							'qty_from_barcode' => (isset($barcode_value_list['qu']) ? 1 : 0),	// The quantity (weight) is read in the barcode
+							'fk_unit' => $objProd->fk_unit,
 						);
 					}
 					$db->free($resql);
@@ -385,6 +387,7 @@ if ($action == 'getProducts' && $user->hasRight('takepos', 'run')) {
 				'object' => 'product',
 				'img' => $ig,
 				'qty' => 1,
+				'fk_unit' => $objProd->fk_unit,
 				'price_formated' => price(price2num(empty($objProd->multiprices[$pricelevel]) ? $obj->price : $objProd->multiprices[$pricelevel], 'MT'), 1, $langs, 1, -1, -1, $conf->currency),
 				'price_ttc_formated' => price(price2num(empty($objProd->multiprices_ttc[$pricelevel]) ? $obj->price_ttc : $objProd->multiprices_ttc[$pricelevel], 'MT'), 1, $langs, 1, -1, -1, $conf->currency)
 			);

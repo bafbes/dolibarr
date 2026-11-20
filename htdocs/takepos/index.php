@@ -332,6 +332,25 @@ function PrintSubCategory(ishow, val) {
 	$("#prowatermark"+ishow).show();
 }
 
+/**
+ * Show again the products of the current category (for example after adding a product with a barcode),
+ * or empty the product grid when no category is open
+ *
+ * @return  {void}
+ */
+function ReloadCurrentCategory() {
+	var found = false;
+	$('[id^=catdiv]').each(function() {
+		if (!found && currentcat !== undefined && $(this).data('rowid') == currentcat) {
+			found = true;
+			LoadProducts(this.id.replace('catdiv', ''));
+		}
+	});
+	if (!found) {
+		ClearSearch(true);
+	}
+}
+
 // LoadProducts
 function LoadProducts(position, issubcat) {
 	console.log("LoadProducts position="+position+" issubcat="+issubcat);
@@ -418,6 +437,7 @@ function LoadProducts(position, issubcat) {
 				$("#prodiv"+ishow).attr("data-rowid","");
 
 				$("#prodiv"+ishow).data("iscat","0");
+				$("#prodiv"+ishow).data("unit", "");
 				$("#prodiv"+ishow).attr("data-iscat","0");
 
 				$("#prodiv"+ishow).attr("class","wrapper2 divempty");
@@ -465,6 +485,9 @@ function LoadProducts(position, issubcat) {
 
 				$("#prodiv"+ishow).data("iscat", 0);
 				$("#prodiv"+ishow).attr("data-iscat", 0);
+
+				// Unit of the product, used to ask the weighing scale for products sold by weight (unit kg)
+				$("#prodiv"+ishow).data("unit", data[idata]['fk_unit']);
 
 				$("#prodiv"+ishow).attr("class","wrapper2");
 
@@ -590,7 +613,7 @@ function MoreProducts(moreorless) {
 	ClearSearch(false);
 }
 
-function ClickProduct(position, qty = 1, qty_std = 0) {
+function ClickProduct(position, qty = 1, qty_std = 0, qty_from_barcode = 0) {
 	console.log("ClickProduct at position"+position);
 	if ($('#invoiceid').val() == "") {
 		invoiceid = $('#invoiceid').val();
@@ -620,16 +643,17 @@ function ClickProduct(position, qty = 1, qty_std = 0) {
 			});
 		};
 
-		// call WeighingScale() if product is a product that need to measure weight
-		<?php if (getDolGlobalString('TAKEPOS_WEIGHING_SCALE')) { ?>
-			if ($('#prodiv'+position).data('unit') == 2) {
+		// For a product sold by weight (unit kg), read the weighing scale, or ask the weight if there is no scale
+		// (except when the weight is already read in the barcode of a label printed by a scale)
+		if ($('#prodiv'+position).data('unit') == 2 && !qty_from_barcode) {
+			<?php if (getDolGlobalString('TAKEPOS_WEIGHING_SCALE')) { ?>
 				WeighingScale(addInvoiceLine);
-			} else {
-				addInvoiceLine(qty, qty_std);
-			}
-		<?php } else { ?>
+			<?php } else { ?>
+				AskWeight(addInvoiceLine);
+			<?php } ?>
+		} else {
 			addInvoiceLine(qty, qty_std);
-		<?php } ?>
+		}
 	}
 
 	ClearSearch(false);
@@ -856,6 +880,7 @@ function Search2(keyCodeForEnter, moreorless) {
 						$("#proimg" + i).attr("src", "genimg/empty.png");
 						$("#prodiv" + i).data("rowid", "");
 						$("#prodiv" + i).attr("data-rowid", "");
+						$("#prodiv" + i).data("unit", "");
 						continue;
 					}
 					<?php
@@ -896,6 +921,7 @@ function Search2(keyCodeForEnter, moreorless) {
 					}
 					$("#prodiv" + i).data("rowid", data[i]['rowid']);
 					$("#prodiv" + i).attr("data-rowid", data[i]['rowid']);
+					$("#prodiv" + i).data("unit", data[i]['fk_unit'] ? data[i]['fk_unit'] : "");
 					$("#prodiv" + i).data("iscat", 0);
 					$("#prodiv" + i).attr("data-iscat", 0);
 
@@ -919,7 +945,8 @@ function Search2(keyCodeForEnter, moreorless) {
 					}
 					else if ('product' == data[0]['object'] && $('#search').val() == data[0]['barcode']) {
 						console.log("There is only 1 answer and we found search on a barcode, so we add the product in basket, qty="+data[0]['qty']);
-						ClickProduct(0, data[0]['qty'], 1);
+						ClickProduct(0, data[0]['qty'], 1, data[0]['qty_from_barcode'] ? 1 : 0);
+						ReloadCurrentCategory();
 					}
 				}
 				if (eventKeyCode == keyCodeForEnter){
@@ -1126,6 +1153,23 @@ function FullScreen() {
 	document.documentElement.requestFullscreen();
 }
 
+/**
+ * Ask the weight of a product sold by weight (when there is no weighing scale or when it does not answer)
+ *
+ * @param   {function}  callback    Function called with the weight entered
+ * @return  {void}
+ */
+function AskWeight(callback) {
+	var weight = prompt("<?php $langs->load("other"); echo dol_escape_js($langs->transnoentitiesnoconv("Weight").' (kg)'); ?>");
+	if (weight === null) {
+		return;
+	}
+	weight = parseFloat(String(weight).replace(',', '.'));
+	if (weight > 0) {
+		callback(weight);
+	}
+}
+
 function WeighingScale(callback) {
 	console.log("Weighing Scale: invoiceid = " + placeid + ", lineid = " + selectedline);
 	<?php if (getDolGlobalString('TAKEPOS_CONNECTOR_TO_WHB_SCALE')) {?>
@@ -1156,6 +1200,14 @@ function WeighingScale(callback) {
 			});
 		<?php } else { ?>
 			// Protocole par défaut de takeposconnector: réception continue du poids/stabilité
+			if (callback !== undefined) {
+				if (parseFloat(globalWeight) > 0) {
+					callback(parseFloat(globalWeight));
+				} else {
+					AskWeight(callback);
+				}
+				return;
+			}
 			editnumber = globalWeight;
 			$("#poslines").load("invoice.php?token=<?php echo currentToken(); ?>&action=updateqty&place="+place+"&idline="+selectedline+"&number="+editnumber, function() {
 				editnumber="";
@@ -1168,9 +1220,26 @@ function WeighingScale(callback) {
 		url: '<?php print getDolGlobalString('TAKEPOS_PRINT_SERVER'); ?>/scale/index.php',
 	})
 	.done(function( editnumber ) {
+		// No valid weight (no scale plugged or no answer): ask it
+		if (!(parseFloat(editnumber) > 0)) {
+			if (callback !== undefined) {
+				AskWeight(callback);
+			}
+			return;
+		}
+		// Weighing at the click on a product: add the line with the weight read
+		if (callback !== undefined) {
+			callback(parseFloat(editnumber));
+			return;
+		}
 		$("#poslines").load("invoice.php?token=<?php echo currentToken(); ?>&action=updateqty&place="+place+"&idline="+selectedline+"&number="+editnumber, function() {
 				editnumber="";
 			});
+	})
+	.fail(function() {
+		if (callback !== undefined) {
+			AskWeight(callback);
+		}
 	});
 	<?php } ?>
 }
