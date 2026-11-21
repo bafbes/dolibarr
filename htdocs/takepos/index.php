@@ -1218,10 +1218,33 @@ function WeighingScale(callback) {
 				editnumber="";
 			});
 		<?php } ?>
-	<?php } else { ?> // utilisation du new TakePOS-Connector PHP: envoie "$" à la balance pour avoir le poids
+	<?php } else { ?> // TakePOS-Connector PHP: reads the weight with the protocol set in the connector
+	// Unit price applied to the customer, needed by price computing scales (Dialog 06)
+	$.getJSON("<?php echo DOL_URL_ROOT; ?>/takepos/ajax/ajax.php", {
+		action: "getWeighingPrice",
+		token: "<?php echo currentToken(); ?>",
+		idproduct: (callback !== undefined ? idproduct : ""),
+		invoiceid: $("#invoiceid").val(),
+		idline: (callback !== undefined ? "" : selectedline)
+	})
+	.always(function(data) {
+		var price = (data && data.price_ttc !== undefined) ? data.price_ttc : "";
+		ReadWeighingScale(price, callback);
+	});
+	<?php } ?>
+}
+
+/**
+ * Read the weight on the weighing scale with the TakePOS-Connector PHP
+ *
+ * @param   {number}    price       Unit price including tax applied to the customer, sent to the scale
+ * @param   {function}  callback    Function called with the weight read (click on a product), or undefined to update the quantity of the selected line
+ * @return  {void}
+ */
+function ReadWeighingScale(price, callback) {
 	$.ajax({
 		type: "POST",
-		data: { token: 'notrequired' },
+		data: { token: 'notrequired', price: price },
 		url: '<?php print getDolGlobalString('TAKEPOS_PRINT_SERVER'); ?>/scale/index.php',
 	})
 	.done(function( editnumber ) {
@@ -1246,7 +1269,6 @@ function WeighingScale(callback) {
 			AskWeight(callback);
 		}
 	});
-	<?php } ?>
 }
 
 $( document ).ready(function() {
