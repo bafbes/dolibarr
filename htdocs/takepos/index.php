@@ -642,7 +642,7 @@ function ClickProduct(position, qty = 1, qty_std = 0, qty_from_barcode = 0) {
 			// Call page invoice.php to generate the section with product lines
 			  $("#poslines").load("invoice.php?action=addline&token=<?php echo currentToken(); ?>&place="+place+"&idproduct="+idproduct+"&selectedline="+selectedline+"&qty="+qty+"&invoiceid="+invoiceid+(qty_std_inner ? '&qty_std=1' : ''), function() {
 				idproduct = "";
-				<?php if (getDolGlobalString('TAKEPOS_CUSTOMER_DISPLAY')) {
+				<?php if (getDolGlobalString('TAKEPOS_CUSTOMER_DISPLAY'.(isset($_SESSION["takeposterminal"]) ? $_SESSION["takeposterminal"] : ''))) {
 					echo "CustomerDisplay();";
 				}?>
 			});
@@ -651,7 +651,7 @@ function ClickProduct(position, qty = 1, qty_std = 0, qty_from_barcode = 0) {
 		// For a product sold by weight (unit kg), read the weighing scale, or ask the weight if there is no scale
 		// (except when the weight is already read in the barcode of a label printed by a scale)
 		if ($('#prodiv'+position).data('unit') == 2 && !qty_from_barcode) {
-			<?php if (getDolGlobalString('TAKEPOS_WEIGHING_SCALE')) { ?>
+			<?php if (getDolGlobalString('TAKEPOS_WEIGHING_SCALE'.(isset($_SESSION["takeposterminal"]) ? $_SESSION["takeposterminal"] : ''))) { ?>
 				WeighingScale(addInvoiceLine);
 			<?php } else { ?>
 				AskWeight(addInvoiceLine);
@@ -1718,7 +1718,7 @@ if (getDolGlobalString('TAKEPOS_HIDE_HEAD_BAR')) {
 	$menus[$r++] = array('title' => '<span class="fa fa-sign-out-alt pictofixedwidth"></span><div class="trunc">'.$langs->trans("Logout").'</div>', 'action' => 'window.location.href=\''.DOL_URL_ROOT.'/user/logout.php?token='.newToken().'\';');
 }
 
-if (getDolGlobalString('TAKEPOS_WEIGHING_SCALE')) {
+if (getDolGlobalString('TAKEPOS_WEIGHING_SCALE'.(isset($_SESSION["takeposterminal"]) ? $_SESSION["takeposterminal"] : ''))) {
 	$menus[$r++] = array('title' => '<span class="fa fa-balance-scale pictofixedwidth"></span><div class="trunc">'.$langs->trans("WeighingScale").'</div>', 'action' => 'WeighingScale();');
 }
 

@@ -1031,7 +1031,7 @@ if (empty($reshook)) {
 				}
 			}
 
-			if (getDolGlobalString('TAKEPOS_CUSTOMER_DISPLAY')) {
+			if (getDolGlobalString('TAKEPOS_CUSTOMER_DISPLAY'.$takeposterminal)) {
 				$CUSTOMER_DISPLAY_line1 = $prod->label;
 				$CUSTOMER_DISPLAY_line2 = price($price_ttc);
 			}
@@ -1940,7 +1940,7 @@ $( document ).ready(function() {
 
 
 <?php
-if (getDolGlobalString('TAKEPOS_CUSTOMER_DISPLAY')) {
+if (getDolGlobalString('TAKEPOS_CUSTOMER_DISPLAY'.$takeposterminal)) {
 	echo "function CustomerDisplay(){";
 	echo "var line1='".$CUSTOMER_DISPLAY_line1."'.substring(0,20);";
 	echo "line1=line1.padEnd(20);";

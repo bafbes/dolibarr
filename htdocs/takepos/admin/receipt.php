@@ -203,22 +203,6 @@ if (isALNERunningVersion()) {
 }
 print "</td></tr>\n";
 
-if (getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector" && filter_var(getDolGlobalString('TAKEPOS_PRINT_SERVER'), FILTER_VALIDATE_URL) == true) {
-	print '<tr class="oddeven"><td>';
-	print $langs->trans('WeighingScale');
-	print '<td colspan="2">';
-	print ajax_constantonoff("TAKEPOS_WEIGHING_SCALE", array(), $conf->entity, 0, 0, 1, 0);
-	print "</td></tr>\n";
-}
-
-if (getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector" && filter_var(getDolGlobalString('TAKEPOS_PRINT_SERVER'), FILTER_VALIDATE_URL) == true) {
-	print '<tr class="oddeven"><td>';
-	print $langs->trans('CustomerDisplay');
-	print '<td colspan="2">';
-	print ajax_constantonoff("TAKEPOS_CUSTOMER_DISPLAY", array(), $conf->entity, 0, 0, 1, 0);
-	print "</td></tr>\n";
-}
-
 // Print without details
 if (getDolGlobalString('TAKEPOS_ENABLE_PRINT_WITHOUT_DETAILS')) {	// Note that even if option is set manually, if version is certified, option will be disabled later and above all in the page that generate the documents/receipts.
 	print '<tr class="oddeven"><td>';

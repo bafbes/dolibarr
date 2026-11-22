@@ -518,6 +518,18 @@ if (isModEnabled('receiptprinter') || getDolGlobalString('TAKEPOS_PRINT_METHOD')
 	}
 }
 
+// Weighing scale and customer display of this terminal, read through the TakePOS Connector installed on its computer
+foreach (array('TAKEPOS_WEIGHING_SCALE' => 'WeighingScale', 'TAKEPOS_CUSTOMER_DISPLAY' => 'CustomerDisplay') as $constname => $labelkey) {
+	print '<tr class="oddeven"><td>';
+	print $langs->trans($labelkey);
+	if (getDolGlobalString('TAKEPOS_PRINT_METHOD') != "takeposconnector" || !filter_var(getDolGlobalString('TAKEPOS_PRINT_SERVER'), FILTER_VALIDATE_URL)) {
+		print ' <span class="opacitymedium">('.$langs->trans("TakeposConnectorNecesary").')</span>';
+	}
+	print '</td><td>';
+	print ajax_constantonoff($constname.$terminal, array(), $conf->entity, 0, 0, 1, 0);
+	print '</td></tr>';
+}
+
 
 print '</table>';
 

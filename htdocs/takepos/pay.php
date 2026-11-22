@@ -551,7 +551,7 @@ if (!getDolGlobalInt("TAKEPOS_NUMPAD")) {
 	}
 
 <?php
-if (getDolGlobalString('TAKEPOS_CUSTOMER_DISPLAY')) {
+if (getDolGlobalString('TAKEPOS_CUSTOMER_DISPLAY'.(isset($_SESSION["takeposterminal"]) ? $_SESSION["takeposterminal"] : ''))) {
 	echo "var line1='".$langs->trans('TotalTTC')."'.substring(0,20);";
 	echo "line1=line1.padEnd(20);";
 	echo "var line2='".price($invoice->total_ttc, 1, '', 1, -1, -1)."'.substring(0,20);";
