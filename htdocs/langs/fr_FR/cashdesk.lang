@@ -201,3 +201,5 @@ DefaultCashPOSLabel=Compte Espèce pour point de vente
 ErrorSplitSaleNotDraft=Cette vente est déjà validée ou payée, elle ne peut pas être fractionnée.
 CurrentSale=Vente en cours
 HideSplitSaleButton=Masquer le bouton « Fractionner la vente » (utile surtout pour les bars et restaurants)
+DisabledInCloud=Désactivé en cloud
+ReceiptPrinterDisabledInCloud=Les imprimantes tickets sont désactivées en cloud : le TakePOS Connector est sur un autre domaine que Dolibarr, le serveur ne peut donc pas joindre les imprimantes du magasin. Utilisez TakePOS Connector.

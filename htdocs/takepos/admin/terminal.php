@@ -73,6 +73,13 @@ if ($resql) {
 
 $terminaltouse = $terminal;
 
+// Cloud instance: the TakePOS Connector is on another domain than Dolibarr, so receipt printers of the shop can't be reached by the server
+$printserverhost = getDolGlobalString('TAKEPOS_PRINT_SERVER');
+if (filter_var($printserverhost, FILTER_VALIDATE_URL)) {
+	$printserverhost = (string) parse_url($printserverhost, PHP_URL_HOST);
+}
+$iscloudinstance = ($printserverhost != '' && strtolower($printserverhost) != strtolower((string) parse_url(DOL_MAIN_URL_ROOT, PHP_URL_HOST)));
+
 
 /*
  * Actions
@@ -124,17 +131,15 @@ if (GETPOST('action', 'alpha') == 'set') {
 	if (GETPOSTISSET('CASHDESK_NO_DECREASE_STOCK'.$terminaltouse)) {
 		$res = dolibarr_set_const($db, "CASHDESK_NO_DECREASE_STOCK".$terminaltouse, GETPOST('CASHDESK_NO_DECREASE_STOCK'.$terminaltouse, 'alpha'), 'chaine', 0, '', $conf->entity);
 	}
-	// Print method of this terminal (empty: use the default print method TAKEPOS_PRINT_METHOD)
+	// Print method of this terminal (receipt printers can't be reached from a cloud instance)
 	if (GETPOSTISSET('TAKEPOS_PRINT_METHOD'.$terminaltouse)) {
 		$printmethod = GETPOST('TAKEPOS_PRINT_METHOD'.$terminaltouse, 'aZ09');
-		if (in_array($printmethod, array('browser', 'receiptprinter', 'takeposconnector'))) {
+		if (in_array($printmethod, array('browser', 'takeposconnector')) || ($printmethod == 'receiptprinter' && !$iscloudinstance)) {
 			$res = dolibarr_set_const($db, "TAKEPOS_PRINT_METHOD".$terminaltouse, $printmethod, 'chaine', 0, '', $conf->entity);
 			// TakePOS connector require ReceiptPrinter module
 			if ($printmethod == "takeposconnector" && !isModEnabled('receiptprinter')) {
 				activateModule("modReceiptPrinter", 1, 0);
 			}
-		} else {
-			$res = dolibarr_del_const($db, "TAKEPOS_PRINT_METHOD".$terminaltouse, $conf->entity);
 		}
 	}
 	if (GETPOSTISSET('TAKEPOS_PRINTER_TO_USE'.$terminaltouse)) {
@@ -465,15 +470,18 @@ if (isALNERunningVersion()) {		// No need to show the custom template when isALN
 }
 
 // Print method of this terminal
-$printmethods = array('browser' => $langs->trans("Browser"), 'receiptprinter' => $langs->trans("ReceiptPrinter"), 'takeposconnector' => 'TakePOS Connector');
-$defaultprintmethod = getDolGlobalString('TAKEPOS_PRINT_METHOD');
+$printmethods = array('takeposconnector' => 'TakePOS Connector', 'browser' => $langs->trans("Browser"), 'receiptprinter' => $langs->trans("ReceiptPrinter"));
+$currentprintmethod = getDolGlobalString('TAKEPOS_PRINT_METHOD'.$terminal, getDolGlobalString('TAKEPOS_PRINT_METHOD'));
 print '<tr class="oddeven"><td>'.$langs->trans("PrintMethod").'</td><td>';
 print '<select id="TAKEPOS_PRINT_METHOD'.$terminal.'" name="TAKEPOS_PRINT_METHOD'.$terminal.'" class="flat minwidth200">';
-print '<option value="">'.$langs->trans("Default").(isset($printmethods[$defaultprintmethod]) ? ' ('.$printmethods[$defaultprintmethod].')' : '').'</option>';
 foreach ($printmethods as $key => $label) {
-	print '<option value="'.$key.'"'.(getDolGlobalString('TAKEPOS_PRINT_METHOD'.$terminal) == $key ? ' selected' : '').'>'.$label.'</option>';
+	$disabled = ($key == 'receiptprinter' && $iscloudinstance);
+	print '<option value="'.$key.'"'.($currentprintmethod == $key ? ' selected' : '').($disabled ? ' disabled title="'.dol_escape_htmltag($langs->trans("DisabledInCloud")).'"' : '').'>'.$label.($disabled ? ' ('.$langs->trans("DisabledInCloud").')' : '').'</option>';
 }
 print '</select>';
+if ($iscloudinstance) {
+	print ' '.$form->textwithpicto('', $langs->trans("ReceiptPrinterDisabledInCloud"));
+}
 print ajax_combobox('TAKEPOS_PRINT_METHOD'.$terminal);
 print '</td></tr>';
 
