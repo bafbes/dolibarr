@@ -1037,9 +1037,9 @@ class dolReceiptPrinter extends Printer
 			}
 			// If is DummyPrintConnector send to log to debugging
 			$connector = $this->printer->connector;
-			if ($connector instanceof DummyPrintConnector || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector") {
+			if ($connector instanceof DummyPrintConnector || getDolGlobalString('TAKEPOS_PRINT_METHOD'.(empty($_SESSION['takeposterminal']) ? '' : $_SESSION['takeposterminal']), getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "takeposconnector") {
 				$data = $connector->getData();
-				if (getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector") {
+				if (getDolGlobalString('TAKEPOS_PRINT_METHOD'.(empty($_SESSION['takeposterminal']) ? '' : $_SESSION['takeposterminal']), getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "takeposconnector") {
 					echo rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
 				}
 				dol_syslog($data);
@@ -1100,7 +1100,7 @@ class dolReceiptPrinter extends Printer
 			return 1;
 		}
 
-		if (getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector") {
+		if (getDolGlobalString('TAKEPOS_PRINT_METHOD'.(empty($_SESSION['takeposterminal']) ? '' : $_SESSION['takeposterminal']), getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "takeposconnector") {
 			$this->connector = new DummyPrintConnector();
 			$this->printer = new Printer($this->connector, $this->profile);
 			return;

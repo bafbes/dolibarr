@@ -124,6 +124,19 @@ if (GETPOST('action', 'alpha') == 'set') {
 	if (GETPOSTISSET('CASHDESK_NO_DECREASE_STOCK'.$terminaltouse)) {
 		$res = dolibarr_set_const($db, "CASHDESK_NO_DECREASE_STOCK".$terminaltouse, GETPOST('CASHDESK_NO_DECREASE_STOCK'.$terminaltouse, 'alpha'), 'chaine', 0, '', $conf->entity);
 	}
+	// Print method of this terminal (empty: use the default print method TAKEPOS_PRINT_METHOD)
+	if (GETPOSTISSET('TAKEPOS_PRINT_METHOD'.$terminaltouse)) {
+		$printmethod = GETPOST('TAKEPOS_PRINT_METHOD'.$terminaltouse, 'aZ09');
+		if (in_array($printmethod, array('browser', 'receiptprinter', 'takeposconnector'))) {
+			$res = dolibarr_set_const($db, "TAKEPOS_PRINT_METHOD".$terminaltouse, $printmethod, 'chaine', 0, '', $conf->entity);
+			// TakePOS connector require ReceiptPrinter module
+			if ($printmethod == "takeposconnector" && !isModEnabled('receiptprinter')) {
+				activateModule("modReceiptPrinter", 1, 0);
+			}
+		} else {
+			$res = dolibarr_del_const($db, "TAKEPOS_PRINT_METHOD".$terminaltouse, $conf->entity);
+		}
+	}
 	if (GETPOSTISSET('TAKEPOS_PRINTER_TO_USE'.$terminaltouse)) {
 		$res = dolibarr_set_const($db, "TAKEPOS_PRINTER_TO_USE".$terminaltouse, GETPOST('TAKEPOS_PRINTER_TO_USE'.$terminaltouse, 'alpha'), 'chaine', 0, '', $conf->entity);
 	}
@@ -451,6 +464,19 @@ if (isALNERunningVersion()) {		// No need to show the custom template when isALN
 	$customprinttemplateallowed = false;	// Custom printer may be allowed if mandatory information in template are guaranteed. For the moment, we prefer not allow this.
 }
 
+// Print method of this terminal
+$printmethods = array('browser' => $langs->trans("Browser"), 'receiptprinter' => $langs->trans("ReceiptPrinter"), 'takeposconnector' => 'TakePOS Connector');
+$defaultprintmethod = getDolGlobalString('TAKEPOS_PRINT_METHOD');
+print '<tr class="oddeven"><td>'.$langs->trans("PrintMethod").'</td><td>';
+print '<select id="TAKEPOS_PRINT_METHOD'.$terminal.'" name="TAKEPOS_PRINT_METHOD'.$terminal.'" class="flat minwidth200">';
+print '<option value="">'.$langs->trans("Default").(isset($printmethods[$defaultprintmethod]) ? ' ('.$printmethods[$defaultprintmethod].')' : '').'</option>';
+foreach ($printmethods as $key => $label) {
+	print '<option value="'.$key.'"'.(getDolGlobalString('TAKEPOS_PRINT_METHOD'.$terminal) == $key ? ' selected' : '').'>'.$label.'</option>';
+}
+print '</select>';
+print ajax_combobox('TAKEPOS_PRINT_METHOD'.$terminal);
+print '</td></tr>';
+
 if (isModEnabled('receiptprinter')) {
 	// Select printer to use with terminal
 	require_once DOL_DOCUMENT_ROOT.'/takepos/class/dolreceiptprinter.class.php';
@@ -488,7 +514,7 @@ if (isModEnabled('receiptprinter')) {
 	}
 }
 
-if (isModEnabled('receiptprinter') || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "receiptprinter" || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector") {
+if (isModEnabled('receiptprinter') || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$terminal, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "receiptprinter" || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$terminal, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "takeposconnector") {
 	// Select printer to use with terminal
 	require_once DOL_DOCUMENT_ROOT.'/takepos/class/dolreceiptprinter.class.php';
 	$printer = new dolReceiptPrinter($db);
@@ -522,7 +548,7 @@ if (isModEnabled('receiptprinter') || getDolGlobalString('TAKEPOS_PRINT_METHOD')
 foreach (array('TAKEPOS_WEIGHING_SCALE' => 'WeighingScale', 'TAKEPOS_CUSTOMER_DISPLAY' => 'CustomerDisplay') as $constname => $labelkey) {
 	print '<tr class="oddeven"><td>';
 	print $langs->trans($labelkey);
-	if (getDolGlobalString('TAKEPOS_PRINT_METHOD') != "takeposconnector" || !filter_var(getDolGlobalString('TAKEPOS_PRINT_SERVER'), FILTER_VALIDATE_URL)) {
+	if (getDolGlobalString('TAKEPOS_PRINT_METHOD'.$terminal, getDolGlobalString('TAKEPOS_PRINT_METHOD')) != "takeposconnector" || !filter_var(getDolGlobalString('TAKEPOS_PRINT_SERVER'), FILTER_VALIDATE_URL)) {
 		print ' <span class="opacitymedium">('.$langs->trans("TakeposConnectorNecesary").')</span>';
 	}
 	print '</td><td>';

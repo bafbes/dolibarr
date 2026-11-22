@@ -445,7 +445,7 @@ if ($action == 'getProducts' && $user->hasRight('takepos', 'run')) {
 	$printer = new dolReceiptPrinter($db);
 
 	// check printer for terminal
-	if ((getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0 || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector")) {
+	if ((getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0 || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$term, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "takeposconnector")) {
 		$object = new Facture($db);
 		$object->fetch($id);
 

@@ -1322,7 +1322,7 @@ if (empty($reshook)) {
 
 	if ($action == "order" && $placeid != 0 && ($user->hasRight('takepos', 'run') || defined('INCLUDE_PHONEPAGE_FROM_PUBLIC_PAGE'))) {
 		include_once DOL_DOCUMENT_ROOT.'/categories/class/categorie.class.php';
-		if ((isModEnabled('receiptprinter') && getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0) || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "receiptprinter" || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector") {
+		if ((isModEnabled('receiptprinter') && getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0) || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$term, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "receiptprinter" || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$term, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "takeposconnector") {
 			require_once DOL_DOCUMENT_ROOT.'/takepos/class/dolreceiptprinter.class.php';
 			$printer = new dolReceiptPrinter($db);
 		}
@@ -1367,7 +1367,7 @@ if (empty($reshook)) {
 				$order_receipt_printer1 .= '</td></tr>';
 			}
 		}
-		if (((isModEnabled('receiptprinter') && getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0) || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "receiptprinter" || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector") && $linestoprint > 0 && $printer !== null) {
+		if (((isModEnabled('receiptprinter') && getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0) || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$term, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "receiptprinter" || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$term, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "takeposconnector") && $linestoprint > 0 && $printer !== null) {
 			$invoice->fetch($placeid); //Reload object before send to printer
 			$printer->orderprinter = 1;
 			echo "<script>";
@@ -1399,7 +1399,7 @@ if (empty($reshook)) {
 				$order_receipt_printer2 .= '</td></tr>';
 			}
 		}
-		if (((isModEnabled('receiptprinter') && getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0) || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "receiptprinter" || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector") && $linestoprint > 0) {
+		if (((isModEnabled('receiptprinter') && getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0) || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$term, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "receiptprinter" || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$term, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "takeposconnector") && $linestoprint > 0) {
 			$invoice->fetch($placeid); //Reload object before send to printer
 			$printer->orderprinter = 2;
 			echo "<script>";
@@ -1431,7 +1431,7 @@ if (empty($reshook)) {
 				$order_receipt_printer3 .= '</td></tr>';
 			}
 		}
-		if (((isModEnabled('receiptprinter') && getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0) || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "receiptprinter" || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector") && $linestoprint > 0 && $printer !== null) {
+		if (((isModEnabled('receiptprinter') && getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0) || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$term, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "receiptprinter" || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$term, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "takeposconnector") && $linestoprint > 0 && $printer !== null) {
 			$invoice->fetch($placeid); //Reload object before send to printer
 			$printer->orderprinter = 3;
 			echo "<script>";
@@ -1484,7 +1484,7 @@ if (empty($reshook)) {
 				$sectionwithinvoicelink .= ' <a target="_blank" class="button" href="' . DOL_URL_ROOT . '/document.php?token=' . newToken() . '&modulepart=facture&file=' . $invoice->ref . '/' . $invoice->ref . '.pdf">'.$langs->trans("Invoice").'</a>';
 			} else {
 				// This section should be same than into index.php
-				if (getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector") {
+				if (getDolGlobalString('TAKEPOS_PRINT_METHOD'.$term, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "takeposconnector") {
 					// Used when the external addon takeposconnector is installed. Deprecated.
 					if (getDolGlobalString('TAKEPOS_PRINT_SERVER') && filter_var(getDolGlobalString('TAKEPOS_PRINT_SERVER'), FILTER_VALIDATE_URL) == true) {
 						// If TAKEPOS_PRINT_SERVER is an URL
@@ -1494,7 +1494,7 @@ if (empty($reshook)) {
 						// Print by calling the receipt.php to get HTML content and send the HTML content to TAKEPOS_PRINT_SERVER:8111/print
 						$sectionwithinvoicelink .= ' <button id="buttonprint" type="button" onclick="PrintHTMLToSlashPrint('.$placeid.')">'.$langs->trans('PrintTicket').'</button>';
 					}
-				} elseif ($customprinterallowed && $customprinttemplateallowed && (isModEnabled('receiptprinter') && getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0) || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "receiptprinter") {		// @phpstan-ignore-line
+				} elseif ($customprinterallowed && $customprinttemplateallowed && (isModEnabled('receiptprinter') && getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0) || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$term, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "receiptprinter") {		// @phpstan-ignore-line
 					// Button Print Receipt on special custom printer using custom template
 					$nameOfPrinter = dol_getIdFromCode($db, getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term), 'printer_receipt', 'rowid', 'name', 1);
 					$sectionwithinvoicelink .= ' <button id="buttonprint" type="button" onclick="PrintByESCPOS('.$placeid.')" title="'.dolPrintHTMLForAttribute($langs->trans("SentToPrinter").' '.$nameOfPrinter).'">'.$langs->trans('PrintTicket').'</button>';
