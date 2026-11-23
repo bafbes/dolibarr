@@ -445,7 +445,7 @@ if ($action == 'getProducts' && $user->hasRight('takepos', 'run')) {
 	$printer = new dolReceiptPrinter($db);
 
 	// check printer for terminal
-	if ((getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0 || getDolGlobalString('TAKEPOS_PRINT_METHOD'.$term, getDolGlobalString('TAKEPOS_PRINT_METHOD')) == "takeposconnector")) {
+	if ((getDolGlobalInt('TAKEPOS_PRINTER_TO_USE'.$term) > 0 || getDolGlobalString('TAKEPOS_PRINT_METHOD') == "takeposconnector")) {
 		$object = new Facture($db);
 		$object->fetch($id);
 
@@ -478,43 +478,6 @@ if ($action == 'getProducts' && $user->hasRight('takepos', 'run')) {
 			print 'Failed to update print counter for object ID='.$object->id.' so we refuse to print.';
 		}
 	}
-} elseif ($action == 'getWeighingPrice' && $user->hasRight('takepos', 'run')) {
-	// Unit price including tax applied to the customer, sent to a price computing weighing scale (Dialog 06)
-	top_httphead('application/json');
-
-	require_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
-
-	$idproduct = GETPOSTINT('idproduct');
-	$invoiceid = GETPOSTINT('invoiceid');
-	$idline = GETPOSTINT('idline');
-
-	$invoice = new Facture($db);
-	if ($invoiceid > 0) {
-		$invoice->fetch($invoiceid);
-	}
-
-	$price_ttc = 0;
-	if ($idline > 0 && $invoice->id > 0) {
-		// Weighing of the selected line: price already applied on the line, discount included
-		foreach ($invoice->lines as $line) {
-			if ($line->id == $idline && $line->qty != 0) {
-				$price_ttc = $line->total_ttc / $line->qty;
-			}
-		}
-	} elseif ($idproduct > 0) {
-		// Weighing at the click on a product: same price as the line that will be added by invoice.php (action addline)
-		$customer = new Societe($db);
-		$takeposterminal = isset($_SESSION["takeposterminal"]) ? $_SESSION["takeposterminal"] : '';
-		$customer->fetch($invoice->id > 0 ? $invoice->socid : getDolGlobalInt('CASHDESK_ID_THIRDPARTY'.$takeposterminal));
-
-		$prod = new Product($db);
-		if ($prod->fetch($idproduct) > 0) {
-			$datapriceofproduct = $prod->getSellPrice($mysoc, $customer, 0);
-			$price_ttc = $datapriceofproduct['pu_ttc'] * (1 - (float) $customer->remise_percent / 100);
-		}
-	}
-
-	echo json_encode(array('price_ttc' => (float) price2num($price_ttc, 'MU')));
 } elseif ($action == 'getInvoice' && $user->hasRight('takepos', 'run')) {
 	top_httphead('application/json');
 
