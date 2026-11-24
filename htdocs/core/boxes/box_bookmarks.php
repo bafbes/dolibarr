@@ -23,6 +23,7 @@
  *      \brief      Module to generate box of bookmarks list
  */
 include_once DOL_DOCUMENT_ROOT.'/core/boxes/modules_boxes.php';
+include_once DOL_DOCUMENT_ROOT.'/bookmarks/bookmarks.lib.php';
 
 /**
  * Class to manage the box to show bookmarks
@@ -96,14 +97,14 @@ class box_bookmarks extends ModeleBoxes
 					$this->info_box_contents[$line][0] = array(
 						'td' => 'class="left" width="16"',
 						'logo' => $this->boximg,
-						'url' => $objp->url,
+						'url' => bookmarkGetUrlToShow($objp->url),
 						'tooltip' => $objp->title,
 						'target' => $objp->target ? 'newtab' : '',
 					);
 					$this->info_box_contents[$line][1] = array(
 						'td' => '',
 						'text' => $objp->title,
-						'url' => $objp->url,
+						'url' => bookmarkGetUrlToShow($objp->url),
 						'tooltip' => $objp->title,
 						'target' => $objp->target ? 'newtab' : '',
 					);

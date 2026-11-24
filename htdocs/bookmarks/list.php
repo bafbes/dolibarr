@@ -35,6 +35,7 @@ require '../main.inc.php';
  */
 
 require_once DOL_DOCUMENT_ROOT.'/bookmarks/class/bookmark.class.php';
+require_once DOL_DOCUMENT_ROOT.'/bookmarks/bookmarks.lib.php';
 
 // Load translation files required by the page
 $langs->loadLangs(array('other', 'admin'));
@@ -444,9 +445,9 @@ while ($i < $imaxinloop) {
 		print '<td class="tdoverflowmax250">';
 		if (empty($linkintern)) {
 			print img_picto('', 'url', 'class="pictofixedwidth"');
-			print '<a class="" href="'.$obj->url.'"'.($obj->target ? ' target="newlink" rel="noopener"' : '').'>';
+			print '<a class="" href="'.dol_escape_htmltag(bookmarkGetUrlToShow($obj->url)).'"'.($obj->target ? ' target="newlink" rel="noopener"' : '').'>';
 		} else {
-			print '<a class="" href="'.$obj->url.'">';
+			print '<a class="" href="'.dol_escape_htmltag(bookmarkGetUrlToShow($obj->url)).'">';
 		}
 		print $link;
 		print '</a>';

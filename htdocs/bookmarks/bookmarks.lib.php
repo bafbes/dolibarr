@@ -24,6 +24,37 @@
 
 
 /**
+ * Return the URL of a bookmark to store in database: an internal link is stored relative to DOL_URL_ROOT,
+ * so the bookmark still works when the database is used with another path or domain.
+ *
+ * @param	string	$url	URL of the bookmark (external http link or internal link)
+ * @return	string			URL to store
+ */
+function bookmarkGetUrlToStore($url)
+{
+	$url = trim($url);
+	if (DOL_URL_ROOT !== '' && !preg_match('/^http/i', $url) && strpos($url, DOL_URL_ROOT.'/') === 0) {
+		$url = substr($url, strlen(DOL_URL_ROOT));
+	}
+	return $url;
+}
+
+/**
+ * Return the URL of a bookmark to use in a link: DOL_URL_ROOT is added before an internal link.
+ *
+ * @param	string	$url	URL of the bookmark as stored in database
+ * @return	string			URL to use in a link
+ */
+function bookmarkGetUrlToShow($url)
+{
+	// External link, or internal link stored with the path of this instance (bookmarks recorded before links were stored relative)
+	if (preg_match('/^http/i', $url) || (DOL_URL_ROOT !== '' && strpos($url, DOL_URL_ROOT.'/') === 0)) {
+		return $url;
+	}
+	return DOL_URL_ROOT.(strpos($url, '/') === 0 ? '' : '/').$url;
+}
+
+/**
  * Add area with bookmarks in top menu
  *
  * @return	string
@@ -38,7 +69,7 @@ function printDropdownBookmarksList()
 	$langs->load("bookmarks");
 
 	$authorized_var=array('limit','optioncss','contextpage');
-	$url = $_SERVER["PHP_SELF"];
+	$url = bookmarkGetUrlToStore($_SERVER["PHP_SELF"]);
 	$url_param = array();
 	if (!empty($_SERVER["QUERY_STRING"])) {
 		if (is_array($_GET)) {	// Parse the original GET URL. So we must keep $_GET here.
@@ -114,7 +145,7 @@ function printDropdownBookmarksList()
 			$bookmarkList = '<div id="dropdown-bookmarks-list" >';
 			$i = 0;
 			while ((!getDolGlobalString('BOOKMARKS_SHOW_IN_MENU') || $i < getDolGlobalInt('BOOKMARKS_SHOW_IN_MENU')) && $obj = $db->fetch_object($resql)) {
-				$bookmarkList .= '<a class="dropdown-item bookmark-item'.(strpos($obj->url, 'http') === 0 ? ' bookmark-item-external' : '').'" id="bookmark-item-'.$obj->rowid.'" data-id="'.$obj->rowid.'" '.($obj->target == 1 ? ' target="_blank"  rel="noopener noreferrer"' : '').' href="'.dol_escape_htmltag($obj->url).'" >';
+				$bookmarkList .= '<a class="dropdown-item bookmark-item'.(strpos($obj->url, 'http') === 0 ? ' bookmark-item-external' : '').'" id="bookmark-item-'.$obj->rowid.'" data-id="'.$obj->rowid.'" '.($obj->target == 1 ? ' target="_blank"  rel="noopener noreferrer"' : '').' href="'.dol_escape_htmltag(bookmarkGetUrlToShow($obj->url)).'" >';
 				$bookmarkList .= dol_escape_htmltag($obj->title);
 				$bookmarkList .= '</a>';
 				$i++;
@@ -148,7 +179,7 @@ function printDropdownBookmarksList()
 			}
 			$i = 0;
 			while ((!getDolGlobalString('BOOKMARKS_SHOW_IN_MENU') || $i < getDolGlobalInt('BOOKMARKS_SHOW_IN_MENU')) && $obj = $db->fetch_object($resql)) {
-				$searchForm .= '<option name="bookmark'.$obj->rowid.'" value="'.$obj->rowid.'" '.($obj->target == 1 ? ' target="_blank" rel="noopener noreferrer"' : '').' rel="'.dol_escape_htmltag($obj->url).'" >';
+				$searchForm .= '<option name="bookmark'.$obj->rowid.'" value="'.$obj->rowid.'" '.($obj->target == 1 ? ' target="_blank" rel="noopener noreferrer"' : '').' rel="'.dol_escape_htmltag(bookmarkGetUrlToShow($obj->url)).'" >';
 				$searchForm .= dol_escape_htmltag($obj->title);
 				$searchForm .= '</option>';
 				$i++;

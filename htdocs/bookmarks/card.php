@@ -29,6 +29,7 @@
 // Load Dolibarr environment
 require '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/bookmarks/class/bookmark.class.php';
+require_once DOL_DOCUMENT_ROOT.'/bookmarks/bookmarks.lib.php';
 
 /**
  * @var Conf $conf
@@ -84,7 +85,7 @@ if (($action == 'add' || $action == 'addproduct' || $action == 'update') && $per
 
 	if (GETPOST('cancel', 'alpha')) {
 		if (empty($backtopage)) {
-			$backtopage = ($urlsource ? $urlsource : ((!empty($url) && !preg_match('/^http/i', $url)) ? $url : DOL_URL_ROOT.'/bookmarks/list.php'));
+			$backtopage = ($urlsource ? $urlsource : ((!empty($url) && !preg_match('/^http/i', $url)) ? bookmarkGetUrlToShow($url) : DOL_URL_ROOT.'/bookmarks/list.php'));
 		}
 		header("Location: ".$backtopage);
 		exit;
@@ -103,7 +104,7 @@ if (($action == 'add' || $action == 'addproduct' || $action == 'update') && $per
 		$object->fk_user = $user->id;
 	}
 	$object->title = $title;
-	$object->url = $url;
+	$object->url = bookmarkGetUrlToStore($url);
 	$object->target = $target;
 	$object->position = $position;
 
@@ -134,7 +135,7 @@ if (($action == 'add' || $action == 'addproduct' || $action == 'update') && $per
 
 		if ($res > 0) {
 			if (empty($backtopage)) {
-				$backtopage = ($urlsource ? $urlsource : ((!empty($url) && !preg_match('/^http/i', $url)) ? $url : DOL_URL_ROOT.'/bookmarks/list.php'));
+				$backtopage = ($urlsource ? $urlsource : ((!empty($url) && !preg_match('/^http/i', $url)) ? bookmarkGetUrlToShow($url) : DOL_URL_ROOT.'/bookmarks/list.php'));
 			}
 			header("Location: ".$backtopage);
 			exit;
@@ -281,7 +282,7 @@ if ($id > 0 && !preg_match('/^add/i', $action)) {
 	if ($action == 'edit') {
 		print '<input class="flat minwidth500 quatrevingtpercent" name="url" value="'.(GETPOSTISSET("url") ? GETPOST("url") : $object->url).'">';
 	} else {
-		print '<a href="'.(preg_match('/^http/i', $object->url) ? $object->url : DOL_URL_ROOT.$object->url).'"'.($object->target ? ' target="_blank" rel="noopener noreferrer"' : '').'>';
+		print '<a href="'.dol_escape_htmltag(bookmarkGetUrlToShow($object->url)).'"'.($object->target ? ' target="_blank" rel="noopener noreferrer"' : '').'>';
 		print img_picto('', 'globe', 'class="paddingright"');
 		print $object->url;
 		print '</a>';
